@@ -54,6 +54,6 @@ class purchase_order(models.Model):
                 'product_id': product.id or False,
                 'product_uom': line_data['value'].get('product_uom'),
                 'price_unit': line_data['value'].get('price_unit'),
-                'tax_id': [(6, 0, line_data['value'].get('taxes_id'))],
+                'taxes_id': [(6, 0, line_data['value'].get('taxes_id'))],
             }
             self.env['purchase.order.line'].create(val)
