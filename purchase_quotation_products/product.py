@@ -35,10 +35,8 @@ class product_product(models.Model):
                 line_data = self.env[
                     'purchase.order.line'].onchange_product_id(
                         lines[0].order_id.pricelist_id.id,
-                        self.id,
-                        qty=qty,
-                        uom_id=self.uom_id.id,
-                        partner_id=lines[0].order_id.partner_id.id)
+                        self.id, qty, self.uom_id.id,
+                        lines[0].order_id.partner_id.id)
                 lines[0].write({
                     'product_qty': qty,
                     'product_uom': self.uom_id.id,

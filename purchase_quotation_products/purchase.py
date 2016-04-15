@@ -41,11 +41,7 @@ class purchase_order(models.Model):
         self.ensure_one()
         for product in self.env['product.product'].browse(product_ids):
             line_data = self.env['purchase.order.line'].onchange_product_id(
-                self.pricelist_id.id,
-                product.id,
-                qty=1,
-                uom_id=uom,
-                partner_id=self.partner_id.id)
+                self.pricelist_id.id, product.id, 1, uom, self.partner_id.id)
             val = {
                 'name': line_data['value'].get('name'),
                 'date_planned': line_data['value'].get('date_planned'),
