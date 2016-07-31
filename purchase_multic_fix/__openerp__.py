@@ -18,14 +18,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{   'active': False,
-    'author':  'ADHOC SA',
+{'active': False,
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'data': [
-        'purchase_view.xml',   
-                ],
+        'purchase_view.xml',
+    ],
     'demo': [],
     'depends': ['purchase'],
     'description': '''
@@ -36,3 +36,4 @@ Purchase Multi Company Fixes
     'name': 'Purchase Multi Company Fixes',
     'test': [],
     'version': '9.0.1.0.0',
+ }

@@ -18,13 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{   'active': False,
-    'author':  'ADHOC SA',
+{'active': False,
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'data': [
-                ],
+    ],
     'demo': [],
     'depends': ['purchase'],
     'description': '''
@@ -35,3 +35,4 @@ Purchase Line Defaults
     'name': 'Purchase Line Defaults',
     'test': [],
     'version': '9.0.1.0.0',
+ }
