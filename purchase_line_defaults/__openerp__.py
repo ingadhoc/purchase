@@ -31,7 +31,7 @@
 Purchase Line Defaults
 ========================
 ''',
-    'installable': True,
+    'installable': False,
     'name': 'Purchase Line Defaults',
     'test': [],
-    'version': '8.0.1.2.0'}
+    'version': '9.0.1.0.0',

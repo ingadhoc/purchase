@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Quotation Products',
-    'version': '8.0.0.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
@@ -45,7 +45,7 @@ Purchase Quotation Products
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }

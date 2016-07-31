@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Add Products Wizard',
-    'version': '8.0.0.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Sales & Purchases',
     'sequence': 14,
     'summary': '',
@@ -45,7 +45,7 @@ This module adds a " multi Add " button on purchase orders calling a wizard "pur
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
