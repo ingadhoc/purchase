@@ -22,9 +22,10 @@ class purchase_order(models.Model):
 
         for line in self.order_line:
             price = line.product_id.price
-            item = line.product_id.item_ids.search(['&',
-                                                    ('date_start', '<=', self.date_order),
-                                                    ('date_end', '>=', self.date_order)])
+            item = line.product_id.item_ids.search(
+                ['&',
+                 ('date_start', '<=', self.date_order),
+                 ('date_end', '>=', self.date_order)])
             if item:
                 price = item[0].fixed_price
             line.price_unit = price
