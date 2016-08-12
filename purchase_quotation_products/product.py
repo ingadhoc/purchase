@@ -19,9 +19,9 @@ class product_product(models.Model):
                 ('product_id', '=', self.id)])
             self.qty_purchase = \
                 sum([self.env['product.uom']._compute_qty_obj(
-                line.product_uom,
-                line.product_qty,
-                self.uom_id) for line in lines])
+                    line.product_uom,
+                    line.product_qty,
+                    self.uom_id) for line in lines])
 
     @api.one
     def _set_qty_purchase(self):
@@ -36,7 +36,7 @@ class product_product(models.Model):
                 line_data = self.env[
                     'purchase.order.line'].onchange_product_quotation(
                         # lines[0].order_id.pricelist_id.id,
-                        self, qty, lines[0].order_id)
+                        self, lines[0].order_id)
                 lines[0].write({
                     'product_qty': qty,
                     'product_uom': self.uom_id.id,

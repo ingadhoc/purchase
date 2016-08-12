@@ -44,7 +44,7 @@ class purchase_order(models.Model):
         for product in self.env['product.product'].browse(
                 product_ids):
             line_data = self.env['purchase.order.line'].\
-                onchange_product_quotation(product, 1,  self)
+                onchange_product_quotation(product, self)
             val = {
                 'name': line_data['name'],
                 'date_planned': line_data['date_planned'],
@@ -65,7 +65,6 @@ class purchase_order_line(models.Model):
     def onchange_product_quotation(
             self,
             product_id,
-            product_qty,
             order_id):
         result = {}
         if not product_id:
@@ -75,7 +74,7 @@ class purchase_order_line(models.Model):
         #  _onchange_quantity will provide default values
         result['date_planned'] = \
             datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        result['price_unit'] = product_qty = 0.0
+        result['price_unit']  = 0.0
         result['product_uom'] = \
             product_id.uom_po_id or product_id.uom_id
         result['domain'] = \
