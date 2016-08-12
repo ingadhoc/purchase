@@ -10,13 +10,17 @@ from openerp import models, api
 
 # class sale_order(models.Model):
 #     _inherit = "sale.order"
-
+#
 #     @api.multi
-#     def onchange_company_id(self, company_id, part_id, type, invoice_line, currency_id):
+#     def onchange_company_id(self, company_id, part_id,
+#                             type, invoice_line, currency_id):
 #         if self.invoice_line:
 #             raise Warning(
-#                 _('You cannot change the company of a invoice that has lines. You should delete them first.'))
-# return super(account_invoice, self).onchange_company_id(company_id,
+#                 _('You cannot change the company'
+#                   ' of a invoice that has lines. '
+#                   'You should delete them first.'))
+# return super(account_invoice, self).\
+#     onchange_company_id(company_id,
 # part_id, type, invoice_line, currency_id)
 
 class purchase_order_line(models.Model):
@@ -25,9 +29,9 @@ class purchase_order_line(models.Model):
     @api.onchange('product_id')
     def onchange_product_id(self):
         res = super(purchase_order_line, self).onchange_product_id()
-        
+
         if not self._context:
-            context = {}
+            self._context = {}
 
         company_id = self._context.get('company_id', False)
         if company_id:
