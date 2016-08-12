@@ -74,7 +74,7 @@ class purchase_order_line(models.Model):
         #  _onchange_quantity will provide default values
         result['date_planned'] = \
             datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        result['price_unit']  = 0.0
+        result['price_unit'] = 0.0
         result['product_uom'] = \
             product_id.uom_po_id or product_id.uom_id
         result['domain'] = \
