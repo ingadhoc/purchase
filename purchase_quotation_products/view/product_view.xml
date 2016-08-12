@@ -25,9 +25,9 @@
                 <field name="uom_id" position="attributes">
                     <attribute name="readonly">True</attribute>
                 </field>
-                <field name="ean13" position="attributes">
-                    <attribute name="readonly">True</attribute>
-                </field>
+                <!--<field name="ean13" position="attributes">-->
+                    <!--<attribute name="readonly">True</attribute>-->
+                <!--</field>-->
                 <field name="attribute_value_ids" position="attributes">
                     <attribute name="readonly">True</attribute>
                 </field>
