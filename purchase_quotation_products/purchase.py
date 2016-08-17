@@ -3,7 +3,7 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, api, _, SUPERUSER_ID
+from openerp import models, api, _
 from ast import literal_eval
 from datetime import datetime
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -61,4 +61,3 @@ class purchase_order(models.Model):
 
             order_line = self.env['purchase.order.line'].create(val)
             order_line.onchange_product_id()
-
