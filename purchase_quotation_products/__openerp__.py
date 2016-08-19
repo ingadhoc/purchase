@@ -24,11 +24,6 @@
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
-    'description': """
-Purchase Quotation Products
-===========================
-
-    """,
     'author':  'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -45,7 +40,7 @@ Purchase Quotation Products
     ],
     'test': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }

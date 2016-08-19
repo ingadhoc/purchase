@@ -5,6 +5,8 @@
 ##############################################################################
 from openerp import models, api, _
 from ast import literal_eval
+from datetime import datetime
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 
 class purchase_order(models.Model):
@@ -23,7 +25,7 @@ class purchase_order(models.Model):
         if actions:
             action_read = actions.read()[0]
             context = literal_eval(action_read['context'])
-            context['pricelist'] = self.pricelist_id.display_name
+            # context['pricelist'] = self.pricelist_id.display_name
             # we send company in context so it filters taxes
             context['company_id'] = self.company_id.id
             action_read['context'] = context
@@ -39,17 +41,23 @@ class purchase_order(models.Model):
     @api.multi
     def add_products(self, product_ids, qty, uom):
         self.ensure_one()
-        for product in self.env['product.product'].browse(product_ids):
-            line_data = self.env['purchase.order.line'].onchange_product_id(
-                self.pricelist_id.id, product.id, 1, uom, self.partner_id.id)
+        for product in self.env['product.product'].browse(
+                product_ids):
+
+            product_lang = product.with_context({
+                'lang': self.partner_id.lang,
+                'partner_id': self.partner_id.id})
+
             val = {
-                'name': line_data['value'].get('name'),
-                'date_planned': line_data['value'].get('date_planned'),
+                'name': product_lang.display_name,
+                'date_planned': datetime.today().strftime(
+                    DEFAULT_SERVER_DATETIME_FORMAT),
                 'product_qty': qty,
                 'order_id': self.id,
                 'product_id': product.id or False,
-                'product_uom': line_data['value'].get('product_uom'),
-                'price_unit': line_data['value'].get('price_unit'),
-                'taxes_id': [(6, 0, line_data['value'].get('taxes_id'))],
+                'product_uom': product.uom_id.id,
+                'price_unit': 0.0,
             }
-            self.env['purchase.order.line'].create(val)
+
+            order_line = self.env['purchase.order.line'].create(val)
+            order_line.onchange_product_id()
