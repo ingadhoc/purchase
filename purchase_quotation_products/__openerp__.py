@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Quotation Products',
-    'version': '8.0.0.0.0',
+    'version': '8.0.0.1.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
@@ -29,7 +29,7 @@ Purchase Quotation Products
 ===========================
 
     """,
-    'author':  'ADHOC SA',
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [
