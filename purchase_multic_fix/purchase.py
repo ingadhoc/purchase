@@ -19,6 +19,18 @@ import openerp.addons.decimal_precision as dp
 # return super(account_invoice, self).onchange_company_id(company_id,
 # part_id, type, invoice_line, currency_id)
 
+class purchase_order(models.Model):
+    _inherit = "purchase.order"
+
+    @api.constrains('company_id', 'picking_type_id')
+    def check_company(self):
+        picking_type_company = self.picking_type_id.warehouse_id.company_id
+        if picking_type_company and picking_type_company != self.company_id:
+            raise Warning(_(
+                'The picking type company must be the same as the purchase '
+                'order company'))
+
+
 class purchase_order_line(models.Model):
     _inherit = "purchase.order.line"
 
