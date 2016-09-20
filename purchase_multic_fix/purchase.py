@@ -22,6 +22,7 @@ import openerp.addons.decimal_precision as dp
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
+    @api.one
     @api.constrains('company_id', 'picking_type_id')
     def check_company(self):
         picking_type_company = self.picking_type_id.warehouse_id.company_id
