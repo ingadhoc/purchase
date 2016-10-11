@@ -24,11 +24,6 @@
     'category': 'Sales & Purchases',
     'sequence': 14,
     'summary': '',
-    'description': """
-Purchase Prices Update
-======================
-An update system for purchase order lines' unit.
-    """,
     'author':  'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -44,7 +39,7 @@ An update system for purchase order lines' unit.
     ],
     'test': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
