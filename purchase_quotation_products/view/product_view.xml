@@ -22,8 +22,8 @@
                 <field name="lst_price" position="attributes">
                     <attribute name="readonly">True</attribute>
                 </field>
-                <field name="uom_id" position="attributes">
-                    <attribute name="readonly">True</attribute>
+                <field name="uom_id" position="replace">
+                    <field name="uom_po_id" readonly="True"/>
                 </field>
                 <!--<field name="ean13" position="attributes">-->
                     <!--<attribute name="readonly">True</attribute>-->
