@@ -5,8 +5,6 @@
 ##############################################################################
 from openerp import models, api, _
 from ast import literal_eval
-from datetime import datetime
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 
 class purchase_order(models.Model):
@@ -39,25 +37,20 @@ class purchase_order(models.Model):
         return action_read
 
     @api.multi
-    def add_products(self, product_ids, qty, uom):
+    def add_products(self, product, qty):
         self.ensure_one()
-        for product in self.env['product.product'].browse(
-                product_ids):
-
-            product_lang = product.with_context({
-                'lang': self.partner_id.lang,
-                'partner_id': self.partner_id.id})
-
-            val = {
-                'name': product_lang.display_name,
-                'date_planned': datetime.today().strftime(
-                    DEFAULT_SERVER_DATETIME_FORMAT),
-                'product_qty': qty,
-                'order_id': self.id,
-                'product_id': product.id or False,
-                'product_uom': product.uom_id.id,
-                'price_unit': 0.0,
-            }
-
-            order_line = self.env['purchase.order.line'].create(val)
-            order_line.onchange_product_id()
+        vals = {
+            'order_id': self.id,
+            'product_id': product.id or False,
+        }
+        # we create line in cache
+        purchase_line = self.env['purchase.order.line'].new(vals)
+        # we call onchange product to get required fields
+        purchase_line.onchange_product_id()
+        # we set qty (if we set it on create odoo overwrite it to 1)
+        purchase_line.product_qty = qty
+        # we call onchange qty)
+        purchase_line._onchange_quantity()
+        # we convert to write
+        vals = purchase_line._convert_to_write(purchase_line._cache)
+        self.env['purchase.order.line'].create(vals)
