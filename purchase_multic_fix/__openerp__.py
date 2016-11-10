@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'active': False,
+{
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -32,4 +32,4 @@
     'name': 'Purchase Multi Company Fixes',
     'test': [],
     'version': '9.0.1.0.0',
- }
+}

@@ -6,25 +6,8 @@
 Purchase Multi Company Fixes
 ============================
 
-This module add in onchange_product_id the taxes having company in this.
-
-Installation
-============
-
-To install this module, you need to:
-
-
-Configuration
-=============
-
-To configure this module, you need to:
-
-
-Usage
-=====
-
-To use this module, you need to:
-
+#. Force taxes suggested on purchase line to be of the same company as the purchase order.
+#. Add a constraint to check that picking type is from the same company as the purchase order one.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot

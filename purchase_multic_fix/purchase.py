@@ -3,25 +3,8 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, api
-# from openerp.exceptions import except_orm, Warning, RedirectWarning
-# import openerp.addons.decimal_precision as dp
+from openerp import models, api, _
 
-
-# class sale_order(models.Model):
-#     _inherit = "sale.order"
-#
-#     @api.multi
-#     def onchange_company_id(self, company_id, part_id,
-#                             type, invoice_line, currency_id):
-#         if self.invoice_line:
-#             raise Warning(
-#                 _('You cannot change the company'
-#                   ' of a invoice that has lines. '
-#                   'You should delete them first.'))
-# return super(account_invoice, self).\
-#     onchange_company_id(company_id,
-# part_id, type, invoice_line, currency_id)
 
 class purchase_order(models.Model):
     _inherit = "purchase.order"
@@ -54,5 +37,3 @@ class purchase_order_line(models.Model):
                     lambda r: r.company_id.id == company_id))
 
         return res
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
