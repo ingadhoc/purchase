@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <button name="button_done" position="after">
+                    <button name="button_reopen" type="object" string="Re-Open" states="done" groups="purchase.group_purchase_manager"/>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>
