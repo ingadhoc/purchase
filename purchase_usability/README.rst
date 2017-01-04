@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===============
-Stock Usability
-===============
+===============================
+Purchase Usability Improvements
+===============================
 
-Several improovements to purchases:
+Several Improvements to purchases:
 #. Add button "Re-Open" on purchase orders to came back from "Done" to "Purchase Order" state, only available to purchase manager
 
 Installation
