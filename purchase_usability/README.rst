@@ -8,6 +8,7 @@ Purchase Usability Improvements
 
 Several Improvements to purchases:
 #. Add button "Re-Open" on purchase orders to came back from "Done" to "Purchase Order" state, only available to purchase manager
+#. Make button send by email also available on done state on purchase orders
 
 Installation
 ============
