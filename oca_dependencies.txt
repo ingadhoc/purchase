@@ -1,1 +1,1 @@
-ingadhoc-purchase https://github.com/ingadhoc/purchase
+ingadhoc-product https://github.com/ingadhoc/product
