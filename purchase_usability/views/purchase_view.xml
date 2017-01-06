@@ -2,18 +2,19 @@
 <openerp>
     <data>
 
-        <record id="purchase_order_form" model="ir.ui.view">
-            <field name="name">purchase.order.form</field>
-            <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="arch" type="xml">
-                <button name="button_done" position="after">
-                    <button name="button_reopen" type="object" string="Re-Open" states="done" groups="purchase.group_purchase_manager"/>
-                </button>
-                <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
-                    <attribute name="states">purchase,done</attribute>
-                </xpath>
-            </field>
+        <!--Make Incoming Producs Menu only visible to tec features-->
+        <record model="ir.ui.menu" id="purchase.menu_action_picking_tree_in_move">
+            <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+        </record>
+
+        <!--Make Requests for Quotation Menu only visible to tec features-->
+        <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
+            <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+        </record>
+
+        <!-- make purchase orders action show all sale.order records -->
+        <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+            <field name="domain">[]</field>
         </record>
 
     </data>

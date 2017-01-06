@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.0.0',
+    'version': '9.0.1.1.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -33,7 +33,11 @@
         'purchase',
     ],
     'data': [
+        'views/account_invoice_view.xml',
         'views/purchase_view.xml',
+        'views/purchase_order_view.xml',
+        'views/purchase_line_view.xml',
+        'views/stock_picking_type_view.xml',
     ],
     'demo': [
     ],

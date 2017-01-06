@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <button name="button_done" position="after">
+                    <button name="button_reopen" type="object" string="Re-Open" states="done" groups="purchase.group_purchase_manager"/>
+                </button>
+                <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
+                    <attribute name="states">purchase,done</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_filter" model="ir.ui.view">
+            <field name="name">purchase.order.filter</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <filter name="invoiced" position="after">
+                    <separator/>
+                </filter>
+                <filter name="not_invoiced" position="before">
+                    <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]" help="Purchase orders that include lines not received."/>
+                    <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]" help="Purchase orders with all lines received."/>
+                    <separator/>
+                </filter>
+                <group>
+                    <filter string="Invoice Satus" domain="[]" context="{'group_by':'invoice_status'}"/>
+                    <filter string="Delivery Satus" domain="[]" context="{'group_by':'delivery_status'}"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="purchase_order_tree" model="ir.ui.view">
+            <field name="name">purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="delivery_status"/>
+                    <field name="invoice_status"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

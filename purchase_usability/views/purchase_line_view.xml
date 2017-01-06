@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- add new menu for purchase lines -->
+        <record model="ir.actions.act_window" id="action_purchase_line_tree">
+            <field name="context">{'search_default_approved': 1}</field>
+            <!-- <field name="domain">[('product_id.product_tmpl_id','in',active_ids)]</field> -->
+            <field name="name">Purchase Lines</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_id" ref="purchase.purchase_order_line_tree"/>
+        </record>
+
+        <menuitem action="action_purchase_line_tree" id="menu_action_purchase_line_tree" parent="purchase.menu_purchase_control" sequence="11"/>
+
+
+        <record id="purchase_order_line_tree" model="ir.ui.view">
+            <field name="name">purchase.order.line.tree</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="arch" type="xml">
+                <!-- very important because user can delete confirmed lines -->
+                <tree position="attributes">
+                    <attribute name="delete">false</attribute>
+                </tree>
+                <field name="product_qty" position="after">
+                    <field name="qty_received"/>
+                    <field name="qty_invoiced"/>
+                </field>
+                <tree>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_form2" model="ir.ui.view">
+            <field name="name">purchase.order.line.form</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_form2"/>
+            <field name="arch" type="xml">
+                <!-- very important because user can delete or edit confirmed lines -->
+                <form position="attributes">
+                    <attribute name="edit">false</attribute>
+                    <attribute name="delete">false</attribute>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_search" model="ir.ui.view">
+            <field name="name">purchase.order.line.search</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_search"/>
+            <field name="arch" type="xml">
+                <filter position="before">
+                    <filter name="draft" string="Quotations" domain="[('state','in',('draft','sent','to approve'))]"/>
+                    <filter name="approved" string="Purchase Orders" domain="[('state','in',('purchase','done'))]"/>
+                    <separator/>
+                    <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]"/>
+                    <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]"/>
+                    <separator/>
+                    <filter name="not_invoiced" string="Not Invoiced" domain="[('invoice_status','=', 'to invoice')]"/>
+                    <filter name="invoiced" string="Invoiced" domain="[('invoice_status','=', 'invoiced')]"/>
+                    <separator/>
+                </filter>
+            </field>
+        </record>
+
+    </data>
+</openerp>
