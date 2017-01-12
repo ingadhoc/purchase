@@ -35,12 +35,16 @@ class PurchaseOrderLine(models.Model):
         default='no'
     )
 
-    @api.depends('state', 'qty_received', 'product_qty')
+    @api.depends('order_id.state', 'qty_received', 'product_qty')
     def _get_received(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for line in self:
-            if line.state not in ('purchase', 'done'):
+            # on v9 odoo consider done with no more to purchase, PR has been
+            # deny, if we change it here we should change odoo behaviour on
+            # purchase orders
+            # if line.state not in ('purchase', 'done'):
+            if line.state != 'purchase':
                 line.delivery_status = 'no'
                 continue
 
@@ -55,17 +59,18 @@ class PurchaseOrderLine(models.Model):
             else:
                 line.delivery_status = 'no'
 
-    @api.depends('state', 'qty_invoiced', 'product_qty')
+    @api.depends('order_id.state', 'qty_invoiced', 'product_qty')
     def _get_invoiced(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for line in self:
-            # TODO we should fix this in purchase orders
-            # if line.state != 'purchase':
-            if line.state not in ('purchase', 'done'):
+            # on v9 odoo consider done with no more to purchase, PR has been
+            # deny, if we change it here we should change odoo behaviour on
+            # purchase orders
+            # if line.state not in ('purchase', 'done'):
+            if line.state != 'purchase':
                 line.invoice_status = 'no'
                 continue
-
             if float_compare(
                     line.qty_invoiced, line.product_qty,
                     precision_digits=precision) == -1:

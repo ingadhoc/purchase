@@ -28,8 +28,11 @@ class PurchaseOrder(models.Model):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for order in self:
-            # if order.state != 'purchase':
-            if order.state not in ('purchase', 'done'):
+            # on v9 odoo consider done with no more to purchase, PR has been
+            # deny, if we change it here we should change odoo behaviour on
+            # purchase orders
+            # if line.state not in ('purchase', 'done'):
+            if order.state != 'purchase':
                 order.delivery_status = 'no'
                 continue
 
