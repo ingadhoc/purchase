@@ -7,6 +7,10 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+                <!-- the help of this button was incorrect, done state still allows you tou add invoices-->
+                <button name="button_done" position="attributes">
+                    <attribute name="help"></attribute>
+                </button>
                 <button name="button_done" position="after">
                     <button name="button_reopen" type="object" string="Re-Open" states="done" groups="purchase.group_purchase_manager"/>
                 </button>

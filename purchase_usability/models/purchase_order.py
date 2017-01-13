@@ -31,8 +31,11 @@ class PurchaseOrder(models.Model):
             # on v9 odoo consider done with no more to purchase, PR has been
             # deny, if we change it here we should change odoo behaviour on
             # purchase orders
-            # if line.state not in ('purchase', 'done'):
-            if order.state != 'purchase':
+            # al final dejamos  nuestro criterio porque es confuso para
+            # clientes y de hecho odoo, a diferencia de lo que dice el boton
+            # si te deja crear las facturas en done
+            # if order.state != 'purchase':
+            if order.state not in ('purchase', 'done'):
                 order.delivery_status = 'no'
                 continue
 
@@ -79,3 +82,27 @@ class PurchaseOrder(models.Model):
                         moves.force_assign()
                     self -= order
         return super(PurchaseOrder, self)._create_picking()
+
+    def _get_invoiced(self):
+        # fix de esta funcion porque odoo no lo quiso arreglar
+        # cambiamos != purchase por not in purchase, done
+        precision = self.env['decimal.precision'].precision_get(
+            'Product Unit of Measure')
+        for order in self:
+            # if order.state != 'purchase':
+            if order.state not in ('purchase', 'done'):
+                order.invoice_status = 'no'
+                continue
+
+            if any(float_compare(
+                    line.qty_invoiced, line.product_qty,
+                    precision_digits=precision) == -1
+                    for line in order.order_line):
+                order.invoice_status = 'to invoice'
+            elif all(float_compare(
+                    line.qty_invoiced, line.product_qty,
+                    precision_digits=precision) >= 0
+                    for line in order.order_line):
+                order.invoice_status = 'invoiced'
+            else:
+                order.invoice_status = 'no'

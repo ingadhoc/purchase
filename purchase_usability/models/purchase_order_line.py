@@ -43,8 +43,11 @@ class PurchaseOrderLine(models.Model):
             # on v9 odoo consider done with no more to purchase, PR has been
             # deny, if we change it here we should change odoo behaviour on
             # purchase orders
-            # if line.state not in ('purchase', 'done'):
-            if line.state != 'purchase':
+            # al final dejamos  nuestro criterio porque es confuso para
+            # clientes y de hecho odoo, a diferencia de lo que dice el boton
+            # si te deja crear las facturas en done
+            # if line.state != 'purchase':
+            if line.state not in ('purchase', 'done'):
                 line.delivery_status = 'no'
                 continue
 
@@ -67,8 +70,11 @@ class PurchaseOrderLine(models.Model):
             # on v9 odoo consider done with no more to purchase, PR has been
             # deny, if we change it here we should change odoo behaviour on
             # purchase orders
-            # if line.state not in ('purchase', 'done'):
-            if line.state != 'purchase':
+            # al final dejamos  nuestro criterio porque es confuso para
+            # clientes y de hecho odoo, a diferencia de lo que dice el boton
+            # si te deja crear las facturas en done
+            # if order.state != 'purchase':
+            if line.state not in ('purchase', 'done'):
                 line.invoice_status = 'no'
                 continue
             if float_compare(
