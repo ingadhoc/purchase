@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <field name="order_line" position="before">
-                    <button name="add_products_to_quotation" type="object" string="Search Products" states="draft,sent"/>
+                    <button name="add_products_to_quotation" type="object" string="Search Products" states="draft,sent" special="string"/>
                 </field>
             </field>
         </record>
