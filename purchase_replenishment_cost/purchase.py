@@ -15,24 +15,25 @@ class PurchaseOrderLine(models.Model):
         if not self.product_id:
             return
 
-        seller = self.product_id._select_seller(
-            self.product_id,
-            partner_id=self.partner_id,
-            quantity=self.product_qty,
-            date=self.order_id.date_order and self.order_id.date_order[:10],
-            uom_id=self.product_uom)
-        if not seller:
-            price_unit = self.product_id.replenishment_cost
-            if (
-                    price_unit and
-                    self.order_id.currency_id != self.product_id.currency_id):
-                price_unit = self.product_id.currency_id.compute(
-                    price_unit, self.order_id.currency_id)
-            if (
-                    price_unit and self.product_uom and
-                    self.product_id.uom_id != self.product_uom):
-                price_unit = self.env['product.uom']._compute_price(
-                    self.product_id.uom_id.id, price_unit,
-                    to_uom_id=self.product_uom.id)
-            self.price_unit = price_unit
+        # we decide better to overwrite this behaviour if module installed
+        # seller = self.product_id._select_seller(
+        #     self.product_id,
+        #     partner_id=self.partner_id,
+        #     quantity=self.product_qty,
+        #     date=self.order_id.date_order and self.order_id.date_order[:10],
+        #     uom_id=self.product_uom)
+        # if not seller:
+        price_unit = self.product_id.replenishment_cost
+        if (
+                price_unit and
+                self.order_id.currency_id != self.product_id.currency_id):
+            price_unit = self.product_id.currency_id.compute(
+                price_unit, self.order_id.currency_id)
+        if (
+                price_unit and self.product_uom and
+                self.product_id.uom_id != self.product_uom):
+            price_unit = self.env['product.uom']._compute_price(
+                self.product_id.uom_id.id, price_unit,
+                to_uom_id=self.product_uom.id)
+        self.price_unit = price_unit
         return res

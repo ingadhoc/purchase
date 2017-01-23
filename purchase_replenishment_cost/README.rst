@@ -6,7 +6,7 @@
 Purchase Replenishment Cost
 ===========================
 
-Use replenishment cost on purchase orders. On each new line, if no supplier price is found for the supplier of the purchase order, the replenishment cost will be used
+Use replenishment cost on purchase orders. On each new line the replenishment cost will be used instead of supplier cost.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
