@@ -1,1 +1,2 @@
 ingadhoc-product https://github.com/ingadhoc/product
+akretion-purchase-suggest https://github.com/akretion/purchase-suggest
