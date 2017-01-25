@@ -4,13 +4,30 @@
 # directory
 ##############################################################################
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 import openerp.addons.decimal_precision as dp
-# from openerp.tools import float_compare, float_is_zero
+from openerp.tools import float_compare
 # from openerp.exceptions import UserError
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class PurchaseSuggestGenerate(models.TransientModel):
+    _inherit = 'purchase.suggest.generate'
+
+    @api.model
+    def _prepare_suggest_line(self, product_id, qty_dict):
+        sline = super(PurchaseSuggestGenerate, self)._prepare_suggest_line(
+            product_id, qty_dict)
+        op = qty_dict['orderpoint']
+        qty = sline['qty_to_order']
+        reste = op.qty_multiple > 0 and qty % op.qty_multiple or 0.0
+        if float_compare(
+                reste, 0.0, precision_rounding=op.product_uom.rounding) > 0:
+            qty += op.qty_multiple - reste
+            sline['qty_to_order'] = sline['qty_to_order']
+        return sline
 
 
 class PurchaseSuggest(models.TransientModel):
