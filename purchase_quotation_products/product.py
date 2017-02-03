@@ -4,10 +4,52 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api
+from openerp.osv.orm import setup_modifiers
+from lxml import etree
 
 
-class product_product(models.Model):
+class ProductProduct(models.Model):
     _inherit = "product.product"
+
+    # TODO we should make this module inherits from sale one, value on context
+    # should be the same and then we should use same computed field
+    @api.model
+    def fields_view_get(
+            self, view_id=None, view_type=False, toolbar=False, submenu=False):
+        """
+        If we came from sale order, we send in context 'force_product_edit'
+        and we change tree view to make editable and also field qty
+        """
+        res = super(ProductProduct, self).fields_view_get(
+            view_id=view_id, view_type=view_type,
+            toolbar=toolbar, submenu=submenu)
+        purchase_quotation_products = self._context.get(
+            'purchase_quotation_products')
+        if purchase_quotation_products:
+            doc = etree.XML(res['arch'])
+
+            # make all fields not editable
+            for node in doc.xpath("//field"):
+                node.set('readonly', '1')
+                setup_modifiers(node, res['fields'], in_tree_view=True)
+
+            # add qty field
+            placeholder = doc.xpath("//field[1]")[0]
+            placeholder.addprevious(
+                etree.Element('field', {
+                    'name': 'qty_purchase',
+                    # we force editable no matter user rights
+                    'readonly': '0',
+                }))
+            res['fields'].update(self.fields_get(['qty_purchase']))
+
+            # make tree view editable
+            for node in doc.xpath("/tree"):
+                node.set('edit', 'true')
+                node.set('create', 'false')
+                node.set('editable', 'top')
+            res['arch'] = etree.tostring(doc)
+        return res
 
     @api.one
     def _get_qty_purchase(self):

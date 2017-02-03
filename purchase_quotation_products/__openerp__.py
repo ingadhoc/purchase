@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Quotation Products',
-    'version': '9.0.1.1.0',
+    'version': '9.0.1.2.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
@@ -33,7 +33,6 @@
         'purchase',
     ],
     'data': [
-        'view/product_view.xml',
         'view/purchase_order_view.xml',
     ],
     'demo': [
