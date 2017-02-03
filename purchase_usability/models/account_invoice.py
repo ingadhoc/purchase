@@ -34,7 +34,9 @@ class AccountInvoice(models.Model):
             data = self._prepare_invoice_line_from_po_line(line)
             new_line = new_lines.new(data)
             new_line._set_additional_fields(self)
-            new_lines += new_line
+            # we only add lines with quantity to invoice
+            if new_line.quantity:
+                new_lines += new_line
 
         self.invoice_line_ids += new_lines
         self.picking_id = False

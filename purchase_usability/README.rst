@@ -11,6 +11,7 @@ Several Improvements to purchases:
 #. Make button send by email also available on done state on purchase orders
 #. Add new parameter "Merge Incoming Picking" on incoming picking types, if set true, when confirming a purchase order, if an open picking exists for same partner and picking type, incoming moves will be merged into that picking
 #. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
+#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that shouldt be invoiced, you still have de possiblity to add them
 #. Make purchase quotations menu only visible with technical features
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
 #. Add delivery status on purchases
