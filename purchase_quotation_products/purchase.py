@@ -19,6 +19,10 @@ class purchase_order(models.Model):
         if actions:
             action_read = actions.read()[0]
             context = literal_eval(action_read['context'])
+            if 'search_default_filter_to_sell' in context:
+                context.pop('search_default_filter_to_sell')
+            context['search_default_filter_to_purchase'] = True
+            # {"search_default_filter_to_sell":1}
             context['purchase_quotation_products'] = True
             # context['pricelist'] = self.pricelist_id.display_name
             # we send company in context so it filters taxes

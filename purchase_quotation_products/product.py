@@ -25,7 +25,7 @@ class ProductProduct(models.Model):
             toolbar=toolbar, submenu=submenu)
         purchase_quotation_products = self._context.get(
             'purchase_quotation_products')
-        if purchase_quotation_products:
+        if purchase_quotation_products and view_type == 'tree':
             doc = etree.XML(res['arch'])
 
             # make all fields not editable
