@@ -36,6 +36,7 @@ class PurchaseSuggest(models.TransientModel):
     replenishment_cost = fields.Float(
         related='product_id.replenishment_cost',
         store=True,
+        readonly=True,
     )
     order_amount = fields.Monetary(
         string='Order Amount',
@@ -45,6 +46,7 @@ class PurchaseSuggest(models.TransientModel):
     currency_id = fields.Many2one(
         related='product_id.currency_id',
         store=True,
+        readonly=True,
     )
     virtual_available = fields.Float(
         string='Forecasted Quantity',
@@ -56,6 +58,7 @@ class PurchaseSuggest(models.TransientModel):
     rotation = fields.Float(
         related='orderpoint_id.rotation',
         store=True,
+        readonly=True,
     )
 
     @api.multi
