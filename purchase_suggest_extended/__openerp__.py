@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Suggest Extended',
-    'version': '9.0.1.0.0',
+    'version': '9.0.1.1.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
@@ -31,11 +31,11 @@
     ],
     'depends': [
         'purchase_suggest',
+        'stock_usability',
         'product_replenishment_cost',
     ],
     'data': [
-        'view/purchase_suggest_view.xml',
-        'view/stock_warehouse_orderpoint_view.xml',
+        'wizard/purchase_suggest_view.xml',
     ],
     'demo': [
     ],

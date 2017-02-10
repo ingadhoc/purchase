@@ -7,6 +7,7 @@
 from openerp import models, fields, api
 import openerp.addons.decimal_precision as dp
 from openerp.tools import float_compare
+# from ast import literal_eval
 # from openerp.exceptions import UserError
 import logging
 
@@ -26,7 +27,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         if float_compare(
                 reste, 0.0, precision_rounding=op.product_uom.rounding) > 0:
             qty += op.qty_multiple - reste
-            sline['qty_to_order'] = sline['qty_to_order']
+            sline['qty_to_order'] = qty
         return sline
 
 
@@ -60,6 +61,11 @@ class PurchaseSuggest(models.TransientModel):
         store=True,
         readonly=True,
     )
+    location_rotation = fields.Float(
+        related='orderpoint_id.location_rotation',
+        store=True,
+        readonly=True,
+    )
 
     @api.multi
     @api.depends('qty_to_order', 'replenishment_cost')
@@ -78,3 +84,21 @@ class PurchaseSuggest(models.TransientModel):
         for rec in self:
             rec.qty_available = rec.qty_available - rec.outgoing_qty \
                 + rec.incoming_qty + rec.draft_po_qty
+
+    @api.multi
+    def action_traceability(self):
+        self.ensure_one()
+        action = self.env.ref('stock.act_product_stock_move_open')
+        if action:
+            action_read = action.read()[0]
+            # nos da error al querer leerlo como dict
+            # context = literal_eval(action_read['context'])
+            # context['search_default_product_id'] = self.product_id.id
+            # context['default_product_id'] = self.product_id.id
+            context = {
+                'search_default_future': 1,
+                'search_default_picking_type': 1,
+                'search_default_product_id': self.product_id.id,
+                'default_product_id': self.product_id.id}
+            action_read['context'] = context
+            return action_read

@@ -6,12 +6,10 @@
 Purchase Suggest Extended
 =========================
 
-#. Add to orderpoint:
-    #. Rotation: invoiced quantity in the last 30 days
 #. Add to purchase suggest:
     #. Replenishment cost
     #. Replenishment cost x quantity 
-    #. Rotation
+    #. Rotation and Location Rotation
     #. pivot and graph view
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
