@@ -11,6 +11,7 @@ Purchase Suggest Extended
     #. Replenishment cost x quantity 
     #. Rotation and Location Rotation
     #. pivot and graph view
+    #. Add option to add products that dont have an order point (min and max are set to 0.0)
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot

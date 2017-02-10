@@ -17,18 +17,65 @@ logger = logging.getLogger(__name__)
 class PurchaseSuggestGenerate(models.TransientModel):
     _inherit = 'purchase.suggest.generate'
 
+    # Without this module, when we use orderpoints, if there are no orderpoints
+    # for a consu product, Odoo will not suggest to re-order it.
+    # But, with this module, Odoo will also suggest to re-order the consu
+    # products, which may not be what the user wants
+    add_products_without_order_point = fields.Boolean(
+        help='Sugerir tambien para productos sin punto de pedido, se va a '
+        'utilizar cantidad mínima y máxima 0.0. NO se tienen en cuenta '
+        'productos consumibles',
+        default=True,
+    )
+
     @api.model
     def _prepare_suggest_line(self, product_id, qty_dict):
         sline = super(PurchaseSuggestGenerate, self)._prepare_suggest_line(
             product_id, qty_dict)
+        # for thos lines with "add_products_without_order_point" we
+        # force user company
+        if not sline['company_id']:
+            sline['company_id'] = self.env.user.company_id.id
+
+        # use mutliple quantity if set
         op = qty_dict['orderpoint']
         qty = sline['qty_to_order']
-        reste = op.qty_multiple > 0 and qty % op.qty_multiple or 0.0
-        if float_compare(
-                reste, 0.0, precision_rounding=op.product_uom.rounding) > 0:
-            qty += op.qty_multiple - reste
-            sline['qty_to_order'] = qty
+        if op:
+            reste = op.qty_multiple > 0 and qty % op.qty_multiple or 0.0
+            if float_compare(
+                    reste, 0.0,
+                    precision_rounding=op.product_uom.rounding) > 0:
+                qty += op.qty_multiple - reste
+                sline['qty_to_order'] = qty
         return sline
+
+    @api.model
+    def generate_products_dict(self):
+        '''
+        inherit the native method to
+        '''
+        products = super(
+            PurchaseSuggestGenerate, self).generate_products_dict()
+        product_ids = products.keys()
+        product_domain = self._prepare_product_domain()
+        # TODO tal vez querramos agregar parametro para setear si solo product
+        # o tambien consumibles
+        if self.add_products_without_order_point:
+            product_domain += [
+                ('type', '=', 'product'),
+                ('id', 'not in', product_ids)]
+            new_products = self.env['product.product'].search(product_domain)
+            for product in new_products:
+                # We also want the missing product that have min_qty = 0
+                # So we remove "if product.z_stock_min > 0"
+                products[product.id] = {
+                    'min_qty': 0.0,
+                    'max_qty': 0.0,
+                    'draft_po_qty': 0.0,  # This value is set later on
+                    'orderpoint': False,
+                    'product': product,
+                }
+        return products
 
 
 class PurchaseSuggest(models.TransientModel):

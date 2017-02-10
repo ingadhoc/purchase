@@ -2,6 +2,17 @@
 <odoo>
 <data>
 
+<record id="purchase_suggest_generate_form" model="ir.ui.view">
+    <field name="name">purchase_suggest_extended.generate.form</field>
+    <field name="model">purchase.suggest.generate</field>
+    <field name="inherit_id" ref="purchase_suggest.purchase_suggest_generate_form"/>
+    <field name="arch" type="xml">
+        <field name="categ_ids" position="before">
+            <field name="add_products_without_order_point"/>
+        </field>
+    </field>
+</record>
+
 <record id="purchase_suggest_search" model="ir.ui.view">
     <field name="name">purchase_suggest.search</field>
     <field name="model">purchase.suggest</field>
