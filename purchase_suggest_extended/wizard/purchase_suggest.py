@@ -101,7 +101,10 @@ class PurchaseSuggest(models.TransientModel):
         compute='_compute_virtual_available',
         store=True,
         digits=dp.get_precision('Product Unit of Measure'),
-        help="in the unit of measure of the product"
+        # help="in the unit of measure of the product",
+        help="Forecast quantity in the unit of measure of the product "
+        "(computed as Quantity On Hand - Outgoing + Incoming + Draft PO "
+        "quantity)"
     )
     rotation = fields.Float(
         related='orderpoint_id.rotation',
@@ -129,8 +132,11 @@ class PurchaseSuggest(models.TransientModel):
     )
     def _compute_virtual_available(self):
         for rec in self:
-            rec.qty_available = rec.qty_available - rec.outgoing_qty \
-                + rec.incoming_qty + rec.draft_po_qty
+            rec.virtual_available = rec.product_id.with_context(
+                location=rec.location_id.id
+            ).virtual_available + rec.draft_po_qty
+            # rec.virtual_available = rec.qty_available - rec.outgoing_qty \
+            #     + rec.incoming_qty + rec.draft_po_qty
 
     @api.multi
     def action_traceability(self):
