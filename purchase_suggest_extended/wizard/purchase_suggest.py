@@ -134,7 +134,8 @@ class PurchaseSuggest(models.TransientModel):
         for rec in self:
             rec.virtual_available = rec.product_id.with_context(
                 location=rec.location_id.id
-            ).virtual_available + rec.draft_po_qty
+            ).virtual_available
+            # + rec.draft_po_qty
             # rec.virtual_available = rec.qty_available - rec.outgoing_qty \
             #     + rec.incoming_qty + rec.draft_po_qty
 
