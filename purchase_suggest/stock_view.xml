@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  © 2015-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+<data>
+
+<record id="view_warehouse_orderpoint_form" model="ir.ui.view">
+    <field name="name">procurement_suggest.orderpoint.form</field>
+    <field name="model">stock.warehouse.orderpoint</field>
+    <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+    <field name="arch" type="xml">
+        <field name="product_min_qty" position="before">
+            <field name="suggest"/>
+        </field>
+    </field>
+</record>
+
+<record id="view_warehouse_orderpoint_tree" model="ir.ui.view">
+    <field name="name">procurement_suggest.orderpoint.tree</field>
+    <field name="model">stock.warehouse.orderpoint</field>
+    <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree"/>
+    <field name="arch" type="xml">
+        <field name="product_min_qty" position="before">
+            <field name="suggest"/>
+        </field>
+    </field>
+</record>
+
+<record id="warehouse_orderpoint_search" model="ir.ui.view">
+    <field name="name">procurement_suggest.orderpoint.search</field>
+    <field name="model">stock.warehouse.orderpoint</field>
+    <field name="inherit_id" ref="stock.warehouse_orderpoint_search"/>
+    <field name="arch" type="xml">
+        <field name="product_id" position="after">
+            <filter name="real" string="Real" domain="[('suggest', '=', False)]"/>
+            <filter name="suggest" string="Suggest" domain="[('suggest', '=', True)]"/>
+        </field>
+    </field>
+</record>
+
+
+</data>
+</odoo>

@@ -30,6 +30,7 @@
     'images': [
     ],
     'depends': [
+        'product_supplier_search',
         'purchase_suggest',
         'stock_usability',
         'product_replenishment_cost',
@@ -41,7 +42,8 @@
     ],
     'test': [
     ],
-    'installable': True,
+    # al final, por temas de performance, modificamos el original
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
