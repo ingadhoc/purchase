@@ -101,7 +101,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 ('categ_id', 'child_of', self.categ_ids.ids))
         if self.seller_ids:
             product_domain.append(
-                ('seller_id', 'in', self.seller_ids.ids))
+                ('main_seller_id', 'in', self.seller_ids.ids))
         return product_domain
 
     @api.model
