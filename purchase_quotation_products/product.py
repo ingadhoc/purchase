@@ -14,8 +14,8 @@ class ProductProduct(models.Model):
     # TODO we should make this module inherits from sale one, value on context
     # should be the same and then we should use same computed field
     @api.model
-    def fields_view_get(
-            self, view_id=None, view_type=False, toolbar=False, submenu=False):
+    def fields_view_get(self, view_id=None, view_type='form',
+                        toolbar=False, submenu=False):
         """
         If we came from sale order, we send in context 'force_product_edit'
         and we change tree view to make editable and also field qty
