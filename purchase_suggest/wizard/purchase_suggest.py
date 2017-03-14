@@ -44,27 +44,26 @@ class PurchaseSuggestGenerate(models.TransientModel):
         # I cannot filter on 'date_order' because it is not a stored field
         porderline_id = porderlines and porderlines[0].id or False
         future_qty = qty_dict['virtual_available'] + qty_dict['draft_po_qty']
-        if float_compare(
-                qty_dict['max_qty'], qty_dict['min_qty'],
-                precision_rounding=qty_dict['product'].uom_id.rounding) == 1:
-            # order to go up to qty_max
-            qty_to_order = qty_dict['max_qty'] - future_qty
-        else:
-            # order to go up to qty_min
-            qty_to_order = qty_dict['min_qty'] - future_qty
 
-        # agregamos comprar hasta el max
-        op = qty_dict['orderpoint']
-        if op:
-            reste = (
-                op.qty_multiple > 0 and qty_to_order % op.qty_multiple or 0.0)
+        qty_to_order = False
+        min_qty = qty_dict['min_qty']
+        max_qty = qty_dict['max_qty']
+        qty_multiple = qty_dict['qty_multiple']
+        product = qty_dict['product']
+        if float_compare(
+                future_qty, min_qty,
+                precision_rounding=product.uom_id.rounding) < 0:
+                # no entendi bien porque pero el scheduller busca menor igual
+                # nosotros solo queremos ordenar si se va por debajo
+                # precision_rounding=product.uom_id.rounding) <= 0:
+            qty_to_order = max(min_qty, max_qty) - future_qty
+
+            reste = (qty_multiple > 0 and qty_to_order % qty_multiple or 0.0)
             if float_compare(
                     reste, 0.0,
-                    precision_rounding=op.product_uom.rounding) > 0:
-                qty_to_order += op.qty_multiple - reste
-                qty_to_order = qty_to_order
+                    precision_rounding=product.uom_id.rounding) > 0:
+                qty_to_order += qty_multiple - reste
 
-        product = qty_dict['product']
         sline = {
             'company_id': (
                 qty_dict['orderpoint'] and
@@ -78,10 +77,11 @@ class PurchaseSuggestGenerate(models.TransientModel):
             'outgoing_qty': qty_dict['outgoing_qty'],
             'draft_po_qty': qty_dict['draft_po_qty'],
             'orderpoint_id':
-            qty_dict['orderpoint'] and qty_dict['orderpoint'].id,
+                qty_dict['orderpoint'] and qty_dict['orderpoint'].id,
             'location_id': self.location_id.id,
-            'min_qty': qty_dict['min_qty'],
-            'max_qty': qty_dict['max_qty'],
+            'min_qty': min_qty,
+            'max_qty': max_qty,
+            'qty_multiple': qty_multiple,
             'last_po_line_id': porderline_id,
             'qty_to_order': qty_to_order,
             'rotation': product.get_product_rotation(),
@@ -125,6 +125,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 products[op.product_id.id] = {
                     'min_qty': op.product_min_qty,
                     'max_qty': op.product_max_qty,
+                    'qty_multiple': op.qty_multiple,
                     'draft_po_qty': 0.0,  # This value is set later on
                     'orderpoint': op,
                     'product': op.product_id,
@@ -154,6 +155,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 products[product.id] = {
                     'min_qty': 0.0,
                     'max_qty': 0.0,
+                    'qty_multiple': 0.0,
                     'draft_po_qty': 0.0,  # This value is set later on
                     'orderpoint': False,
                     'product': product,
@@ -199,7 +201,10 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 product_id, qty_dict['virtual_available'],
                 qty_dict['draft_po_qty'], qty_dict['min_qty'])
             compare = float_compare(
-                qty_dict['virtual_available'] + qty_dict['draft_po_qty'],
+                # para las que ya existe en borrador queremos crear igual
+                # y que a lo sumo la cantidad a comprar de cero
+                # qty_dict['virtual_available'] + qty_dict['draft_po_qty'],
+                qty_dict['virtual_available'],
                 qty_dict['min_qty'],
                 precision_rounding=qty_dict['product'].uom_id.rounding)
             if compare < 0:
@@ -246,6 +251,7 @@ class PurchaseSuggest(models.TransientModel):
     virtual_available = fields.Float(
         string='Forecasted Quantity',
         digits=dp.get_precision('Product Unit of Measure'),
+        readonly=True,
         help="Forecast quantity in the unit of measure of the product "
         "(computed as Quantity On Hand - Outgoing + Incoming + Draft PO "
         "quantity)"
@@ -260,6 +266,11 @@ class PurchaseSuggest(models.TransientModel):
         string='Order Amount',
         compute='_compute_order_amount',
         store=True,
+    )
+    qty_multiple = fields.Float(
+        string="Qty Multiple", readonly=True,
+        digits=dp.get_precision('Product Unit of Measure'),
+        help="in the unit of measure for the product"
     )
 
     @api.multi
@@ -354,6 +365,13 @@ class PurchaseSuggestPoCreate(models.TransientModel):
     _name = 'purchase.suggest.po.create'
     _description = 'PurchaseSuggestPoCreate'
 
+    only_update_if_same_user = fields.Boolean(
+        default=True,
+        string='Solo actualizar si mismo usuario',
+        help='Solo se va a actualizar el PC si existe un PC generado '
+        'por mi usuario, si no se va a generar uno nuevo.',
+    )
+
     def _location2pickingtype(self, company, location):
         spto = self.env['stock.picking.type']
         pick_type_dom = [
@@ -402,12 +420,16 @@ class PurchaseSuggestPoCreate(models.TransientModel):
         poo = self.env['purchase.order']
         puo = self.env['product.uom']
         pick_type = self._location2pickingtype(company, location)
-        existing_pos = poo.search([
+        domain = [
             ('partner_id', '=', partner.id),
             ('company_id', '=', company.id),
             ('state', '=', 'draft'),
             ('picking_type_id', '=', pick_type.id),
-        ])
+        ]
+        if self.only_update_if_same_user:
+            domain += [('create_uid', '=', self.env.user.id)]
+
+        existing_pos = poo.search(domain)
         if existing_pos:
             # update the first existing PO
             existing_po = existing_pos[0]
