@@ -139,6 +139,9 @@
                 for the same stock location, it will be updated with the new
                 products and quantities to order.
             </p>
+            <group>
+              <field name="only_update_if_same_user"/>
+            </group>
             <footer>
                 <button type="object" name="create_po"
                     string="Create Purchase Orders" class="oe_highlight"/>

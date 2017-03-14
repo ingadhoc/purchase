@@ -52,7 +52,10 @@ class PurchaseSuggestGenerate(models.TransientModel):
         product = qty_dict['product']
         if float_compare(
                 future_qty, min_qty,
-                precision_rounding=qty_dict['product'].uom_id.rounding) <= 0:
+                precision_rounding=product.uom_id.rounding) < 0:
+                # no entendi bien porque pero el scheduller busca menor igual
+                # nosotros solo queremos ordenar si se va por debajo
+                # precision_rounding=product.uom_id.rounding) <= 0:
             qty_to_order = max(min_qty, max_qty) - future_qty
 
             reste = (qty_multiple > 0 and qty_to_order % qty_multiple or 0.0)
@@ -248,6 +251,7 @@ class PurchaseSuggest(models.TransientModel):
     virtual_available = fields.Float(
         string='Forecasted Quantity',
         digits=dp.get_precision('Product Unit of Measure'),
+        readonly=True,
         help="Forecast quantity in the unit of measure of the product "
         "(computed as Quantity On Hand - Outgoing + Incoming + Draft PO "
         "quantity)"
@@ -262,6 +266,11 @@ class PurchaseSuggest(models.TransientModel):
         string='Order Amount',
         compute='_compute_order_amount',
         store=True,
+    )
+    qty_multiple = fields.Float(
+        string="Qty Multiple", readonly=True,
+        digits=dp.get_precision('Product Unit of Measure'),
+        help="in the unit of measure for the product"
     )
 
     @api.multi
@@ -341,10 +350,6 @@ class PurchaseSuggest(models.TransientModel):
         string="Min Quantity", readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
         help="in the unit of measure for the product")
-    qty_multiple = fields.Float(
-        string="Qty Multiple", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
-        help="in the unit of measure for the product")
     max_qty = fields.Float(
         string="Max Quantity", readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
@@ -359,6 +364,13 @@ class PurchaseSuggest(models.TransientModel):
 class PurchaseSuggestPoCreate(models.TransientModel):
     _name = 'purchase.suggest.po.create'
     _description = 'PurchaseSuggestPoCreate'
+
+    only_update_if_same_user = fields.Boolean(
+        default=True,
+        string='Solo actualizar si mismo usuario',
+        help='Solo se va a actualizar el PC si existe un PC generado '
+        'por mi usuario, si no se va a generar uno nuevo.',
+    )
 
     def _location2pickingtype(self, company, location):
         spto = self.env['stock.picking.type']
@@ -408,12 +420,16 @@ class PurchaseSuggestPoCreate(models.TransientModel):
         poo = self.env['purchase.order']
         puo = self.env['product.uom']
         pick_type = self._location2pickingtype(company, location)
-        existing_pos = poo.search([
+        domain = [
             ('partner_id', '=', partner.id),
             ('company_id', '=', company.id),
             ('state', '=', 'draft'),
             ('picking_type_id', '=', pick_type.id),
-        ])
+        ]
+        if self.only_update_if_same_user:
+            domain += [('create_uid', '=', self.env.user.id)]
+
+        existing_pos = poo.search(domain)
         if existing_pos:
             # update the first existing PO
             existing_po = existing_pos[0]
