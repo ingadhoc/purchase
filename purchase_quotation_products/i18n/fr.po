@@ -4,43 +4,42 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
-# Javier Diez <jd@adhoc.com.ar>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-03-05 22:23+0000\n"
 "PO-Revision-Date: 2017-03-05 22:23+0000\n"
-"Last-Translator: Javier Diez <jd@adhoc.com.ar>, 2016\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016\n"
+"Language-Team: French (https://www.transifex.com/adhoc/teams/46451/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: purchase_quotation_products
 #: model:ir.model,name:purchase_quotation_products.model_product_product
 msgid "Product"
-msgstr "Producto"
+msgstr "Article"
 
 #. module: purchase_quotation_products
 #: model:ir.model,name:purchase_quotation_products.model_purchase_order
 msgid "Purchase Order"
-msgstr "Orden de compra"
+msgstr ""
 
 #. module: purchase_quotation_products
 #: model:ir.model.fields,field_description:purchase_quotation_products.field_product_product_qty_purchase
 msgid "Quantity"
-msgstr "Cantidad"
+msgstr ""
 
 #. module: purchase_quotation_products
 #: code:addons/purchase_quotation_products/purchase.py:33
 #, python-format
 msgid "Quotation Products"
-msgstr "Productos En Presupuesto"
+msgstr ""
 
 #. module: purchase_quotation_products
 #: model:ir.ui.view,arch_db:purchase_quotation_products.purchase_order_form_view
 msgid "Search Products"
-msgstr "Buscar Productos"
+msgstr ""

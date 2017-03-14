@@ -1,0 +1,166 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * purchase_usability
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
+# Javier Diez <jd@adhoc.com.ar>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 9.0c\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-05 22:23+0000\n"
+"PO-Revision-Date: 2017-03-05 22:23+0000\n"
+"Last-Translator: Javier Diez <jd@adhoc.com.ar>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_account_invoice_picking_id
+msgid "Add Picking"
+msgstr "Agregar Picking"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+msgid "Delivery Satus"
+msgstr "Estado de Envío"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_delivery_status
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_delivery_status
+msgid "Delivery Status"
+msgstr "Estado de Envío"
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_account_invoice_picking_id
+msgid ""
+"Encoding help. When selected, the associated picking, all related purchase "
+"order lines are added to the vendor bill. Several Pickings can be selected."
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_stock_picking_type_merge_incoming_picking
+msgid ""
+"If set true, when confirming a purchase order, if an open picking exists for"
+" same partner and picking type, incoming moves willbe merged into that "
+"picking"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: purchase_usability
+#: selection:purchase.order.line,invoice_status:0
+msgid "Invoice Received"
+msgstr "Factura Recibida"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+msgid "Invoice Satus"
+msgstr "Estado de Factura"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_invoice_status
+msgid "Invoice Status"
+msgstr "Estado de Factura"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+msgid "Invoiced"
+msgstr "Facturado"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_stock_picking_type_merge_incoming_picking
+msgid "Merge incoming picking"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+msgid "Not Invoiced"
+msgstr ""
+
+#. module: purchase_usability
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order.line,delivery_status:0
+#: selection:purchase.order.line,invoice_status:0
+msgid "Not purchased"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.actions.act_window,name:purchase_usability.action_purchase_line_tree
+#: model:ir.ui.menu,name:purchase_usability.menu_action_purchase_line_tree
+msgid "Purchase Lines"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_purchase_order
+msgid "Purchase Order"
+msgstr "Orden de compra"
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de la Orden de compra"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_stock_picking_purchase_ids
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+msgid "Purchase orders that include lines not received."
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+msgid "Purchase orders with all lines received."
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+msgid "Quotations"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid "Re-Open"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order.line,delivery_status:0
+msgid "Received"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_stock_picking_type
+msgid "The picking type determines the picking view"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order.line,delivery_status:0
+msgid "To Receive"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: purchase_usability
+#: selection:purchase.order.line,invoice_status:0
+msgid "Waiting Invoices"
+msgstr ""
