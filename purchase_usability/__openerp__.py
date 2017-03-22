@@ -38,6 +38,7 @@
         'views/purchase_order_view.xml',
         'views/purchase_line_view.xml',
         'views/stock_picking_type_view.xml',
+        'views/stock_picking_view.xml',
     ],
     'demo': [
     ],

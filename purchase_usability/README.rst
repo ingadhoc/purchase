@@ -6,16 +6,25 @@
 Purchase Usability Improvements
 ===============================
 
-Several Improvements to purchases:
+Several Improvements to purchases
+
+On purchase orders:
 #. Add button "Re-Open" on purchase orders to came back from "Done" to "Purchase Order" state, only available to purchase manager
 #. Make button send by email also available on done state on purchase orders
-#. Add new parameter "Merge Incoming Picking" on incoming picking types, if set true, when confirming a purchase order, if an open picking exists for same partner and picking type, incoming moves will be merged into that picking
 #. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
-#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that shouldt be invoiced, you still have de possiblity to add them
 #. Make purchase quotations menu only visible with technical features
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
 #. Add delivery status on purchases
+
+On purchase lines:
 #. Add delivery status and invoice status on purchase lines
+
+On incoming pickings:
+#. Add new parameter "Merge Incoming Picking" on incoming picking types, if set true, when confirming a purchase order, if an open picking exists for same partner and picking type, incoming moves will be merged into that picking (TODO remove this functionality)
+#. Add button "Add Purchase Lines" to add moves from other pickings that are still pending.
+ 
+On purchase invoices:
+#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that shouldt be invoiced, you still have de possiblity to add them
 
 Installation
 ============
@@ -43,7 +52,20 @@ To configure this module, you need to:
 Known issues / Roadmap
 ======================
 
-* ...
+Notes abount "Add Purchase Lines":
+Teniamos dos opciones:
+1) al confirmar PO dejamos que se genere picking y permitimos robar moves desde otros pickings. tener en cuenta 
+    a) si picking queda limpio ver de cancelar o borrar
+    b) si resto cantidad cuando esto haciendo add purchase lines, a que picking se los asigno)
+2) que se generen moves sin pickings, tener en cuenta:
+    a) necesitamos confirmar los moves con action_confirm (pero evitar que se genere picking) o manualmente
+    b) tenemos que gestionar que cancelar po cancele los moves
+    c) cambiar metodo de agregar lineas para que busque moves sin picking
+    d) que al procesar cantidad menor haya otra opción o el "back order" no cree picking (si no, no los vamos a poder robar)
+    e) no es back compatible, lo que ya esta creado no se puede chupar
+
+la opcion 1 parece mas simple pero el problema es que si disminuimos cantidad agregada a un picking, cuando la sacamos, a que picking se la asignamos? Igualmente fuimos por la 1 para tratar de ser menos invacivos
+
 
 Bug Tracker
 ===========
