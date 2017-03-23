@@ -91,7 +91,7 @@ class ProductProduct(models.Model):
                 self.env['purchase.order'].browse(
                     purchase_order_id).add_products(self, qty)
 
-    qty_purchase = fields.Integer(
+    qty_purchase = fields.Float(
         string='Quantity',
         compute='_get_qty_purchase',
         inverse='_set_qty_purchase')
