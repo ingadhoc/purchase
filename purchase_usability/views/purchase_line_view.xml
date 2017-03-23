@@ -60,9 +60,40 @@
                     <filter name="not_invoiced" string="Not Invoiced" domain="[('invoice_status','=', 'to invoice')]"/>
                     <filter name="invoiced" string="Invoiced" domain="[('invoice_status','=', 'invoiced')]"/>
                     <separator/>
+                    <!-- TODO this should only be visible from picking -->
+                    <filter name="picking_qty" string="En Picking actual" domain="[('picking_qty', '!=', False)]" help="Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"/>
+                    <separator/>
                 </filter>
             </field>
         </record>
+
+<!-- intentamos hacer el agregar varios con esto pero no pudismos porque perdemos el cotnexto del active_id que nos da el picking correspondiente -->
+        <!-- <record model="ir.actions.server" id="action_add_all_to_picking">
+            <field name="name">Add all to picking</field>
+            <field name="model_id" ref="purchase.model_purchase_order_line"/>
+            <field name="code">
+active_domain = context.get('active_domain', [])
+
+# tratamos de obtener el picking_id del dummy domain que mandamos
+picking_id = False
+for rec in active_domain:
+    if len(rec) == 3 and rec[0] == 'picking_id':
+        picking_id = rec[2]
+        break
+
+if picking_id and context.get('active_model') == 'purchase.order.line' and context.get('active_ids'):
+    recs = env['purchase.order.line'].with_context(active_id=picking_id,active_model='stock.picking').browse(context.get('active_ids')).action_add_all_to_picking()
+            </field>
+        </record>
+ -->
+        <!-- <record model="ir.values" id="action_account_move_line_reconcile_prompt_values">
+            <field name="model_id" ref="account.model_account_move_line" />
+            <field name="name">Add all to picking</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,' +str(ref('action_add_all_to_picking'))" />
+            <field name="key">action</field>
+            <field name="model">purchase.order.line</field>
+        </record> -->
 
     </data>
 </openerp>

@@ -123,6 +123,15 @@ class PurchaseOrderLine(models.Model):
                 }))
             res['fields'].update(self.fields_get(['picking_qty']))
 
+            # add button to add all
+            placeholder.addprevious(
+                etree.Element('button', {
+                    'name': 'action_add_all_to_picking',
+                    'type': 'object',
+                    'icon': 'fa-plus-square',
+                    'string': _('Add all to picking'),
+                }))
+
             # make tree view editable
             for node in doc.xpath("/tree"):
                 node.set('edit', 'true')
@@ -145,7 +154,8 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def _inverse_picking_qty(self):
         picking_id = self._context.get('active_id', False)
-        if not picking_id:
+        active_model = self._context.get('active_model', False)
+        if not picking_id or active_model != 'stock.picking':
             return True
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
@@ -280,4 +290,23 @@ class PurchaseOrderLine(models.Model):
     picking_qty = fields.Float(
         string='Quantity',
         compute='_compute_picking_qty',
-        inverse='_inverse_picking_qty')
+        inverse='_inverse_picking_qty',
+        search='_search_picking_qty',
+    )
+
+    @api.model
+    def _search_picking_qty(self, operator, operand):
+        """
+        implementamos solo el caso "('picking_qty', '!=', False)" que es el que
+        usamos en la vista y unico que nos interesa por ahora
+        """
+        picking_id = self._context.get('active_id', False)
+        active_model = self._context.get('active_model', False)
+        if active_model != 'stock.picking':
+            return []
+        return [('move_ids.picking_id', 'in', [picking_id])]
+
+    @api.multi
+    def action_add_all_to_picking(self):
+        for rec in self:
+            rec.picking_qty = rec.product_qty - rec.qty_received
