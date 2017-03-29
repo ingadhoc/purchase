@@ -34,8 +34,9 @@ class PurchaseSuggestGenerate(models.TransientModel):
         default=True,
     )
 
-    @api.model
+    @api.multi
     def _prepare_suggest_line(self, product_id, qty_dict):
+        self.ensure_one()
         porderline_id = False
         porderlines = self.env['purchase.order.line'].search([
             ('state', 'not in', ('draft', 'cancel')),
@@ -93,8 +94,9 @@ class PurchaseSuggestGenerate(models.TransientModel):
         }
         return sline
 
-    @api.model
+    @api.multi
     def _prepare_product_domain(self):
+        self.ensure_one()
         product_domain = []
         if self.categ_ids:
             product_domain.append(
@@ -104,8 +106,9 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 ('main_seller_id', 'in', self.seller_ids.ids))
         return product_domain
 
-    @api.model
+    @api.multi
     def generate_products_dict(self):
+        self.ensure_one()
         ppo = self.env['product.product']
         swoo = self.env['stock.warehouse.orderpoint']
         products = {}
@@ -182,9 +185,13 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 line.product_uom, line.product_qty, line.product_id.uom_id)
             products[line.product_id.id]['draft_po_qty'] += qty_product_po_uom
         logger.info('Draft PO qty computed on %d products', len(products))
-        virtual_qties = self.pool['product.product']._product_available(
-            self._cr, self._uid, products.keys(),
-            context={'location': self.location_id.id})
+        # usamos nueva api
+        virtual_qties = self.env['product.product'].browse(
+            products.keys()).with_context(
+            location=self.location_id.id)._product_available()
+        # virtual_qties = self.pool['product.product']._product_available(
+        #     self._cr, self._uid, products.keys(),
+        #     context={'location': self.location_id.id})
         logger.info('Stock levels qty computed on %d products', len(products))
         for product_id, qty_dict in products.iteritems():
             qty_dict['virtual_available'] =\
