@@ -10,6 +10,10 @@ from openerp.tools.float_utils import float_compare
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    # add context so show purchase data by default
+    order_id = fields.Many2one(
+        context={'show_purchase': True}
+    )
     delivery_status = fields.Selection([
         ('no', 'Not purchased'),
         ('to receive', 'To Receive'),

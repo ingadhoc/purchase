@@ -8,6 +8,8 @@ Purchase Usability Improvements
 
 Several Improvements to purchases
 
+#. Make that, by default, links to purchase orders you "purchase" data and not only "quoatation"
+
 On purchase orders:
 #. Add button "Re-Open" on purchase orders to came back from "Done" to "Purchase Order" state, only available to purchase manager
 #. Make button send by email also available on done state on purchase orders
