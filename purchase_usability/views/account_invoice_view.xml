@@ -7,6 +7,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
             <field name="arch" type="xml">
+                <field name="invoice_line_ids" position="before">
+                  <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" states='draft'/>
+                </field>
                 <field name="purchase_id" position="before">
                     <field name="picking_id" attrs="{'invisible': [('state', '&lt;&gt;', 'draft')]}" class="oe_edit_only"/>
                 </field>

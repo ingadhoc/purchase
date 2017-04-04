@@ -59,9 +59,8 @@
                     <separator/>
                     <filter name="not_invoiced" string="Not Invoiced" domain="[('invoice_status','=', 'to invoice')]"/>
                     <filter name="invoiced" string="Invoiced" domain="[('invoice_status','=', 'invoiced')]"/>
-                    <separator/>
                     <!-- TODO this should only be visible from picking -->
-                    <filter name="picking_qty" string="En Picking actual" domain="[('picking_qty', '!=', False)]" help="Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"/>
+                    <filter name="invoice_qty" string="En Factura actual" domain="[('invoice_qty', '!=', False)]" help="Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"/>
                     <separator/>
                 </filter>
             </field>
