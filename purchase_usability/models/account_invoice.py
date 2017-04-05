@@ -75,7 +75,7 @@ class AccountInvoice(models.Model):
 
         # for perfomance issues on creating invoice
         if self.type not in [
-                'in_invoice', 'out_invoice'] or not self.partner_id:
+                'in_invoice', 'in_refund'] or not self.partner_id:
             return {'domain': {'picking_id': [('id', '=', False)]}}
 
         # A PO can be selected only if at least one PO line is not already in
