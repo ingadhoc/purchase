@@ -63,13 +63,20 @@ class AccountInvoice(models.Model):
         self.picking_id = False
         return {}
 
-    @api.onchange('state', 'partner_id', 'invoice_line_ids')
+    # for perfomance issues...
+    # @api.onchange('state', 'partner_id', 'invoice_line_ids')
+    @api.onchange('partner_id', 'invoice_line_ids')
     def _onchange_allowed_picking_ids(self):
         '''
         The purpose of the method is to define a domain for the available
         pickings.
         '''
         result = {}
+
+        # for perfomance issues on creating invoice
+        if self.type not in [
+                'in_invoice', 'out_invoice'] or not self.partner_id:
+            return {'domain': {'picking_id': [('id', '=', False)]}}
 
         # A PO can be selected only if at least one PO line is not already in
         # the invoice
