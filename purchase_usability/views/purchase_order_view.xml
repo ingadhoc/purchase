@@ -7,6 +7,11 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+                <!-- add print button -->
+                <button name="action_rfq_send" position="after">
+                    <button name="print_quotation" string="Print PO" type="object" states="purchase,done" groups="base.group_user"/>
+                </button>
+
                 <!-- the help of this button was incorrect, done state still allows you tou add invoices-->
                 <button name="button_done" position="attributes">
                     <attribute name="help"></attribute>

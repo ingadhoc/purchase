@@ -17,6 +17,7 @@ On purchase orders:
 #. Make purchase quotations menu only visible with technical features
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
 #. Add delivery status on purchases
+#. Add print PO on purchase and done status
 
 On purchase lines:
 #. Add delivery status and invoice status on purchase lines
