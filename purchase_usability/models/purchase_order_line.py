@@ -112,14 +112,14 @@ class PurchaseOrderLine(models.Model):
     qty_to_invoice = fields.Float(
         compute='_get_to_invoice_qty',
         string='To Invoice',
-        # store=True,
+        store=True,
         readonly=True,
-        # digits=dp.get_precision('Product Unit of Measure'),
+        digits=dp.get_precision('Product Unit of Measure'),
         default=0.0
     )
 
-    # @api.depends(
-    #     'qty_invoiced', 'qty_delivered', 'product_uom_qty', 'order_id.state')
+    @api.depends(
+        'qty_invoiced', 'qty_received', 'order_id.state')
     def _get_to_invoice_qty(self):
         for line in self:
             if line.order_id.state in ['purchase', 'done']:
@@ -234,11 +234,17 @@ class PurchaseOrderLine(models.Model):
             lines = rec.env['account.invoice.line'].search([
                 ('invoice_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
-            if rec.invoice_qty > rec.qty_to_invoice:
-                raise UserError(_(
-                    'No puede facturar más de lo pendiente a facturar. '
-                    'Verifique la configuración de facturación de sus '
-                    'productos y/o la receipción de la mercadería.'))
+            # TODO ver como agregamos esta validacion de otra manera
+            # no funciona bien si, por ej, agregamos una cantidad y luego
+            # la aumentamos, en realidad tal vez no hace falta esta validacion
+            # y se controla quedando enc antidades negativas. se podria
+            # controlar directamente desde el qty_to_invoice con contraint
+            # si se necesta
+            # if rec.invoice_qty > rec.qty_to_invoice:
+            #     raise UserError(_(
+            #         'No puede facturar más de lo pendiente a facturar. '
+            #         'Verifique la configuración de facturación de sus '
+            #         'productos y/o la receipción de la mercadería.'))
             if lines:
                 # si existitan lineas y la cantidad es zero borramos
                 if not rec.invoice_qty:
@@ -258,6 +264,10 @@ class PurchaseOrderLine(models.Model):
                 new_line._set_additional_fields(self)
                 vals = new_line._convert_to_write(new_line._cache)
                 purchase_lines.create(vals)
+            # el depends de esta funcion no lo hace ejecutar desde aca pero si
+            # si se edita en la factura (no estoy seguro porque), lo forzamos
+            # aca
+            rec._compute_qty_invoiced()
 
     invoice_qty = fields.Float(
         string='Quantity',

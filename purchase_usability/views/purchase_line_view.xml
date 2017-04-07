@@ -59,6 +59,7 @@
                     <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]"/>
                     <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]"/>
                     <separator/>
+                    <filter name="to_invoice" string="To Invoice" domain="[('qty_to_invoice','&gt;', 0.0)]"/>
                     <filter name="not_invoiced" string="Not Invoiced" domain="[('invoice_status','=', 'to invoice')]"/>
                     <filter name="invoiced" string="Invoiced" domain="[('invoice_status','=', 'invoiced')]"/>
                     <!-- TODO this should only be visible from picking -->
