@@ -174,7 +174,7 @@ class PurchaseOrderLine(models.Model):
                     'name': 'action_add_all_to_invoice',
                     'type': 'object',
                     'icon': 'fa-plus-square',
-                    'string': _('Add all to picking'),
+                    'string': _('Add all to invoice'),
                 }))
 
             # make tree view editable

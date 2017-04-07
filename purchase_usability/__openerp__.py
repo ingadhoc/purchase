@@ -39,6 +39,7 @@
         'views/purchase_view.xml',
         'views/purchase_order_view.xml',
         'views/purchase_line_view.xml',
+        'wizard/purchase_order_line_add_to_invoice_view.xml',
     ],
     'demo': [
     ],
