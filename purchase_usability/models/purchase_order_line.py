@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import UserError
+# from openerp.exceptions import UserError
 from openerp.tools.float_utils import float_compare
 import openerp.addons.decimal_precision as dp
 from openerp.osv.orm import setup_modifiers
