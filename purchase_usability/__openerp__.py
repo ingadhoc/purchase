@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.7.0',
+    'version': '9.0.1.8.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -31,6 +31,8 @@
     ],
     'depends': [
         'purchase',
+        # we add stock voucher to hav voucher information on purchase line
+        'stock_voucher',
     ],
     'data': [
         'views/account_invoice_view.xml',

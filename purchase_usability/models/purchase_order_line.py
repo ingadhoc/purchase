@@ -44,6 +44,15 @@ class PurchaseOrderLine(models.Model):
         copy=False,
         default='no'
     )
+    vouchers = fields.Char(
+        compute='_compute_vouchers'
+    )
+
+    @api.multi
+    def _compute_vouchers(self):
+        for rec in self:
+            rec.vouchers = ', '.join(rec.mapped(
+                'move_ids.picking_id.voucher_ids.display_name'))
 
     @api.depends('order_id.state', 'qty_received', 'product_qty')
     def _get_received(self):
@@ -135,6 +144,14 @@ class PurchaseOrderLine(models.Model):
             'force_line_edit')
         if force_line_edit and view_type == 'tree':
             doc = etree.XML(res['arch'])
+            # add to invoice qty field (before setupmodifis because if not
+            # it remains editable)
+            placeholder = doc.xpath("//field[1]")[0]
+            placeholder.addprevious(
+                etree.Element('field', {
+                    'name': 'qty_to_invoice',
+                    'readonly': '1',
+                }))
 
             # make all fields not editable
             for node in doc.xpath("//field"):
@@ -142,13 +159,6 @@ class PurchaseOrderLine(models.Model):
                 setup_modifiers(node, res['fields'], in_tree_view=True)
 
             # add qty field
-            placeholder = doc.xpath("//field[1]")[0]
-            placeholder.addprevious(
-                etree.Element('field', {
-                    'name': 'qty_to_invoice',
-                    # we force editable no matter user rights
-                    'readonly': '0',
-                }))
             placeholder.addprevious(
                 etree.Element('field', {
                     'name': 'invoice_qty',
