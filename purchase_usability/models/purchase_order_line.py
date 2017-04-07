@@ -177,6 +177,16 @@ class PurchaseOrderLine(models.Model):
                     'string': _('Add all to invoice'),
                 }))
 
+            # add button tu open form
+            placeholder = doc.xpath("//tree")[0]
+            placeholder.append(
+                etree.Element('button', {
+                    'name': 'action_line_form',
+                    'type': 'object',
+                    'icon': 'fa-external-link',
+                    'string': _('Open Purchase Line Form View'),
+                }))
+
             # make tree view editable
             for node in doc.xpath("/tree"):
                 node.set('edit', 'true')
@@ -184,6 +194,22 @@ class PurchaseOrderLine(models.Model):
                 node.set('editable', 'top')
             res['arch'] = etree.tostring(doc)
         return res
+
+    @api.multi
+    def action_line_form(self):
+        self.ensure_one()
+        # view_id = self.env['ir.model.data'].xmlid_to_res_id(
+        #     'product.product_normal_form_view')
+        return {
+            'name': _('Purchase Line'),
+            'view_type': 'form',
+            "view_mode": 'form',
+            'res_model': 'purchase.order.line',
+            'type': 'ir.actions.act_window',
+            # 'domain': [('id', 'in', self.apps_product_ids.ids)],
+            'res_id': self.id,
+            # 'view_id': view_id,
+        }
 
     @api.multi
     def _compute_invoice_qty(self):
