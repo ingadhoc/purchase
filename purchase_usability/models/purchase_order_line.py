@@ -292,4 +292,4 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
-            rec.invoice_qty = rec.qty_to_invoice
+            rec.invoice_qty = rec.qty_to_invoice + rec.invoice_qty
