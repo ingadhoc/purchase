@@ -4,27 +4,24 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
-# Nicolas Mac Rouillon <nmr@ingadhoc.com>, 2017
-# Javier Diez <jd@adhoc.com.ar>, 2017
-# Lisandro Boggio <lboggio@ingenieriaboggio.com.ar>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-07 21:31+0000\n"
 "PO-Revision-Date: 2017-04-07 21:31+0000\n"
-"Last-Translator: Lisandro Boggio <lboggio@ingenieriaboggio.com.ar>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
+"Language-Team: French (https://www.transifex.com/adhoc/teams/46451/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_invoice_supplier_purchase_form
 msgid "Add Purchase Lines"
-msgstr "Agregar Líneas de Compra"
+msgstr ""
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:177
@@ -41,7 +38,7 @@ msgstr ""
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Annuler"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
@@ -56,33 +53,33 @@ msgstr ""
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr "Créé par"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Date de création"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
 msgid "Delivery Satus"
-msgstr "Estado de Envío"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_delivery_status
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_delivery_status
 msgid "Delivery Status"
-msgstr "Estado de Envío"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_display_name
 msgid "Display Name"
-msgstr "Nombre Mostrado"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "En Factura actual"
-msgstr "En Factura actual"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -90,8 +87,6 @@ msgid ""
 "Filtra las lineas que estan cargadas en el picking de contexto (si es que "
 "existe uno)"
 msgstr ""
-"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
-"existe uno)"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_id
@@ -102,54 +97,54 @@ msgstr "ID"
 #: model:ir.model,name:purchase_usability.model_account_invoice
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_invoice_id
 msgid "Invoice"
-msgstr "Factura"
+msgstr ""
 
 #. module: purchase_usability
 #: selection:purchase.order.line,invoice_status:0
 msgid "Invoice Received"
-msgstr "Factura Recibida"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
 msgid "Invoice Satus"
-msgstr "Estado de Factura"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_invoice_status
 msgid "Invoice Status"
-msgstr "Estado de Factura"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Invoiced"
-msgstr "Facturado"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización realizada por"
+msgstr "Mis à jour par"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Dernière mise à jour"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Not Invoiced"
-msgstr "No facturado"
+msgstr ""
 
 #. module: purchase_usability
 #: selection:purchase.order,delivery_status:0
 #: selection:purchase.order.line,delivery_status:0
 #: selection:purchase.order.line,invoice_status:0
 msgid "Not purchased"
-msgstr "No comprado"
+msgstr ""
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:187
@@ -165,7 +160,7 @@ msgstr ""
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
 msgid "Print PO"
-msgstr "Imprimir OC"
+msgstr ""
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:204
@@ -177,47 +172,47 @@ msgstr ""
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_line_tree
 #: model:ir.ui.menu,name:purchase_usability.menu_action_purchase_line_tree
 msgid "Purchase Lines"
-msgstr "Comprar Líneas"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order
 msgid "Purchase Order"
-msgstr "Orden de compra"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de la Orden de compra"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Purchase Orders"
-msgstr "Pedidos de compra"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
 msgid "Purchase orders that include lines not received."
-msgstr "Pedidos que incluyen líneas no recibidas."
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
 msgid "Purchase orders with all lines received."
-msgstr "Órdenes de compra con todas las líneas recibidas."
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_invoice_qty
 msgid "Quantity"
-msgstr "Cantidad"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Quotations"
-msgstr "Presupuestos"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
 msgid "Re-Open"
-msgstr "Re-Abierto"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -225,7 +220,7 @@ msgstr "Re-Abierto"
 #: selection:purchase.order,delivery_status:0
 #: selection:purchase.order.line,delivery_status:0
 msgid "Received"
-msgstr "Recibido"
+msgstr ""
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:25
@@ -243,7 +238,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_to_invoice
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "To Invoice"
-msgstr "A Facturar"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -251,7 +246,7 @@ msgstr "A Facturar"
 #: selection:purchase.order,delivery_status:0
 #: selection:purchase.order.line,delivery_status:0
 msgid "To Receive"
-msgstr "A Recibir"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_vouchers
@@ -262,7 +257,7 @@ msgstr ""
 #. module: purchase_usability
 #: selection:purchase.order.line,invoice_status:0
 msgid "Waiting Invoices"
-msgstr "Esperando Facturas"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form

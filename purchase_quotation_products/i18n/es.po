@@ -4,14 +4,13 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
-# Javier Diez <jd@adhoc.com.ar>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 22:23+0000\n"
-"PO-Revision-Date: 2017-03-05 22:23+0000\n"
-"Last-Translator: Javier Diez <jd@adhoc.com.ar>, 2016\n"
+"POT-Creation-Date: 2017-04-07 21:31+0000\n"
+"PO-Revision-Date: 2017-04-07 21:31+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: purchase_quotation_products
+#: code:addons/purchase_quotation_products/product.py:53
+#, python-format
+msgid "Open Product Form View"
+msgstr "Abrir Vista Formulario del Producto"
+
+#. module: purchase_quotation_products
+#: code:addons/purchase_quotation_products/product.py:105
 #: model:ir.model,name:purchase_quotation_products.model_product_product
+#, python-format
 msgid "Product"
 msgstr "Producto"
 
