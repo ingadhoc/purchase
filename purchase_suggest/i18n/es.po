@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 22:23+0000\n"
-"PO-Revision-Date: 2017-03-05 22:23+0000\n"
+"POT-Creation-Date: 2017-04-07 21:31+0000\n"
+"PO-Revision-Date: 2017-04-07 21:31+0000\n"
 "Last-Translator: Lisandro Boggio <lboggio@ingenieriaboggio.com.ar>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
@@ -201,7 +201,7 @@ msgstr "Proveedor Principal"
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:266
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:373
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:398
 #, python-format
 msgid "Make sure you have at least an incoming picking type defined"
 msgstr "Asegurese que tiene al menos un Tipo de albarán entrante definido"
@@ -232,20 +232,25 @@ msgid "Minimum Inventory Rule"
 msgstr "Stock Máx."
 
 #. module: purchase_suggest
+#: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_tree
+msgid "Mult. Qty"
+msgstr "Cant. Múltiplo"
+
+#. module: purchase_suggest
 #: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_search
 msgid "Negative Forecast"
-msgstr "Proyección Negativa"
+msgstr "Previsiones Negativas / Roturas de stock"
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:365
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:472
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:501
 #, python-format
 msgid "No purchase orders created or updated"
 msgstr "No se generaron o actualizaron Pedidos de Compra"
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:358
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:465
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:494
 #, python-format
 msgid "No supplier configured for product '%s'."
 msgstr "No hay proveedor configurado para el producto '%s'."
@@ -300,7 +305,7 @@ msgstr "UdM de Compra"
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:325
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:432
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:461
 #, python-format
 msgid "Purchase order updated from purchase suggestions."
 msgstr "Pedido de compra compra actualizado desde sugerido de compras."
@@ -309,6 +314,11 @@ msgstr "Pedido de compra compra actualizado desde sugerido de compras."
 #: model:ir.model,name:purchase_suggest.model_purchase_suggest_po_create
 msgid "PurchaseSuggestPoCreate"
 msgstr "PurchaseSuggestPoCreate"
+
+#. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_qty_multiple
+msgid "Qty Multiple"
+msgstr "Multiplo de cantidad de compra"
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_qty_available
@@ -356,6 +366,20 @@ msgid "Seller"
 msgstr "Proveedor"
 
 #. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_po_create_only_update_if_same_user
+msgid "Solo actualizar si mismo usuario"
+msgstr "Sólo actualizar si es el mismo usuario"
+
+#. module: purchase_suggest
+#: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_po_create_only_update_if_same_user
+msgid ""
+"Solo se va a actualizar el PC si existe un PC generado por mi usuario, si no"
+" se va a generar uno nuevo."
+msgstr ""
+"Solo se va a actualizar el PC si existe un PC generado por mi usuario, si no"
+" se va a generar uno nuevo."
+
+#. module: purchase_suggest
 #: model:ir.model,name:purchase_suggest.model_purchase_suggest_generate
 msgid "Start to generate the purchase suggestions"
 msgstr "Generar sugerido de compra"
@@ -401,7 +425,7 @@ msgstr ""
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:102
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:134
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:138
 #, python-format
 msgid ""
 "There are 2 orderpoints (%s and %s) for the same product on stock location "
@@ -412,7 +436,7 @@ msgstr ""
 
 #. module: purchase_suggest
 #: code:addons/purchase_suggest/wizard/purchase_suggest.py:174
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:229
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:241
 #, python-format
 msgid "There are no purchase suggestions to generate."
 msgstr "No hay sugerido de compra para generar"
@@ -453,6 +477,7 @@ msgstr ""
 #. module: purchase_suggest
 #: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_max_qty
 #: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_min_qty
+#: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_qty_multiple
 msgid "in the unit of measure for the product"
 msgstr "in la unidad de medida del producto"
 
