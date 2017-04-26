@@ -264,6 +264,8 @@ class PurchaseOrderLine(models.Model):
                 new_line._set_additional_fields(self)
                 vals = new_line._convert_to_write(new_line._cache)
                 purchase_lines.create(vals)
+            # recomputamos impuestos
+            invoice.compute_taxes()
             # el depends de esta funcion no lo hace ejecutar desde aca pero si
             # si se edita en la factura (no estoy seguro porque), lo forzamos
             # aca
