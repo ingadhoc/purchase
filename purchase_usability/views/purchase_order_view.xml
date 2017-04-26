@@ -22,6 +22,12 @@
                 <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
                     <attribute name="states">purchase,done</attribute>
                 </xpath>
+
+                <!-- agregamos boton de cancelar linea -->
+                <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="after">
+                    <field name="delivery_status" invisible="1"/>
+                    <button name="button_cancel_remaining" type="object" string="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" attrs="{'invisible': [('delivery_status', '!=', 'to receive')]}" groups="purchase.group_purchase_manager"/>
+                </xpath>
             </field>
         </record>
 

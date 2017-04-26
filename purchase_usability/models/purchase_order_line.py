@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-# from openerp.exceptions import UserError
+from openerp.exceptions import UserError
 from openerp.tools.float_utils import float_compare
 import openerp.addons.decimal_precision as dp
 from openerp.osv.orm import setup_modifiers
@@ -47,6 +47,46 @@ class PurchaseOrderLine(models.Model):
     vouchers = fields.Char(
         compute='_compute_vouchers'
     )
+
+    # backport of fix made on odoo v10, on odoo v9 refunds are also summed
+    @api.depends('invoice_lines.invoice_id.state')
+    def _compute_qty_invoiced(self):
+        for line in self:
+            qty = 0.0
+            for inv_line in line.invoice_lines:
+                if inv_line.invoice_id.state not in ['cancel']:
+                    if inv_line.invoice_id.type == 'in_invoice':
+                        qty += inv_line.uom_id._compute_qty_obj(
+                            inv_line.uom_id, inv_line.quantity,
+                            line.product_uom)
+                    elif inv_line.invoice_id.type == 'in_refund':
+                        qty -= inv_line.uom_id._compute_qty_obj(
+                            inv_line.uom_id, inv_line.quantity,
+                            line.product_uom)
+            line.qty_invoiced = qty
+
+    @api.multi
+    def button_cancel_remaining(self):
+        for rec in self:
+            old_product_qty = rec.product_qty
+            if rec.qty_invoiced > rec.qty_received:
+                raise UserError(_(
+                    'You can not cancel remianing qty to receive because '
+                    'there are more product invoiced than the received. '
+                    'You should correct invoice or ask for a refund'))
+            rec.product_qty = rec.qty_received
+            to_cancel_moves = rec.move_ids.filtered(
+                lambda x: x.state != 'done')
+            to_cancel_moves.action_cancel()
+            # to_cancel_moves.mapped('linked_move_operation_ids').unlink()
+            # because move cancel dont update operations, we re asign
+            to_cancel_moves.mapped('picking_id').filtered(
+                lambda x: x.state not in ['draft', 'cancel']).action_assign()
+            rec.order_id.message_post(
+                body=_(
+                    'Cancel remaining call for line "%s" (id %s), line '
+                    'qty updated from %s to %s') % (
+                        rec.name, rec.id, old_product_qty, rec.product_qty))
 
     @api.multi
     def _compute_vouchers(self):
