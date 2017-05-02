@@ -53,7 +53,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         product = qty_dict['product']
         if float_compare(
                 future_qty, min_qty,
-                precision_rounding=product.uom_id.rounding) < 0:
+                precision_rounding=qty_dict['uom_rounding']) < 0:
                 # no entendi bien porque pero el scheduller busca menor igual
                 # nosotros solo queremos ordenar si se va por debajo
                 # precision_rounding=product.uom_id.rounding) <= 0:
@@ -62,7 +62,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
             reste = (qty_multiple > 0 and qty_to_order % qty_multiple or 0.0)
             if float_compare(
                     reste, 0.0,
-                    precision_rounding=product.uom_id.rounding) > 0:
+                    precision_rounding=qty_dict['uom_rounding']) > 0:
                 qty_to_order += qty_multiple - reste
 
         sline = {
@@ -108,6 +108,11 @@ class PurchaseSuggestGenerate(models.TransientModel):
 
     @api.multi
     def generate_products_dict(self):
+        """
+        Esta funcion genera un diccionario con solo lo que es necesario
+        para ver si hay que sugerir o no el producto, luego se extiende para
+        los productos que quedan con mas información
+        """
         self.ensure_one()
         ppo = self.env['product.product']
         swoo = self.env['stock.warehouse.orderpoint']
@@ -131,6 +136,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     'qty_multiple': op.qty_multiple,
                     'draft_po_qty': 0.0,  # This value is set later on
                     'orderpoint': op,
+                    'uom_rounding': op.product_id.uom_id.rounding,
                     'product': op.product_id,
                 }
             else:
@@ -161,6 +167,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     'qty_multiple': 0.0,
                     'draft_po_qty': 0.0,  # This value is set later on
                     'orderpoint': False,
+                    'uom_rounding': product.uom_id.rounding,
                     'product': product,
                 }
         return products
@@ -193,6 +200,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
         #     self._cr, self._uid, products.keys(),
         #     context={'location': self.location_id.id})
         logger.info('Stock levels qty computed on %d products', len(products))
+
+        product_ids = []
         for product_id, qty_dict in products.iteritems():
             qty_dict['virtual_available'] =\
                 virtual_qties[product_id]['virtual_available']
@@ -213,14 +222,33 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 # qty_dict['virtual_available'] + qty_dict['draft_po_qty'],
                 qty_dict['virtual_available'],
                 qty_dict['min_qty'],
-                precision_rounding=qty_dict['product'].uom_id.rounding)
+                precision_rounding=qty_dict['uom_rounding'])
             if compare < 0:
-                vals = self._prepare_suggest_line(product_id, qty_dict)
-                if vals:
-                    p_suggest_lines.append(vals)
-                    logger.debug(
-                        'Created a procurement suggestion for product ID %d',
-                        product_id)
+                product_ids.append(product_id)
+                # vals = self._prepare_suggest_line(product_id, qty_dict)
+                # if vals:
+                #     p_suggest_lines.append(vals)
+                #     logger.debug(
+                #         'Created a procurement suggestion for product ID %d',
+                #         product_id)
+        # podriamos haber hecho el invalidate cache antes del for anterior
+        # y dejar como estaba pero entonces, como no hay un prefetch
+        # se recorria cada producto, invalidando y haciendo browse sobre los
+        # prods que queremos, odoo hace el prefetch para nosotros
+        # tuvimos que hacer este maneje porque si no odoo hacia prefetch para
+        # todos los productos buscados y no solo para los que hay que hacer
+        # el suggest
+        # TODO, tal vez mas facil sea no mandar tantos datos por aca y que
+        # sean campos calculados storeados de lo que se termina creando
+        # entonces ahi odoo lo deberia resolver bien
+        self.invalidate_cache()
+        for product in self.env['product.product'].browse(product_ids):
+            vals = self._prepare_suggest_line(product.id, products[product.id])
+            if vals:
+                p_suggest_lines.append(vals)
+                logger.debug(
+                    'Created a procurement suggestion for product ID %d',
+                    product_id)
         p_suggest_lines_sorted = p_suggest_lines
         # no hay necesidad para esto, podemos ordenar por clase
         # p_suggest_lines_sorted = sorted(
