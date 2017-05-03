@@ -35,22 +35,28 @@ class PurchaseSuggestGenerate(models.TransientModel):
     )
 
     @api.multi
-    def _prepare_suggest_line(self, product_id, qty_dict):
+    def _prepare_suggest_line(self, product, qty_dict):
         self.ensure_one()
+
+        # get purchase lines quantity
+        polines = self.env['purchase.order.line'].search([
+            ('state', '=', 'draft'), ('product_id', '=', product.id)])
+        draft_po_qty = 0.0
+        for line in polines:
+            qty_product_po_uom = self.env['product.uom']._compute_qty_obj(
+                line.product_uom, line.product_qty, line.product_id.uom_id)
+            draft_po_qty += qty_product_po_uom
+
         porderline_id = False
-        porderlines = self.env['purchase.order.line'].search([
-            ('state', 'not in', ('draft', 'cancel')),
-            ('product_id', '=', product_id)],
-            order='id desc', limit=1)
         # I cannot filter on 'date_order' because it is not a stored field
-        porderline_id = porderlines and porderlines[0].id or False
-        future_qty = qty_dict['virtual_available'] + qty_dict['draft_po_qty']
+        porderline_id = polines and polines[0].id or False
+
+        future_qty = qty_dict['virtual_available'] + draft_po_qty
 
         qty_to_order = False
         min_qty = qty_dict['min_qty']
         max_qty = qty_dict['max_qty']
         qty_multiple = qty_dict['qty_multiple']
-        product = qty_dict['product']
         if float_compare(
                 future_qty, min_qty,
                 precision_rounding=qty_dict['uom_rounding']) < 0:
@@ -70,13 +76,13 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 qty_dict['orderpoint'] and
                 qty_dict['orderpoint'].company_id.id or
                 self.env.user.company_id.id),
-            'product_id': product_id,
+            'product_id': product.id,
             # 'seller_id': qty_dict['product'].main_seller_id.id or False,
             'virtual_available': qty_dict['virtual_available'],
             'qty_available': qty_dict['qty_available'],
             'incoming_qty': qty_dict['incoming_qty'],
             'outgoing_qty': qty_dict['outgoing_qty'],
-            'draft_po_qty': qty_dict['draft_po_qty'],
+            'draft_po_qty': draft_po_qty,
             'orderpoint_id':
                 qty_dict['orderpoint'] and qty_dict['orderpoint'].id,
             'location_id': self.location_id.id,
@@ -114,95 +120,101 @@ class PurchaseSuggestGenerate(models.TransientModel):
         los productos que quedan con mas información
         """
         self.ensure_one()
-        ppo = self.env['product.product']
-        swoo = self.env['stock.warehouse.orderpoint']
-        products = {}
+        products_dict = {}
         op_domain = [
             ('suggest', '=', True),
             ('company_id', '=', self.env.user.company_id.id),
             ('location_id', 'child_of', self.location_id.id),
         ]
-        if self.categ_ids or self.seller_ids:
 
-            products_subset = ppo.search(self._prepare_product_domain())
-            op_domain.append(('product_id', 'in', products_subset.ids))
-        ops = swoo.search(op_domain)
+        product_domain = self._prepare_product_domain()
 
-        for op in ops:
-            if op.product_id.id not in products:
-                products[op.product_id.id] = {
-                    'min_qty': op.product_min_qty,
-                    'max_qty': op.product_max_qty,
-                    'qty_multiple': op.qty_multiple,
-                    'draft_po_qty': 0.0,  # This value is set later on
-                    'orderpoint': op,
-                    'uom_rounding': op.product_id.uom_id.rounding,
-                    'product': op.product_id,
-                }
-            else:
-                raise UserError(
-                    _("There are 2 orderpoints (%s and %s) for the same "
-                        "product on stock location %s or its "
-                        "children.") % (
-                        products[op.product_id.id]['orderpoint'].name,
-                        op.name,
-                        self.location_id.complete_name))
+        product_uoms_read = self.env['product.product'].read_group(
+            product_domain,
+            ['uom_id'],
+            'uom_id')
+        for product_uom_read in product_uoms_read:
+            uom_id = product_uom_read['uom_id'][0]
+            rounding = self.env['product.uom'].browse(uom_id).rounding
+
+            products_subset = self.env['product.product'].search(
+                product_domain + [('uom_id', '=', uom_id)])
+
+            ops = self.env['stock.warehouse.orderpoint'].search(
+                op_domain + [('product_id', 'in', products_subset.ids)])
+
+            for op in ops:
+                # TODO tal vez rel brwose de product_id aca pueda
+                # traer probelmas de performance, podemos probar con un read
+                # o sin prefetch
+                if op.product_id.id not in products_dict:
+                    products_dict[op.product_id.id] = {
+                        'min_qty': op.product_min_qty,
+                        'max_qty': op.product_max_qty,
+                        'qty_multiple': op.qty_multiple,
+                        'orderpoint': op,
+                        'uom_rounding': rounding,
+                    }
+                else:
+                    raise UserError(
+                        _("There are 2 orderpoints (%s and %s) for the same "
+                            "product on stock location %s or its "
+                            "children.") % (
+                            products_dict[op.product_id.id]['orderpoint'].name,
+                            op.name,
+                            self.location_id.complete_name))
 
         # agregamos productos sin orderpoint
         # TODO tal vez querramos agregar parametro para setear si solo product
         # o tambien consumibles
         if self.add_products_without_order_point:
-            product_ids = products.keys()
+            product_ids = products_dict.keys()
             product_domain = self._prepare_product_domain()
             product_domain += [
                 ('type', '=', 'product'),
                 ('id', 'not in', product_ids)]
-            new_products = self.env['product.product'].search(product_domain)
-            for product in new_products:
-                # We also want the missing product that have min_qty = 0
-                # So we remove "if product.z_stock_min > 0"
-                products[product.id] = {
-                    'min_qty': 0.0,
-                    'max_qty': 0.0,
-                    'qty_multiple': 0.0,
-                    'draft_po_qty': 0.0,  # This value is set later on
-                    'orderpoint': False,
-                    'uom_rounding': product.uom_id.rounding,
-                    'product': product,
-                }
-        return products
+            # agrupamos por uom para mejorar performance
+            product_uoms_read = self.env['product.product'].read_group(
+                product_domain,
+                ['uom_id'],
+                'uom_id')
+            for product_uom_read in product_uoms_read:
+                uom_id = product_uom_read['uom_id'][0]
+                rounding = self.env['product.uom'].browse(uom_id).rounding
+                new_products = self.env['product.product'].search(
+                    product_domain + [('uom_id', '=', uom_id)])
+                for product in new_products:
+                    # We also want the missing product that have min_qty = 0
+                    # So we remove "if product.z_stock_min > 0"
+                    products_dict[product.id] = {
+                        'min_qty': 0.0,
+                        'max_qty': 0.0,
+                        'qty_multiple': 0.0,
+                        'orderpoint': False,
+                        'uom_rounding': rounding,
+                    }
+        return products_dict
 
     @api.multi
     def run(self):
         self.ensure_one()
-        pso = self.env['purchase.suggest']
-        polo = self.env['purchase.order.line']
-        puo = self.env['product.uom']
-        p_suggest_lines = []
-        products = self.generate_products_dict()
-        # key = product_id
-        # value = {'virtual_qty': 1.0, 'draft_po_qty': 4.0, 'min_qty': 6.0}
-        # WARNING: draft_po_qty is in the UoM of the product
         logger.info('Starting to compute the purchase suggestions')
-        logger.info('Min qty computed on %d products', len(products))
-        polines = polo.search([
-            ('state', '=', 'draft'), ('product_id', 'in', products.keys())])
-        for line in polines:
-            qty_product_po_uom = puo._compute_qty_obj(
-                line.product_uom, line.product_qty, line.product_id.uom_id)
-            products[line.product_id.id]['draft_po_qty'] += qty_product_po_uom
-        logger.info('Draft PO qty computed on %d products', len(products))
+        pso = self.env['purchase.suggest']
+        p_suggest_lines = []
+        products_dict = self.generate_products_dict()
+
+        logger.info('Min qty computed on %d products', len(products_dict))
+
         # usamos nueva api
         virtual_qties = self.env['product.product'].browse(
-            products.keys()).with_context(
+            products_dict.keys()).with_context(
             location=self.location_id.id)._product_available()
-        # virtual_qties = self.pool['product.product']._product_available(
-        #     self._cr, self._uid, products.keys(),
-        #     context={'location': self.location_id.id})
-        logger.info('Stock levels qty computed on %d products', len(products))
+
+        logger.info(
+            'Stock levels qty computed on %d products', len(products_dict))
 
         product_ids = []
-        for product_id, qty_dict in products.iteritems():
+        for product_id, qty_dict in products_dict.iteritems():
             qty_dict['virtual_available'] =\
                 virtual_qties[product_id]['virtual_available']
             qty_dict['incoming_qty'] =\
@@ -211,15 +223,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 virtual_qties[product_id]['outgoing_qty']
             qty_dict['qty_available'] =\
                 virtual_qties[product_id]['qty_available']
-            logger.debug(
-                'Product ID: %d Virtual qty = %s Draft PO qty = %s '
-                'Min. qty = %s',
-                product_id, qty_dict['virtual_available'],
-                qty_dict['draft_po_qty'], qty_dict['min_qty'])
+
             compare = float_compare(
-                # para las que ya existe en borrador queremos crear igual
-                # y que a lo sumo la cantidad a comprar de cero
-                # qty_dict['virtual_available'] + qty_dict['draft_po_qty'],
                 qty_dict['virtual_available'],
                 qty_dict['min_qty'],
                 precision_rounding=qty_dict['uom_rounding'])
@@ -243,16 +248,15 @@ class PurchaseSuggestGenerate(models.TransientModel):
         # entonces ahi odoo lo deberia resolver bien
         self.invalidate_cache()
         for product in self.env['product.product'].browse(product_ids):
-            vals = self._prepare_suggest_line(product.id, products[product.id])
+            vals = self._prepare_suggest_line(
+                product, products_dict[product.id])
             if vals:
                 p_suggest_lines.append(vals)
                 logger.debug(
                     'Created a procurement suggestion for product ID %d',
                     product_id)
         p_suggest_lines_sorted = p_suggest_lines
-        # no hay necesidad para esto, podemos ordenar por clase
-        # p_suggest_lines_sorted = sorted(
-        #     p_suggest_lines, key=lambda to_sort: to_sort['seller_id'])
+
         if p_suggest_lines_sorted:
             p_suggest_ids = []
             for p_suggest_line in p_suggest_lines_sorted:
