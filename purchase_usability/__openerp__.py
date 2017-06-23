@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.9.0',
+    'version': '9.0.1.10.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -33,12 +33,14 @@
         'purchase',
         # we add stock voucher to hav voucher information on purchase line
         'stock_voucher',
+        'stock_usability',
     ],
     'data': [
         'views/account_invoice_view.xml',
         'views/purchase_view.xml',
         'views/purchase_order_view.xml',
         'views/purchase_line_view.xml',
+        'views/stock_move_view.xml',
         'wizard/purchase_order_line_add_to_invoice_view.xml',
     ],
     'demo': [

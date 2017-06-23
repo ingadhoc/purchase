@@ -28,8 +28,14 @@ On incoming pickings:
 #. Add new parameter "Merge Incoming Picking" on incoming picking types, if set true, when confirming a purchase order, if an open picking exists for same partner and picking type, incoming moves will be merged into that picking (TODO remove this functionality)
 #. Add button "Add Purchase Lines" to add moves from other pickings that are still pending.
  
+On stock moves:
+#. Button with link to related purchase order
+
 On purchase invoices:
 #. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that shouldt be invoiced, you still have de possiblity to add them
+
+
+TODO: tal vez querramos implementar que el check de procurements sea analogo al de moves para que se marque realizado si moves en done o cancel, buscar en purchase "return all(move.state == 'done' for move in procurement.move_ids)"
 
 Installation
 ============
