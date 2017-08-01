@@ -48,6 +48,28 @@ class PurchaseOrderLine(models.Model):
         compute='_compute_vouchers'
     )
 
+    qty_to_invoice_on_voucher = fields.Integer(
+        compute="_compute_qty_to_invoice_on_voucher",
+        string="To invoice on voucher")
+
+    @api.multi
+    def _compute_qty_to_invoice_on_voucher(self):
+        # al calcular por voucher no tenemos en cuenta el metodo de facturacion
+        # es decir, que calculamos como si fuese metodo segun lo recibido
+        voucher = self._context.get('voucher', False)
+        if voucher:
+            for line in self:
+                if line.order_id.state in ['purchase', 'done']:
+                    moves = line.move_ids.search([
+                        ('id', 'in', line.move_ids.ids),
+                        ('state', '=', 'done'),
+                        ('picking_id.voucher_ids.name', 'ilike', voucher),
+                    ])
+                    line.qty_to_invoice_on_voucher = sum(
+                        moves.mapped('product_uom_qty'))
+                else:
+                    line.qty_to_invoice_on_voucher = 0
+
     # backport of fix made on odoo v10, on odoo v9 refunds are also summed
     @api.depends('invoice_lines.invoice_id.state')
     def _compute_qty_invoiced(self):
@@ -189,6 +211,14 @@ class PurchaseOrderLine(models.Model):
             placeholder = doc.xpath("//field[1]")[0]
             placeholder.addprevious(
                 etree.Element('field', {
+                    'name': 'qty_to_invoice_on_voucher',
+                    'readonly': '1',
+                    # on enterprise view is not refres
+                    # 'invisible': "not context.get('voucher', False)",
+                }))
+            placeholder = doc.xpath("//field[2]")[0]
+            placeholder.addprevious(
+                etree.Element('field', {
                     'name': 'qty_to_invoice',
                     'readonly': '1',
                 }))
@@ -206,7 +236,8 @@ class PurchaseOrderLine(models.Model):
                     'readonly': '0',
                 }))
             res['fields'].update(self.fields_get(
-                ['invoice_qty', 'qty_to_invoice']))
+                ['invoice_qty', 'qty_to_invoice',
+                 'qty_to_invoice_on_voucher']))
 
             # add button to add all
             placeholder.addprevious(
@@ -334,4 +365,6 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
-            rec.invoice_qty = rec.qty_to_invoice + rec.invoice_qty
+            # si filtramos por un voucher, mandamos esa cantidad
+            rec.invoice_qty = rec.qty_to_invoice_on_voucher or (
+                rec.qty_to_invoice + rec.invoice_qty)

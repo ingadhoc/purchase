@@ -39,6 +39,7 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         "('state', '=', 'draft'), "
         "('type', 'in', ['in_invoice', 'in_refund'])]",
     )
+    voucher = fields.Char('Voucher')
 
     @api.model
     def get_purchase_lines(self):
@@ -54,5 +55,6 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         self.ensure_one()
         pol = self.get_purchase_lines()
         pol.with_context(
+            voucher=self.voucher,
             active_id=self.invoice_id.id,
             active_model='account.invoice').action_add_all_to_invoice()

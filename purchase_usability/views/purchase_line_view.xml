@@ -52,7 +52,7 @@
             <field name="inherit_id" ref="purchase.purchase_order_line_search"/>
             <field name="arch" type="xml">
                 <filter position="before">
-                    <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]"/>
+                    <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]" context="{'voucher': self}"/>
                     <filter name="draft" string="Quotations" domain="[('state','in',('draft','sent','to approve'))]"/>
                     <filter name="approved" string="Purchase Orders" domain="[('state','in',('purchase','done'))]"/>
                     <separator/>

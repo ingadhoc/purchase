@@ -12,6 +12,7 @@
                     <group>
                         <field name="partner_id" invisible="1"/>
                         <field name="invoice_id"/>
+                        <field name="voucher"/>
                     </group>
                     <footer>
                         <button name="confirm" type="object" class="oe_highlight" string="Confirm"/>
