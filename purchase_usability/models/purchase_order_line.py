@@ -334,7 +334,7 @@ class PurchaseOrderLine(models.Model):
                 data['quantity'] = rec.invoice_qty
                 data['invoice_id'] = invoice_id
                 new_line = purchase_lines.new(data)
-                new_line._set_additional_fields(self)
+                new_line._set_additional_fields(invoice)
                 vals = new_line._convert_to_write(new_line._cache)
                 purchase_lines.create(vals)
             # recomputamos impuestos
