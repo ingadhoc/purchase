@@ -3,8 +3,9 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 from openerp.tools.float_utils import float_compare
+from openerp.exceptions import UserError
 
 
 class PurchaseOrder(models.Model):
@@ -79,3 +80,17 @@ class PurchaseOrder(models.Model):
                 order.invoice_status = 'invoiced'
             else:
                 order.invoice_status = 'no'
+
+    @api.multi
+    def button_set_invoiced(self):
+        if not self.user_has_groups('base.group_system'):
+            group = self.env.ref('base.group_system').sudo()
+            raise UserError(_(
+                'Only users with "%s / %s" can Set Invoiced manually') % (
+                group.category_id.name, group.name))
+        # en compras el invoice_status no se calcula desde las lineas por eso
+        # lo pisamos en la PO. No pisamos el qty_invoiced porque nos parece
+        # mas prolijo para restablecero ver que paso
+        self.write({'invoice_status': 'invoiced'})
+        self.order_line.write({'qty_to_invoice': 0.0})
+        self.message_post(body='Manually setted as invoiced')
