@@ -60,17 +60,18 @@ class PurchaseOrderLine(models.Model):
         # es decir, que calculamos como si fuese metodo segun lo recibido
         voucher = self._context.get('voucher', False)
         if voucher:
-            for line in self:
-                if line.order_id.state in ['purchase', 'done']:
-                    moves = line.move_ids.search([
-                        ('id', 'in', line.move_ids.ids),
-                        ('state', '=', 'done'),
-                        ('picking_id.voucher_ids.name', 'ilike', voucher),
-                    ])
-                    line.qty_on_voucher = sum(
-                        moves.mapped('product_uom_qty'))
-                else:
-                    line.qty_on_voucher = 0
+            lines = self.filtered(
+                lambda x: x.order_id.state in ['purchase', 'done'])
+            moves = self.env['stock.move'].search([
+                ('id', 'in', lines.mapped('move_ids').ids),
+                ('state', '=', 'done'),
+                ('picking_id.voucher_ids.name', 'ilike', voucher),
+            ])
+            for line in lines:
+                line.qty_on_voucher = sum(
+                    moves.filtered(
+                        lambda x: x.id in line.move_ids.ids).mapped(
+                        'product_uom_qty'))
 
     # backport of fix made on odoo v10, on odoo v9 refunds are also summed
     @api.depends('invoice_lines.invoice_id.state')
@@ -303,6 +304,7 @@ class PurchaseOrderLine(models.Model):
             return True
         invoice = self.env['account.invoice'].browse(invoice_id)
         purchase_lines = self.env['account.invoice.line']
+        do_not_compute = self._context.get('do_not_compute')
         for rec in self:
             lines = rec.env['account.invoice.line'].search([
                 ('invoice_id', '=', invoice_id),
@@ -338,6 +340,8 @@ class PurchaseOrderLine(models.Model):
                 vals = new_line._convert_to_write(new_line._cache)
                 purchase_lines.create(vals)
             # recomputamos impuestos
+            if do_not_compute:
+                continue
             invoice.compute_taxes()
             # el depends de esta funcion no lo hace ejecutar desde aca pero si
             # si se edita en la factura (no estoy seguro porque), lo forzamos
