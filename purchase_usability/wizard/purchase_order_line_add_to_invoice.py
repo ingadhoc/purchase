@@ -54,7 +54,11 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
     def confirm(self):
         self.ensure_one()
         pol = self.get_purchase_lines()
+        # send to not compute to compute everything on one time
         pol.with_context(
+            do_not_compute=True,
             voucher=self.voucher,
             active_id=self.invoice_id.id,
             active_model='account.invoice').action_add_all_to_invoice()
+        pol._compute_qty_invoiced()
+        self.invoice_id.compute_taxes()
