@@ -99,13 +99,15 @@ class PurchaseOrderLine(models.Model):
                     'there are more product invoiced than the received. '
                     'You should correct invoice or ask for a refund'))
             rec.product_qty = rec.qty_received
-            to_cancel_moves = rec.move_ids.filtered(
-                lambda x: x.state != 'done')
-            to_cancel_moves.action_cancel()
-            # to_cancel_moves.mapped('linked_move_operation_ids').unlink()
-            # because move cancel dont update operations, we re asign
-            to_cancel_moves.mapped('picking_id').filtered(
-                lambda x: x.state not in ['draft', 'cancel']).action_assign()
+
+            # si fue generado por procurements usamos el cancel de procurements
+            if rec.procurement_ids:
+                rec.procurement_ids.button_cancel_remaining()
+            else:
+                to_cancel_moves = rec.move_ids.filtered(
+                    lambda x: x.state != 'done')
+                to_cancel_moves.action_cancel()
+
             rec.order_id.message_post(
                 body=_(
                     'Cancel remaining call for line "%s" (id %s), line '
