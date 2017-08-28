@@ -121,7 +121,9 @@ class PurchaseOrderLine(models.Model):
             rec.vouchers = ', '.join(rec.mapped(
                 'move_ids.picking_id.voucher_ids.display_name'))
 
-    @api.depends('order_id.state', 'qty_received', 'product_qty')
+    @api.depends(
+        'order_id.state', 'qty_received', 'product_qty',
+        'order_id.manually_set_received')
     def _get_received(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
@@ -136,7 +138,9 @@ class PurchaseOrderLine(models.Model):
             if line.state not in ('purchase', 'done'):
                 line.delivery_status = 'no'
                 continue
-
+            if line.order_id.manually_set_received:
+                line.delivery_status = 'received'
+                continue
             if float_compare(
                     line.qty_received, line.product_qty,
                     precision_digits=precision) == -1:
@@ -148,7 +152,9 @@ class PurchaseOrderLine(models.Model):
             else:
                 line.delivery_status = 'no'
 
-    @api.depends('order_id.state', 'qty_invoiced', 'product_qty')
+    @api.depends(
+        'order_id.state', 'qty_invoiced', 'product_qty',
+        'order_id.manually_set_invoiced')
     def _get_invoiced(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
@@ -162,6 +168,9 @@ class PurchaseOrderLine(models.Model):
             # if order.state != 'purchase':
             if line.state not in ('purchase', 'done'):
                 line.invoice_status = 'no'
+                continue
+            if line.order_id.manually_set_invoiced:
+                line.invoice_status = 'invoiced'
                 continue
             if float_compare(
                     line.qty_invoiced, line.product_qty,

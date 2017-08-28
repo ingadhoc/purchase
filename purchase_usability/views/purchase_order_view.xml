@@ -25,6 +25,10 @@
                     <attribute name="states">purchase,done</attribute>
                 </xpath>
 
+                <field name="invoice_status" position="before">
+                    <field name="manually_set_invoiced" groups="base.group_no_one"/>
+                    <field name="manually_set_received" groups="base.group_no_one"/>
+                </field>
                 <!-- agregamos boton de cancelar linea -->
                 <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="after">
                     <field name="delivery_status" invisible="1"/>

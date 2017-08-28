@@ -11,6 +11,18 @@ from openerp.exceptions import UserError
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    manually_set_invoiced = fields.Boolean(
+        string='Manually Set Invoiced?',
+        help='If you set this field to True, then all lines invoiceable lines'
+        'will be set to invoiced?',
+        track_visibility='onchange',
+    )
+    manually_set_received = fields.Boolean(
+        string='Manually Set Received?',
+        help='If you set this field to True, then all lines deliverable lines'
+        'will be set to received?',
+        track_visibility='onchange',
+    )
     delivery_status = fields.Selection([
         ('no', 'Not purchased'),
         ('to receive', 'To Receive'),
@@ -24,7 +36,9 @@ class PurchaseOrder(models.Model):
         default='no'
     )
 
-    @api.depends('state', 'order_line.qty_received', 'order_line.product_qty')
+    @api.depends(
+        'state', 'order_line.qty_received', 'order_line.product_qty',
+        'manually_set_received')
     def _get_received(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
@@ -38,6 +52,10 @@ class PurchaseOrder(models.Model):
             # if order.state != 'purchase':
             if order.state not in ('purchase', 'done'):
                 order.delivery_status = 'no'
+                continue
+
+            if order.manually_set_received:
+                order.delivery_status = 'received'
                 continue
 
             if any(float_compare(
@@ -57,6 +75,7 @@ class PurchaseOrder(models.Model):
     def button_reopen(self):
         self.write({'state': 'purchase'})
 
+    @api.depends('manually_set_invoiced')
     def _get_invoiced(self):
         # fix de esta funcion porque odoo no lo quiso arreglar
         # cambiamos != purchase por not in purchase, done
@@ -66,6 +85,10 @@ class PurchaseOrder(models.Model):
             # if order.state != 'purchase':
             if order.state not in ('purchase', 'done'):
                 order.invoice_status = 'no'
+                continue
+
+            if order.manually_set_invoiced:
+                order.invoice_status = 'invoiced'
                 continue
 
             if any(float_compare(
@@ -94,3 +117,33 @@ class PurchaseOrder(models.Model):
         self.write({'invoice_status': 'invoiced'})
         self.order_line.write({'qty_to_invoice': 0.0})
         self.message_post(body='Manually setted as invoiced')
+
+    @api.multi
+    def write(self, vals):
+        self.check_manually_set_invoiced(vals)
+        self.check_manually_set_received(vals)
+        return super(PurchaseOrder, self).write(vals)
+
+    @api.model
+    def create(self, vals):
+        self.check_manually_set_invoiced(vals)
+        self.check_manually_set_received(vals)
+        return super(PurchaseOrder, self).create(vals)
+
+    @api.model
+    def check_manually_set_invoiced(self, vals):
+        if vals.get('manually_set_invoiced') and not self.user_has_groups(
+                'base.group_system'):
+            group = self.env.ref('base.group_system').sudo()
+            raise UserError(_(
+                'Only users with "%s / %s" can Set Invoiced manually') % (
+                group.category_id.name, group.name))
+
+    @api.model
+    def check_manually_set_received(self, vals):
+        if vals.get('manually_set_received') and not self.user_has_groups(
+                'base.group_system'):
+            group = self.env.ref('base.group_system').sudo()
+            raise UserError(_(
+                'Only users with "%s / %s" can Set Received manually') % (
+                group.category_id.name, group.name))
