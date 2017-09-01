@@ -24,6 +24,7 @@ On purchase lines:
 #. Add delivery status and invoice status on purchase lines
 #. Backport of a fix of odoo v10 to deduct refunds on qty_invoiced field (on v9, by default, they are summed)
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
+#. If not seller is defined or seller price is 0, then sugget accounting cost
 
 On incoming pickings:
 #. Add new parameter "Merge Incoming Picking" on incoming picking types, if set true, when confirming a purchase order, if an open picking exists for same partner and picking type, incoming moves will be merged into that picking (TODO remove this functionality)

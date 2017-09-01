@@ -385,3 +385,27 @@ class PurchaseOrderLine(models.Model):
             # si filtramos por un voucher, mandamos esa cantidad
             rec.invoice_qty = rec.qty_on_voucher or (
                 rec.qty_to_invoice + rec.invoice_qty)
+
+    @api.onchange('product_qty', 'product_uom')
+    def _onchange_quantity(self):
+        res = super(PurchaseOrderLine, self)._onchange_quantity()
+        if not self.product_id:
+            return
+
+        # if price was not computed (not seller or seller price = 0.0), then
+        # use standar price
+        if not self.price_unit:
+            price_unit = self.product_id.standard_price
+            if (
+                    price_unit and
+                    self.order_id.currency_id != self.product_id.currency_id):
+                price_unit = self.product_id.currency_id.compute(
+                    price_unit, self.order_id.currency_id)
+            if (
+                    price_unit and self.product_uom and
+                    self.product_id.uom_id != self.product_uom):
+                price_unit = self.env['product.uom']._compute_price(
+                    self.product_id.uom_id.id, price_unit,
+                    to_uom_id=self.product_uom.id)
+            self.price_unit = price_unit
+        return res
