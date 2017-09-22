@@ -6,7 +6,7 @@
 Purchase Global Discount
 ========================
 
-Add a wizard on purchase orders that allow you to define global discounts to sale
+Add a wizard on purchase orders that allow you to define global discounts to purchase
 orders by percentage.
 
 
