@@ -34,6 +34,14 @@
                     <field name="delivery_status" invisible="1"/>
                     <button name="button_cancel_remaining" type="object" string="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" attrs="{'invisible': [('delivery_status', '!=', 'to receive')]}" groups="purchase.group_purchase_manager"/>
                 </xpath>
+                <field name="currency_id" position="replace">
+                    <label for="currency_id" groups="base.group_multi_currency"/>
+                    <div groups="base.group_multi_currency">
+                        <field name="currency_id" class="oe_inline"/>
+                        <button name="%(action_purchase_change_currency)d" type="action" class="oe_inline oe_link" string="(change)" attrs="{'invisible':[('state','not in',['draft','sent'])]}"/>
+                    </div>
+
+                </field>
             </field>
         </record>
 
