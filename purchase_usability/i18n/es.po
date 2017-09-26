@@ -1,21 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* purchase_usability
-#
+# * purchase_usability
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 9.0e\n"
+"Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-26 12:19+0000\n"
-"PO-Revision-Date: 2017-09-26 09:37-0300\n"
-"Last-Translator: <>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2017-09-26 17:08+0000\n"
+"PO-Revision-Date: 2017-09-26 17:08+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: \n"
 "Language: es\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
@@ -37,7 +38,8 @@ msgstr "Agregar todo a la factura"
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
 msgid "All the selected lines are going to be added to the following invoice."
-msgstr "Todas las líneas seleccionadas van a ser agregadas a la siguiente factura."
+msgstr ""
+"Todas las líneas seleccionadas van a ser agregadas a la siguiente factura."
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
@@ -48,20 +50,33 @@ msgstr "Cancelar"
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:113
 #, python-format
-msgid "Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to %s"
-msgstr "Se ejecutó Cancelar remanante para línea \"%s\" (id %s), cantidad actualizada de %s a %s"
+msgid ""
+"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
+"%s"
+msgstr ""
+"Se ejecutó Cancelar remanante para línea \"%s\" (id %s), cantidad "
+"actualizada de %s a %s"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid "Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves"
-msgstr "Cancelar cantidad pendiente a recibir. Esto va a setear todas las cantidades ordenadas iguales a la cantidad recibida y va a cancelar los movimientos pendientes"
+msgid ""
+"Cancel remaining quanitity to be received. This will set line quantity equal"
+" to received qty and will cancel remaining moves"
+msgstr ""
+"Cancelar cantidad pendiente a recibir. Esto va a setear todas las cantidades"
+" ordenadas iguales a la cantidad recibida y va a cancelar los movimientos "
+"pendientes"
 
 #. module: purchase_usability
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_change_currency
-#: model:ir.model,name:purchase_usability.model_purchase_change_currency
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
 msgid "Change Currency"
 msgstr "Cambiar moneda"
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_purchase_change_currency
+msgid "Change Currency Purchase Order"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_currency_id
@@ -119,8 +134,12 @@ msgstr "En Factura actual"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
-msgid "Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"
-msgstr "Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"
+msgid ""
+"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
+"existe uno)"
+msgstr ""
+"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
+"existe uno)"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_id
@@ -130,13 +149,21 @@ msgstr "ID"
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_received
-msgid "If you set this field to True, then all lines deliverable lineswill be set to received?"
-msgstr "If you set this field to True, then all lines deliverable lineswill be set to received?"
+msgid ""
+"If you set this field to True, then all lines deliverable lineswill be set "
+"to received?"
+msgstr ""
+"If you set this field to True, then all lines deliverable lineswill be set "
+"to received?"
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_invoiced
-msgid "If you set this field to True, then all lines invoiceable lineswill be set to invoiced?"
-msgstr "Si marca este campo como Verdadero entonces todas las líneas facturables van a ser marcadas como facturadas."
+msgid ""
+"If you set this field to True, then all lines invoiceable lineswill be set "
+"to invoiced?"
+msgstr ""
+"Si marca este campo como Verdadero entonces todas las líneas facturables van"
+" a ser marcadas como facturadas."
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_account_invoice
@@ -256,11 +283,6 @@ msgid "Partner id"
 msgstr "Id Empresa"
 
 #. module: purchase_usability
-#: model:ir.model,name:purchase_usability.model_stock_picking
-msgid "Picking List"
-msgstr "Picking List"
-
-#. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
 msgid "Print PO"
 msgstr "Imprimir OC"
@@ -348,30 +370,27 @@ msgid "Set Invoiced"
 msgstr "Setear Facturado"
 
 #. module: purchase_usability
-#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_smart_search
-#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_smart_search
-msgid "Smart search"
-msgstr "Smart search"
-
-#. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_stock_move
 msgid "Stock Move"
 msgstr "Movimiento stock"
 
 #. module: purchase_usability
-#: model:ir.model,name:purchase_usability.model_stock_picking_type
-msgid "The picking type determines the picking view"
-msgstr "El tipo de albarán determina la vista de albarán"
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid ""
+"This order will be setted as invoiced. This operation can't be undone. Are "
+"you sure do you want to continue?"
+msgstr ""
+"Esta orden va a marcar como facturada. Esta operación no puede deshacerse. "
+"Seguro que desea continuar?"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid "This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?"
-msgstr "Esta orden va a marcar como facturada. Esta operación no puede deshacerse. Seguro que desea continuar?"
-
-#. module: purchase_usability
-#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid "This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?"
-msgstr "This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?"
+msgid ""
+"This will set line quantity equal to received qty and will cancel remaining "
+"moves. This can not be undone. Are you sure you want to continue?"
+msgstr ""
+"This will set line quantity equal to received qty and will cancel remaining "
+"moves. This can not be undone. Are you sure you want to continue?"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:49
@@ -417,8 +436,12 @@ msgstr "Esperando Facturas"
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:98
 #, python-format
-msgid "You can not cancel remianing qty to receive because there are more product invoiced than the received. You should correct invoice or ask for a refund"
-msgstr "You can not cancel remianing qty to receive because there are more product invoiced than the received. You should correct invoice or ask for a refund"
+msgid ""
+"You can not cancel remianing qty to receive because there are more product "
+"invoiced than the received. You should correct invoice or ask for a refund"
+msgstr ""
+"You can not cancel remianing qty to receive because there are more product "
+"invoiced than the received. You should correct invoice or ask for a refund"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form

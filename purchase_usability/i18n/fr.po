@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 21:31+0000\n"
-"PO-Revision-Date: 2017-04-07 21:31+0000\n"
+"POT-Creation-Date: 2017-09-26 17:08+0000\n"
+"PO-Revision-Date: 2017-09-26 17:08+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
 "Language-Team: French (https://www.transifex.com/adhoc/teams/46451/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid "(change)"
+msgstr ""
+
+#. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_invoice_supplier_purchase_form
 msgid "Add Purchase Lines"
 msgstr ""
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:177
+#: code:addons/purchase_usability/models/purchase_order_line.py:262
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_order_line_add_to_invoice
 #, python-format
 msgid "Add all to invoice"
@@ -37,8 +42,40 @@ msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
 msgid "Cancel"
 msgstr "Annuler"
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order_line.py:113
+#, python-format
+msgid ""
+"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
+"%s"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid ""
+"Cancel remaining quanitity to be received. This will set line quantity equal"
+" to received qty and will cancel remaining moves"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.actions.act_window,name:purchase_usability.action_purchase_change_currency
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "Change Currency"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_purchase_change_currency
+msgid "Change Currency Purchase Order"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_currency_id
+msgid "Change to"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
@@ -51,14 +88,21 @@ msgid "Confirm Draft Invoices"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_create_uid
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_uid
 msgid "Created by"
 msgstr "Créé par"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_create_date
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_date
 msgid "Created on"
 msgstr "Date de création"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_currency_rate
+msgid "Currency Rate"
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
@@ -72,6 +116,7 @@ msgid "Delivery Status"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_display_name
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_display_name
 msgid "Display Name"
 msgstr ""
@@ -89,14 +134,34 @@ msgid ""
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_id
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_id
 msgid "ID"
 msgstr "ID"
 
 #. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_received
+msgid ""
+"If you set this field to True, then all lines deliverable lineswill be set "
+"to received?"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_invoiced
+msgid ""
+"If you set this field to True, then all lines invoiceable lineswill be set "
+"to invoiced?"
+msgstr ""
+
+#. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_account_invoice
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_invoice_id
 msgid "Invoice"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "Invoice Currency"
 msgstr ""
 
 #. module: purchase_usability
@@ -120,19 +185,38 @@ msgid "Invoiced"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency___last_update
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice___last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_write_uid
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_uid
 msgid "Last Updated by"
 msgstr "Mis à jour par"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_write_date
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_manually_set_invoiced
+msgid "Manually Set Invoiced?"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_manually_set_received
+msgid "Manually Set Received?"
+msgstr ""
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/wizard/purchase_change_currency.py:29
+#, python-format
+msgid "No Purchase Order on context as \"active_id\""
+msgstr ""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -147,9 +231,38 @@ msgid "Not purchased"
 msgstr ""
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:187
+#: code:addons/purchase_usability/wizard/purchase_change_currency.py:39
+#, python-format
+msgid "Old Currency And New Currency can not be the same"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_on_voucher
+msgid "On Voucher"
+msgstr ""
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order.py:111
+#: code:addons/purchase_usability/models/purchase_order.py:138
+#, python-format
+msgid "Only users with \"%s / %s\" can Set Invoiced manually"
+msgstr ""
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order.py:147
+#, python-format
+msgid "Only users with \"%s / %s\" can Set Received manually"
+msgstr ""
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order_line.py:272
 #, python-format
 msgid "Open Purchase Line Form View"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_stock_move_purchase_id
+msgid "Order Reference"
 msgstr ""
 
 #. module: purchase_usability
@@ -163,7 +276,7 @@ msgid "Print PO"
 msgstr ""
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:204
+#: code:addons/purchase_usability/models/purchase_order_line.py:289
 #, python-format
 msgid "Purchase Line"
 msgstr ""
@@ -176,6 +289,7 @@ msgstr ""
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order
+#: model:ir.ui.view,arch_db:purchase_usability.view_move_form
 msgid "Purchase Order"
 msgstr ""
 
@@ -223,15 +337,54 @@ msgid "Received"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_rate
+msgid "Select a currency rate to apply on the purchase order"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_id
+msgid "Select a currency to apply on the purchase order"
+msgstr ""
+
+#. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:25
 #, python-format
 msgid "Selected lines must be from the same partner"
 msgstr ""
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:48
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid "Set Invoiced"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid ""
+"This order will be setted as invoiced. This operation can't be undone. Are "
+"you sure do you want to continue?"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid ""
+"This will set line quantity equal to received qty and will cancel remaining "
+"moves. This can not be undone. Are you sure you want to continue?"
+msgstr ""
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:49
 #, python-format
 msgid "This wizard must be called from purchase lines"
+msgstr ""
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "This wizard will change the currency of the purchase order"
 msgstr ""
 
 #. module: purchase_usability
@@ -249,6 +402,11 @@ msgid "To Receive"
 msgstr ""
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_voucher
+msgid "Voucher"
+msgstr ""
+
+#. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_vouchers
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Vouchers"
@@ -260,7 +418,16 @@ msgid "Waiting Invoices"
 msgstr ""
 
 #. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order_line.py:98
+#, python-format
+msgid ""
+"You can not cancel remianing qty to receive because there are more product "
+"invoiced than the received. You should correct invoice or ask for a refund"
+msgstr ""
+
+#. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
 msgid "or"
 msgstr ""
 
