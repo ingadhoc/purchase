@@ -1,22 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * purchase_usability
-# 
-# Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
+# 	* purchase_usability
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 9.0c\n"
+"Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-28 12:14+0000\n"
-"PO-Revision-Date: 2017-08-28 12:14+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"POT-Creation-Date: 2017-09-26 12:19+0000\n"
+"PO-Revision-Date: 2017-09-26 09:37-0300\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
+msgid "(change)"
+msgstr "(cambio)"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_invoice_supplier_purchase_form
@@ -33,33 +37,36 @@ msgstr "Agregar todo a la factura"
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
 msgid "All the selected lines are going to be added to the following invoice."
-msgstr ""
-"Todas las líneas seleccionadas van a ser agregadas a la siguiente factura."
+msgstr "Todas las líneas seleccionadas van a ser agregadas a la siguiente factura."
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:113
 #, python-format
-msgid ""
-"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
-"%s"
-msgstr ""
-"Se ejecutó Cancelar remanante para línea \"%s\" (id %s), cantidad "
-"actualizada de %s a %s"
+msgid "Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to %s"
+msgstr "Se ejecutó Cancelar remanante para línea \"%s\" (id %s), cantidad actualizada de %s a %s"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid ""
-"Cancel remaining quanitity to be received. This will set line quantity equal"
-" to received qty and will cancel remaining moves"
-msgstr ""
-"Cancelar cantidad pendiente a recibir. Esto va a setear todas las cantidades"
-" ordenadas iguales a la cantidad recibida y va a cancelar los movimientos "
-"pendientes"
+msgid "Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves"
+msgstr "Cancelar cantidad pendiente a recibir. Esto va a setear todas las cantidades ordenadas iguales a la cantidad recibida y va a cancelar los movimientos pendientes"
+
+#. module: purchase_usability
+#: model:ir.actions.act_window,name:purchase_usability.action_purchase_change_currency
+#: model:ir.model,name:purchase_usability.model_purchase_change_currency
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "Change Currency"
+msgstr "Cambiar moneda"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_currency_id
+msgid "Change to"
+msgstr "Cambiar a"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
@@ -69,17 +76,24 @@ msgstr "Confirmar"
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
 msgid "Confirm Draft Invoices"
-msgstr "Agregar a Factura"
+msgstr "Confirmar Facturas Borrador"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_create_uid
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_create_date
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_create_date
 msgid "Created on"
 msgstr "Creado en"
+
+#. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_currency_rate
+msgid "Currency Rate"
+msgstr "Tasa de Cambio"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
@@ -90,12 +104,13 @@ msgstr "Estado de Envío"
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_delivery_status
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_delivery_status
 msgid "Delivery Status"
-msgstr "Estado de Envío"
+msgstr "Estado de entrega"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_display_name
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_display_name
 msgid "Display Name"
-msgstr "Nombre Mostrado"
+msgstr "Nombre mostrado"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -104,37 +119,35 @@ msgstr "En Factura actual"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
-msgid ""
-"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
-"existe uno)"
-msgstr ""
-"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
-"existe uno)"
+msgid "Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"
+msgstr "Filtra las lineas que estan cargadas en el picking de contexto (si es que existe uno)"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_id
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_id
 msgid "ID"
 msgstr "ID"
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_received
-msgid ""
-"If you set this field to True, then all lines deliverable lineswill be set "
-"to received?"
-msgstr ""
+msgid "If you set this field to True, then all lines deliverable lineswill be set to received?"
+msgstr "If you set this field to True, then all lines deliverable lineswill be set to received?"
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_invoiced
-msgid ""
-"If you set this field to True, then all lines invoiceable lineswill be set "
-"to invoiced?"
-msgstr ""
+msgid "If you set this field to True, then all lines invoiceable lineswill be set to invoiced?"
+msgstr "Si marca este campo como Verdadero entonces todas las líneas facturables van a ser marcadas como facturadas."
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_account_invoice
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_invoice_id
 msgid "Invoice"
 msgstr "Factura"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "Invoice Currency"
+msgstr "Moneda de Factura"
 
 #. module: purchase_usability
 #: selection:purchase.order.line,invoice_status:0
@@ -149,7 +162,7 @@ msgstr "Estado de Factura"
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_invoice_status
 msgid "Invoice Status"
-msgstr "Estado de Factura"
+msgstr "Estado de la Factura"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -157,16 +170,19 @@ msgid "Invoiced"
 msgstr "Facturado"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency___last_update
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr "Última modificación en"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_write_uid
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización realizada por"
+msgstr "Última actualización de"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_write_date
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
@@ -174,17 +190,23 @@ msgstr "Última actualización en"
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_manually_set_invoiced
 msgid "Manually Set Invoiced?"
-msgstr ""
+msgstr "Setear Facturado Manualmente?"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_manually_set_received
 msgid "Manually Set Received?"
-msgstr ""
+msgstr "Manually Set Received?"
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/wizard/purchase_change_currency.py:29
+#, python-format
+msgid "No Purchase Order on context as \"active_id\""
+msgstr "No Purchase Order on context as \"active_id\""
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Not Invoiced"
-msgstr "No facturado"
+msgstr "No Facturado"
 
 #. module: purchase_usability
 #: selection:purchase.order,delivery_status:0
@@ -192,6 +214,12 @@ msgstr "No facturado"
 #: selection:purchase.order.line,invoice_status:0
 msgid "Not purchased"
 msgstr "No comprado"
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/wizard/purchase_change_currency.py:39
+#, python-format
+msgid "Old Currency And New Currency can not be the same"
+msgstr "Old Currency And New Currency can not be the same"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_on_voucher
@@ -209,7 +237,7 @@ msgstr "Solo los usuarios con \"%s / %s\" pueden forzar manuamente facturado"
 #: code:addons/purchase_usability/models/purchase_order.py:147
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Received manually"
-msgstr ""
+msgstr "Only users with \"%s / %s\" can Set Received manually"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:272
@@ -220,12 +248,17 @@ msgstr "Abrir vista formulario de Líneas de Compra"
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_stock_move_purchase_id
 msgid "Order Reference"
-msgstr "Referencia del Pedido"
+msgstr "Referencia del pedido"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_partner_id
 msgid "Partner id"
-msgstr "Id del Partner"
+msgstr "Id Empresa"
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_stock_picking
+msgid "Picking List"
+msgstr "Picking List"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
@@ -242,23 +275,23 @@ msgstr "Línea de Compra"
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_line_tree
 #: model:ir.ui.menu,name:purchase_usability.menu_action_purchase_line_tree
 msgid "Purchase Lines"
-msgstr "Líneas de Compra"
+msgstr "Comprar Líneas"
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order
 #: model:ir.ui.view,arch_db:purchase_usability.view_move_form
 msgid "Purchase Order"
-msgstr "Orden de compra"
+msgstr "Pedido de compra"
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de la Orden de compra"
+msgstr "Línea pedido de compra"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Purchase Orders"
-msgstr "Pedidos de compra"
+msgstr "Órdenes de compra"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
@@ -278,12 +311,12 @@ msgstr "Cantidad"
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Quotations"
-msgstr "Presupuestos"
+msgstr "Cotización"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
 msgid "Re-Open"
-msgstr "Re-Abierto"
+msgstr "Reabrir"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
@@ -292,6 +325,16 @@ msgstr "Re-Abierto"
 #: selection:purchase.order.line,delivery_status:0
 msgid "Received"
 msgstr "Recibido"
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_rate
+msgid "Select a currency rate to apply on the purchase order"
+msgstr "Select a currency rate to apply on the purchase order"
+
+#. module: purchase_usability
+#: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_id
+msgid "Select a currency to apply on the purchase order"
+msgstr "Select a currency to apply on the purchase order"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:25
@@ -305,31 +348,41 @@ msgid "Set Invoiced"
 msgstr "Setear Facturado"
 
 #. module: purchase_usability
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_change_currency_smart_search
+#: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_smart_search
+msgid "Smart search"
+msgstr "Smart search"
+
+#. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_stock_move
 msgid "Stock Move"
-msgstr "Movimiento de Stock"
+msgstr "Movimiento stock"
+
+#. module: purchase_usability
+#: model:ir.model,name:purchase_usability.model_stock_picking_type
+msgid "The picking type determines the picking view"
+msgstr "El tipo de albarán determina la vista de albarán"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid ""
-"This order will be setted as invoiced. This operation can't be undone. Are "
-"you sure do you want to continue?"
-msgstr ""
-"Esta orden va a marcar como facturada. Esta operación no puede deshacerse. "
-"Seguro que desea continuar?"
+msgid "This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?"
+msgstr "Esta orden va a marcar como facturada. Esta operación no puede deshacerse. Seguro que desea continuar?"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_form
-msgid ""
-"This will set line quantity equal to received qty and will cancel remaining "
-"moves. This can not be undone. Are you sure you want to continue?"
-msgstr ""
+msgid "This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?"
+msgstr "This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:49
 #, python-format
 msgid "This wizard must be called from purchase lines"
 msgstr "Este asistente debe llamarse desde líneas de compra"
+
+#. module: purchase_usability
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
+msgid "This wizard will change the currency of the purchase order"
+msgstr "Este asistente cambiará la moneda de la orden de compra"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_to_invoice
@@ -343,12 +396,12 @@ msgstr "A Facturar"
 #: selection:purchase.order,delivery_status:0
 #: selection:purchase.order.line,delivery_status:0
 msgid "To Receive"
-msgstr "A Recibir"
+msgstr "Para recibir"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_add_to_invoice_voucher
 msgid "Voucher"
-msgstr ""
+msgstr "Comprobante"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_vouchers
@@ -364,17 +417,16 @@ msgstr "Esperando Facturas"
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:98
 #, python-format
-msgid ""
-"You can not cancel remianing qty to receive because there are more product "
-"invoiced than the received. You should correct invoice or ask for a refund"
-msgstr ""
+msgid "You can not cancel remianing qty to receive because there are more product invoiced than the received. You should correct invoice or ask for a refund"
+msgstr "You can not cancel remianing qty to receive because there are more product invoiced than the received. You should correct invoice or ask for a refund"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form
+#: model:ir.ui.view,arch_db:purchase_usability.view_purchase_change_currency
 msgid "or"
 msgstr "o"
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
-msgstr ""
+msgstr "purchase.order.line.add_to_invoice"

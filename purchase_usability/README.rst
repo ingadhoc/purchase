@@ -19,6 +19,7 @@ On purchase orders:
 #. Add delivery status on purchases
 #. Add print PO on purchase and done status
 #. Add button to force "invoiced" only for admin with tec features
+#. Add button to change the currency and update the prices of the order lines
 
 On purchase lines:
 #. Add delivery status and invoice status on purchase lines
