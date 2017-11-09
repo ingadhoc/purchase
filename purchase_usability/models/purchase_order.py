@@ -147,3 +147,11 @@ class PurchaseOrder(models.Model):
             raise UserError(_(
                 'Only users with "%s / %s" can Set Received manually') % (
                 group.category_id.name, group.name))
+
+    @api.multi
+    def action_view_invoice(self):
+        # we fix that if we create an invoice from an
+        # PO send the currency in the context
+        result = super(PurchaseOrder, self).action_view_invoice()
+        result['context'].update({'default_currency_id': self.currency_id.id})
+        return result
