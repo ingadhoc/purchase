@@ -1,4 +1,5 @@
 ingadhoc-product https://github.com/ingadhoc/product
 ingadhoc-stock https://github.com/ingadhoc/stock
+ingadhoc-sale https://github.com/ingadhoc/sale
 akretion-purchase-suggest https://github.com/akretion/purchase-suggest
 oca-purchase-workflow https://github.com/OCA/purchase-workflow.git
