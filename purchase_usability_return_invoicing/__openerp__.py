@@ -19,30 +19,23 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.15.0',
+    'name': 'Purchase Usability interatction with Refund management',
+    'version': '9.0.1.0.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
-    'author': 'ADHOC SA',
+    "author": "Eficent, Odoo Community Association (OCA), ADHOC SA",
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [
     ],
     'depends': [
-        'purchase',
-        # we add stock voucher to hav voucher information on purchase line
-        'stock_voucher',
-        'stock_usability',
+        'sale_stock_picking_return_invoicing',
+        'purchase_usability',
     ],
     'data': [
-        'wizard/purchase_change_currency_view.xml',
-        'wizard/purchase_order_line_add_to_invoice_view.xml',
-        'views/account_invoice_view.xml',
-        'views/purchase_view.xml',
         'views/purchase_order_view.xml',
-        'views/purchase_line_view.xml',
-        'views/stock_move_view.xml',
+        'wizards/stock_return_picking_view.xml',
     ],
     'demo': [
     ],

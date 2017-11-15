@@ -75,12 +75,12 @@ class PurchaseOrder(models.Model):
     def button_reopen(self):
         self.write({'state': 'purchase'})
 
-    @api.depends('manually_set_invoiced')
+    @api.depends('manually_set_invoiced', 'order_line.move_ids.state')
     def _get_invoiced(self):
         # fix de esta funcion porque odoo no lo quiso arreglar
         # cambiamos != purchase por not in purchase, done
-        precision = self.env['decimal.precision'].precision_get(
-            'Product Unit of Measure')
+        # precision = self.env['decimal.precision'].precision_get(
+        #     'Product Unit of Measure')
         for order in self:
             # if order.state != 'purchase':
             if order.state not in ('purchase', 'done'):
@@ -91,18 +91,28 @@ class PurchaseOrder(models.Model):
                 order.invoice_status = 'invoiced'
                 continue
 
-            if any(float_compare(
-                    line.qty_invoiced, line.product_qty,
-                    precision_digits=precision) == -1
-                    for line in order.order_line):
+            # tambien modificamos y hacemos de esta manera para poder
+            # usar en purchase_usability_return_invoicing
+            if any(line.invoice_status == 'to invoice'
+                   for line in order.order_line):
                 order.invoice_status = 'to invoice'
-            elif all(float_compare(
-                    line.qty_invoiced, line.product_qty,
-                    precision_digits=precision) >= 0
-                    for line in order.order_line):
+            elif all(line.invoice_status == 'invoiced'
+                     for line in order.order_line):
                 order.invoice_status = 'invoiced'
             else:
                 order.invoice_status = 'no'
+            # if any(float_compare(
+            #         line.qty_invoiced, line.product_qty,
+            #         precision_digits=precision) == -1
+            #         for line in order.order_line):
+            #     order.invoice_status = 'to invoice'
+            # elif all(float_compare(
+            #         line.qty_invoiced, line.product_qty,
+            #         precision_digits=precision) >= 0
+            #         for line in order.order_line):
+            #     order.invoice_status = 'invoiced'
+            # else:
+            #     order.invoice_status = 'no'
 
     @api.multi
     def button_set_invoiced(self):

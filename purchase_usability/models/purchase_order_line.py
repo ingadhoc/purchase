@@ -141,6 +141,7 @@ class PurchaseOrderLine(models.Model):
             if line.order_id.manually_set_received:
                 line.delivery_status = 'received'
                 continue
+
             if float_compare(
                     line.qty_received, line.product_qty,
                     precision_digits=precision) == -1:
@@ -172,16 +173,37 @@ class PurchaseOrderLine(models.Model):
             if line.order_id.manually_set_invoiced:
                 line.invoice_status = 'invoiced'
                 continue
-            if float_compare(
-                    line.qty_invoiced, line.product_qty,
-                    precision_digits=precision) == -1:
+
+            # usamos qty_to_invoice para compatibilidad con el de return
+            # y ademas que tenga en cuenta si el producto es lo recibido o lo
+            # pedido
+            # if float_compare(
+            #         line.qty_invoiced, line.product_qty,
+            #         precision_digits=precision) == -1:
+            #     line.invoice_status = 'to invoice'
+            # elif float_compare(
+            #         line.qty_invoiced, line.product_qty,
+            #         precision_digits=precision) >= 0:
+            #     line.invoice_status = 'invoiced'
+            # else:
+            #     line.invoice_status = 'no'
+
+            if line.product_id.purchase_method == 'receive' and not \
+                    line.move_ids.filtered(lambda x: x.state == 'done'):
                 line.invoice_status = 'to invoice'
-            elif float_compare(
-                    line.qty_invoiced, line.product_qty,
-                    precision_digits=precision) >= 0:
+                # We would like to put 'no', but that would break standard
+                # odoo tests.
+                continue
+
+            if abs(float_compare(line.qty_to_invoice, 0.0,
+                                 precision_digits=precision)) == 1:
+                line.invoice_status = 'to invoice'
+            elif float_compare(line.qty_to_invoice, 0.0,
+                               precision_digits=precision) == 0:
                 line.invoice_status = 'invoiced'
             else:
                 line.invoice_status = 'no'
+
 
 # modificaciones para facilitar creacion de factura
     # este campo no existe en POL, robamos de SOL
