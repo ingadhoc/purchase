@@ -28,13 +28,3 @@ class AccountInvoice(models.Model):
                 ('company_id', '=', self.company_id.id),
             ]
         return action_read
-
-    # We do this for a bug when creating an invoice from
-    # the PO that does not get the correct currency from the PO, by default
-    # bring the currency of the newspaper.
-    @api.onchange('journal_id')
-    def _onchange_journal_id(self):
-        if self._context.get('default_currency_id', False):
-            self.currency_id = self._context.get('default_currency_id')
-        else:
-            super(AccountInvoice, self)._onchange_journal_id()
