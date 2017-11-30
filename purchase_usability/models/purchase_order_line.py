@@ -94,6 +94,10 @@ class PurchaseOrderLine(models.Model):
     def button_cancel_remaining(self):
         for rec in self:
             old_product_qty = rec.product_qty
+            # TODO tal vez cambiar en v10
+            # en este caso si lo bloqueamos ya que si llegan a querer generar
+            # nc lo pueden hacer con el buscar líneas de las facturas
+            # y luego lo pueden terminar cancelando
             if rec.qty_invoiced > rec.qty_received:
                 raise UserError(_(
                     'You can not cancel remianing qty to receive because '
