@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Usability interatction with Refund management',
-    'version': '9.0.1.0.0',
+    'version': '9.0.1.1.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
