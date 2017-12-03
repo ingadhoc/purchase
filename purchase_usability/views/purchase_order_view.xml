@@ -76,6 +76,11 @@
                     <field name="delivery_status"/>
                     <field name="invoice_status"/>
                 </tree>
+
+                <!-- como unificamos menus hacemos que sea mas visible cuales son las borrador -->
+                <tree position="attributes">
+                    <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
+                </tree>
             </field>
         </record>
 
