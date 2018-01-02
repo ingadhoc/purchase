@@ -73,23 +73,3 @@ class PurchaseOrderLine(models.Model):
                             move.product_uom, move.product_uom_qty,
                             line.product_uom)
             line.qty_returned = qty
-
-    @api.depends('qty_returned')
-    def _get_to_invoice_qty(self):
-        """
-        Modificamos la funcion original para que si el producto es segun lo
-        pedido, para que funcione el reembolo hacemos que la cantidad a
-        facturar reste la cantidad devuelta.
-        NOTA: solo lo hacemos si policy "order" porque en policy "delivered"
-        odoo ya lo descuenta a la cantidad entregada y automáticamente lo
-        termina facturando
-        """
-        super(PurchaseOrderLine, self)._get_to_invoice_qty()
-        for line in self:
-            # igual que por defecto, si no en estos estados, no hay a facturar
-            if line.order_id.state not in ['sale', 'done']:
-                continue
-            if line.product_id.invoice_policy == 'order':
-                line.qty_to_invoice = (
-                    line.product_uom_qty - line.qty_returned -
-                    line.qty_invoiced)
