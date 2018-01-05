@@ -22,6 +22,8 @@ class purchase_order(models.Model):
             if 'search_default_filter_to_sell' in context:
                 context.pop('search_default_filter_to_sell')
             context['search_default_filter_to_purchase'] = True
+            # para que este funcione requiere modulo product_supplier_search
+            context['search_default_seller_ids'] = self.partner_id.name
             # {"search_default_filter_to_sell":1}
             context['purchase_quotation_products'] = True
             # context['pricelist'] = self.pricelist_id.display_name
