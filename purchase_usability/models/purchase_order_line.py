@@ -92,6 +92,10 @@ class PurchaseOrderLine(models.Model):
 
     @api.multi
     def button_cancel_remaining(self):
+        # TODO faltaría proteger cancel remaining de kits (analogo a en ventas)
+        # si es que se da el mismo error de que no se cancela bien. No pudimos
+        # ni testearlo porque en realidad no se puede confirmar compra con kit.
+        # Cargada incidencia a odoo con id 808056
         for rec in self:
             old_product_qty = rec.product_qty
             # TODO tal vez cambiar en v10
