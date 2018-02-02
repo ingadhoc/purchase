@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-26 17:08+0000\n"
-"PO-Revision-Date: 2017-09-26 17:08+0000\n"
+"POT-Creation-Date: 2018-02-02 12:10+0000\n"
+"PO-Revision-Date: 2018-02-02 12:10+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgid "Add Purchase Lines"
 msgstr "Agregar Líneas de Compra"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:262
+#: code:addons/purchase_usability/models/purchase_order_line.py:292
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_order_line_add_to_invoice
 #, python-format
 msgid "Add all to invoice"
@@ -48,7 +48,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:113
+#: code:addons/purchase_usability/models/purchase_order_line.py:121
 #, python-format
 msgid ""
 "Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
@@ -254,20 +254,20 @@ msgid "On Voucher"
 msgstr "En Remito"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order.py:111
-#: code:addons/purchase_usability/models/purchase_order.py:138
+#: code:addons/purchase_usability/models/purchase_order.py:121
+#: code:addons/purchase_usability/models/purchase_order.py:148
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Invoiced manually"
 msgstr "Solo los usuarios con \"%s / %s\" pueden forzar manuamente facturado"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order.py:147
+#: code:addons/purchase_usability/models/purchase_order.py:157
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Received manually"
 msgstr "Only users with \"%s / %s\" can Set Received manually"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:272
+#: code:addons/purchase_usability/models/purchase_order_line.py:302
 #, python-format
 msgid "Open Purchase Line Form View"
 msgstr "Abrir vista formulario de Líneas de Compra"
@@ -288,7 +288,12 @@ msgid "Print PO"
 msgstr "Imprimir OC"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:289
+#: model:ir.model,name:purchase_usability.model_procurement_order
+msgid "Procurement"
+msgstr "Abastecimiento"
+
+#. module: purchase_usability
+#: code:addons/purchase_usability/models/purchase_order_line.py:319
 #, python-format
 msgid "Purchase Line"
 msgstr "Línea de Compra"
@@ -434,7 +439,7 @@ msgid "Waiting Invoices"
 msgstr "Esperando Facturas"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order_line.py:98
+#: code:addons/purchase_usability/models/purchase_order_line.py:106
 #, python-format
 msgid ""
 "You can not cancel remianing qty to receive because there are more product "
