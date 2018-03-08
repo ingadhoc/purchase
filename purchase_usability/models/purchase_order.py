@@ -16,12 +16,14 @@ class PurchaseOrder(models.Model):
         help='If you set this field to True, then all lines invoiceable lines'
         'will be set to invoiced?',
         track_visibility='onchange',
+        copy=False,
     )
     manually_set_received = fields.Boolean(
         string='Manually Set Received?',
         help='If you set this field to True, then all lines deliverable lines'
         'will be set to received?',
         track_visibility='onchange',
+        copy=False,
     )
     delivery_status = fields.Selection([
         ('no', 'Not purchased'),
