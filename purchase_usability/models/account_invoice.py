@@ -25,6 +25,5 @@ class AccountInvoice(models.Model):
             action_read['domain'] = [
                 ('partner_id.commercial_partner_id', '=',
                     self.partner_id.commercial_partner_id.id),
-                ('company_id', '=', self.company_id.id),
             ]
         return action_read

@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.16.0',
+    'version': '9.0.1.17.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
