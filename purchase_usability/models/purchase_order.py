@@ -166,4 +166,15 @@ class PurchaseOrder(models.Model):
         # PO send the currency in the context
         result = super(PurchaseOrder, self).action_view_invoice()
         result['context'].update({'default_currency_id': self.currency_id.id})
+        # Modificamos para que desde las compras se vaya a facturas en vista
+        # lista siempre por un error con el módulo account_invoice_commission.
+        # Para probarlo en v10 a ver si se reproduce:
+        # 1. Generar orden de compra y validar
+        # 2. Generar una factura y validarla
+        # 3. Desde la orden de compra ir a ver facturas
+        # (desactivar este parche) y entones nos lleva
+        # a la factura en vista form
+        # 4. Probar generar nueva factura
+        result['domain'] = "[('id', 'in', " + str(self.invoice_ids.ids) + ")]"
+        result['views'] = []
         return result
