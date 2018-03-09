@@ -378,6 +378,16 @@ class PurchaseOrderLine(models.Model):
                 data['invoice_id'] = invoice_id
                 new_line = purchase_lines.new(data)
                 new_line._set_additional_fields(invoice)
+                # we force cache update of company_id value on invoice lines
+                # this fix right tax choose
+                # prevent price and name being overwrited
+                if self.company_id != invoice.company_id:
+                    price_unit = new_line.price_unit
+                    name = new_line.name
+                    new_line.company_id = invoice.company_id
+                    new_line._onchange_product_id()
+                    new_line.name = name
+                    new_line.price_unit = price_unit
                 vals = new_line._convert_to_write(new_line._cache)
                 purchase_lines.create(vals)
             # recomputamos impuestos
