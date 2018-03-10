@@ -18,6 +18,7 @@
         <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
         <field name="arch" type="xml">
             <filter name="invoiced" position="after">
+                <separator/>
                 <filter name="with_returns" string="With Returns" domain="[('with_returns','=', True)]" help="Pedidos de venta con devoluciones facturables"/>
                 <separator/>
             </filter>
