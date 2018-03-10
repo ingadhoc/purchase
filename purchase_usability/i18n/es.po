@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-02 12:10+0000\n"
-"PO-Revision-Date: 2018-02-02 12:10+0000\n"
+"POT-Creation-Date: 2018-03-10 15:29+0000\n"
+"PO-Revision-Date: 2018-03-10 15:29+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
@@ -153,8 +153,8 @@ msgid ""
 "If you set this field to True, then all lines deliverable lineswill be set "
 "to received?"
 msgstr ""
-"If you set this field to True, then all lines deliverable lineswill be set "
-"to received?"
+"Si marca este campo como Verdadero entonces todas las líneas a recibir van a"
+" ser marcadas como recibidas."
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_order_manually_set_invoiced
@@ -222,7 +222,7 @@ msgstr "Setear Facturado Manualmente?"
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_manually_set_received
 msgid "Manually Set Received?"
-msgstr "Manually Set Received?"
+msgstr "Setear Recibido Manualmente?"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_change_currency.py:29
@@ -246,7 +246,7 @@ msgstr "No comprado"
 #: code:addons/purchase_usability/wizard/purchase_change_currency.py:39
 #, python-format
 msgid "Old Currency And New Currency can not be the same"
-msgstr "Old Currency And New Currency can not be the same"
+msgstr "La Moneda vieja y la nueva no pueden ser la misma"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_on_voucher
@@ -254,17 +254,17 @@ msgid "On Voucher"
 msgstr "En Remito"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order.py:121
-#: code:addons/purchase_usability/models/purchase_order.py:148
+#: code:addons/purchase_usability/models/purchase_order.py:123
+#: code:addons/purchase_usability/models/purchase_order.py:150
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Invoiced manually"
 msgstr "Solo los usuarios con \"%s / %s\" pueden forzar manuamente facturado"
 
 #. module: purchase_usability
-#: code:addons/purchase_usability/models/purchase_order.py:157
+#: code:addons/purchase_usability/models/purchase_order.py:159
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Received manually"
-msgstr "Only users with \"%s / %s\" can Set Received manually"
+msgstr "Solo los usuarios con \"%s / %s\" pueden forzar manuamente recibido"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/models/purchase_order_line.py:302
@@ -302,7 +302,7 @@ msgstr "Línea de Compra"
 #: model:ir.actions.act_window,name:purchase_usability.action_purchase_line_tree
 #: model:ir.ui.menu,name:purchase_usability.menu_action_purchase_line_tree
 msgid "Purchase Lines"
-msgstr "Comprar Líneas"
+msgstr "Líneas de Compra"
 
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order
@@ -313,12 +313,12 @@ msgstr "Pedido de compra"
 #. module: purchase_usability
 #: model:ir.model,name:purchase_usability.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea pedido de compra"
+msgstr "Línea de pedido de compra"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "Purchase Orders"
-msgstr "Órdenes de compra"
+msgstr "Pedidos de compra"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
@@ -328,7 +328,7 @@ msgstr "Pedidos que incluyen líneas no recibidas."
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.view_purchase_order_filter
 msgid "Purchase orders with all lines received."
-msgstr "Órdenes de compra con todas las líneas recibidas."
+msgstr "Pedidos de compra con todas las líneas recibidas."
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_invoice_qty
@@ -356,12 +356,12 @@ msgstr "Recibido"
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_rate
 msgid "Select a currency rate to apply on the purchase order"
-msgstr "Select a currency rate to apply on the purchase order"
+msgstr "Seleccionar una tasa de cambio a aplicar en la orden de compra"
 
 #. module: purchase_usability
 #: model:ir.model.fields,help:purchase_usability.field_purchase_change_currency_currency_id
 msgid "Select a currency to apply on the purchase order"
-msgstr "Select a currency to apply on the purchase order"
+msgstr "Seleccionar una moneda a aplicar en la orden de compra"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:25
@@ -394,8 +394,9 @@ msgid ""
 "This will set line quantity equal to received qty and will cancel remaining "
 "moves. This can not be undone. Are you sure you want to continue?"
 msgstr ""
-"This will set line quantity equal to received qty and will cancel remaining "
-"moves. This can not be undone. Are you sure you want to continue?"
+"Esto va a setear la cantidad de la línea igual a la cantidad recibida y va a"
+" cancelar los movimientos pendientes. Esto no puede deshacerse. Seguro que "
+"desea continuar?"
 
 #. module: purchase_usability
 #: code:addons/purchase_usability/wizard/purchase_order_line_add_to_invoice.py:49
@@ -410,7 +411,6 @@ msgstr "Este asistente cambiará la moneda de la orden de compra"
 
 #. module: purchase_usability
 #: model:ir.model.fields,field_description:purchase_usability.field_purchase_order_line_qty_to_invoice
-#: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_search
 msgid "To Invoice"
 msgstr "A Facturar"
 
@@ -445,8 +445,9 @@ msgid ""
 "You can not cancel remianing qty to receive because there are more product "
 "invoiced than the received. You should correct invoice or ask for a refund"
 msgstr ""
-"You can not cancel remianing qty to receive because there are more product "
-"invoiced than the received. You should correct invoice or ask for a refund"
+"No puede cancelar cantidad remanente a recibir porque hay más productos "
+"facturados que los recibidos. Debe modificar la factura o solicitar una nota"
+" de crédito"
 
 #. module: purchase_usability
 #: model:ir.ui.view,arch_db:purchase_usability.purchase_order_line_add_to_invoice_form

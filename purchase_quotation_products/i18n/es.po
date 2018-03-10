@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 21:31+0000\n"
-"PO-Revision-Date: 2017-04-07 21:31+0000\n"
+"POT-Creation-Date: 2018-03-10 15:28+0000\n"
+"PO-Revision-Date: 2018-03-10 15:28+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Producto"
 #. module: purchase_quotation_products
 #: model:ir.model,name:purchase_quotation_products.model_purchase_order
 msgid "Purchase Order"
-msgstr "Orden de compra"
+msgstr "Pedido de compra"
 
 #. module: purchase_quotation_products
 #: model:ir.model.fields,field_description:purchase_quotation_products.field_product_product_qty_purchase
@@ -42,7 +42,7 @@ msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: purchase_quotation_products
-#: code:addons/purchase_quotation_products/purchase.py:33
+#: code:addons/purchase_quotation_products/purchase.py:35
 #, python-format
 msgid "Quotation Products"
 msgstr "Productos En Presupuesto"
