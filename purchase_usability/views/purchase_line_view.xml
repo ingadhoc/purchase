@@ -25,6 +25,8 @@
                 <field name="product_qty" position="after">
                     <field name="qty_received"/>
                     <field name="qty_invoiced"/>
+                    <!-- to display currency symbol on monetary widget -->
+                    <field name="currency_id" invisible="1"/>
                 </field>
                 <tree>
                     <field name="vouchers"/>
