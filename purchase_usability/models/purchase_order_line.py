@@ -162,7 +162,7 @@ class PurchaseOrderLine(models.Model):
                 line.delivery_status = 'no'
 
     @api.depends(
-        'order_id.state', 'qty_invoiced', 'product_qty',
+        'order_id.state', 'qty_invoiced', 'product_qty', 'qty_to_invoice',
         'order_id.manually_set_invoiced')
     def _get_invoiced(self):
         precision = self.env['decimal.precision'].precision_get(
@@ -196,12 +196,14 @@ class PurchaseOrderLine(models.Model):
             # else:
             #     line.invoice_status = 'no'
 
-            if line.product_id.purchase_method == 'receive' and not \
-                    line.move_ids.filtered(lambda x: x.state == 'done'):
-                line.invoice_status = 'to invoice'
-                # We would like to put 'no', but that would break standard
-                # odoo tests.
-                continue
+            # this code was from an OCA module but it seams to be wrong
+            # TODO remove this
+            # if line.product_id.purchase_method == 'receive' and not \
+            #         line.move_ids.filtered(lambda x: x.state == 'done'):
+            #     line.invoice_status = 'to invoice'
+            #     # We would like to put 'no', but that would break standard
+            #     # odoo tests.
+            #     continue
 
             if abs(float_compare(line.qty_to_invoice, 0.0,
                                  precision_digits=precision)) == 1:
