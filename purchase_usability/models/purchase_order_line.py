@@ -337,7 +337,11 @@ class PurchaseOrderLine(models.Model):
             lines = rec.env['account.invoice.line'].search([
                 ('invoice_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
-            rec.invoice_qty = sum(lines.mapped('quantity'))
+            if self.env['account.invoice'].browse(invoice_id)\
+                    .type == 'in_refund':
+                rec.invoice_qty = -1.0 * sum(lines.mapped('quantity'))
+            else:
+                rec.invoice_qty = sum(lines.mapped('quantity'))
 
     @api.multi
     def _inverse_invoice_qty(self):
@@ -346,6 +350,7 @@ class PurchaseOrderLine(models.Model):
         if not invoice_id or active_model != 'account.invoice':
             return True
         invoice = self.env['account.invoice'].browse(invoice_id)
+        sign = invoice.type == 'in_refund' and -1.0 or 1.0
         purchase_lines = self.env['account.invoice.line']
         do_not_compute = self._context.get('do_not_compute')
         for rec in self:
@@ -369,14 +374,14 @@ class PurchaseOrderLine(models.Model):
                     lines.unlink()
                 else:
                     (lines - lines[0]).unlink()
-                    lines[0].quantity = rec.invoice_qty
+                    lines[0].quantity = sign * rec.invoice_qty
             else:
                 # si no hay lineas y no se puso cantidad entonces no hacemos
                 # nada
                 if not rec.invoice_qty:
                     continue
                 data = invoice._prepare_invoice_line_from_po_line(rec)
-                data['quantity'] = rec.invoice_qty
+                data['quantity'] = sign * rec.invoice_qty
                 data['invoice_id'] = invoice_id
                 new_line = purchase_lines.new(data)
                 new_line._set_additional_fields(invoice)
