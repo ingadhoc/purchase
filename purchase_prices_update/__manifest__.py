@@ -41,8 +41,6 @@ An update system for purchase order lines' unit.
     ],
     'demo': [
     ],
-    'test': [
-    ],
     'installable': False,
     'auto_install': False,
     'application': False,

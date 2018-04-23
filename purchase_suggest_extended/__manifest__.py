@@ -39,8 +39,6 @@
     ],
     'demo': [
     ],
-    'test': [
-    ],
     # al final, por temas de performance, modificamos el original
     'installable': False,
     'auto_install': False,
