@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo.osv import fields, osv
+from odoo.tools.translate import _
 
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare, float_round
-from openerp import SUPERUSER_ID
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare, float_round
+from odoo import SUPERUSER_ID
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from psycopg2 import OperationalError
-import openerp
+import odoo
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class procurement_order(osv.osv):
             ids = orderpoint_ids[:1000]
             del orderpoint_ids[:1000]
             if use_new_cursor:
-                cr = openerp.registry(cr.dbname).cursor()
+                cr = odoo.registry(cr.dbname).cursor()
             product_dict = {}
             ops_dict = {}
             ops = orderpoint_obj.browse(cr, uid, ids, context=context)

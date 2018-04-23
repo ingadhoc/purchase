@@ -4,11 +4,11 @@
 # directory
 ##############################################################################
 
-from openerp import models, fields, api
-import openerp.addons.decimal_precision as dp
-from openerp.tools import float_compare
+from odoo import models, fields, api
+import odoo.addons.decimal_precision as dp
+from odoo.tools import float_compare
 # from ast import literal_eval
-# from openerp.exceptions import UserError
+# from odoo.exceptions import UserError
 import logging
 
 logger = logging.getLogger(__name__)

@@ -3,9 +3,9 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api, _
-from openerp.tools.float_utils import float_compare
-from openerp.exceptions import UserError
+from odoo import models, fields, api, _
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError
 
 
 class PurchaseOrder(models.Model):

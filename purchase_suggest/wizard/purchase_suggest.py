@@ -2,10 +2,10 @@
 # © 2015-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api, _
-import openerp.addons.decimal_precision as dp
-from openerp.tools import float_compare, float_is_zero
-from openerp.exceptions import UserError
+from odoo import models, fields, api, _
+import odoo.addons.decimal_precision as dp
+from odoo.tools import float_compare, float_is_zero
+from odoo.exceptions import UserError
 import logging
 
 logger = logging.getLogger(__name__)

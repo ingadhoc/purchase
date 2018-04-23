@@ -3,11 +3,11 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api, _
-from openerp.exceptions import UserError
-from openerp.tools.float_utils import float_compare
-import openerp.addons.decimal_precision as dp
-from openerp.osv.orm import setup_modifiers
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
+import odoo.addons.decimal_precision as dp
+from odoo.osv.orm import setup_modifiers
 from lxml import etree
 import logging
 _logger = logging.getLogger(__name__)
