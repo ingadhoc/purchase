@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -39,8 +38,6 @@
         'wizard/purchase_suggest_view.xml',
     ],
     'demo': [
-    ],
-    'test': [
     ],
     # al final, por temas de performance, modificamos el original
     'installable': False,

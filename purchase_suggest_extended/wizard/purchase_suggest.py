@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
-# For copyright and license notices, see __openerp__.py file in module root
+# For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
 
-from openerp import models, fields, api
-import openerp.addons.decimal_precision as dp
-from openerp.tools import float_compare
+from odoo import models, fields, api
+import odoo.addons.decimal_precision as dp
+from odoo.tools import float_compare
 # from ast import literal_eval
-# from openerp.exceptions import UserError
+# from odoo.exceptions import UserError
 import logging
 
 logger = logging.getLogger(__name__)

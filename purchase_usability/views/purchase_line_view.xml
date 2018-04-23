@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
         <!-- add new menu for purchase lines -->
         <record model="ir.actions.act_window" id="action_purchase_line_tree">
@@ -102,4 +102,4 @@ if picking_id and context.get('active_model') == 'purchase.order.line' and conte
         </record> -->
 
     </data>
-</openerp>
+</odoo>

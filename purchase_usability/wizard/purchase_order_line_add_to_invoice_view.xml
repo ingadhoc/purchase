@@ -1,4 +1,4 @@
-<openerp>
+<odoo>
     <data>
 
         <record id="purchase_order_line_add_to_invoice_form" model="ir.ui.view">
@@ -35,4 +35,4 @@
 
 
     </data>
-</openerp>
+</odoo>
