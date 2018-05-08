@@ -458,6 +458,10 @@ class PurchaseSuggestPoCreate(models.TransientModel):
         polo = self.env['purchase.order.line']
         poo = self.env['purchase.order']
         puo = self.env['product.uom']
+        context = dict(self.env.context)
+        context.update(
+            {'company_id': company.id})
+        self.env.context = context
         pick_type = self._location2pickingtype(company, location)
         domain = [
             ('partner_id', '=', partner.id),
