@@ -455,6 +455,7 @@ class PurchaseSuggestPoCreate(models.TransientModel):
 
     def _create_update_purchase_order(
             self, partner, company, po_lines, location):
+        self = self.with_context(company_id=company.id)
         polo = self.env['purchase.order.line']
         poo = self.env['purchase.order']
         puo = self.env['product.uom']
