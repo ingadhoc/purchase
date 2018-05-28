@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase Global Discount',
-    'version': '9.0.1.0.0',
+    'version': '11.0.1.0.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -33,11 +33,9 @@
     },
     'data': [
         'wizard/purchase_global_discount_wizard_view.xml',
-        'views/purchase_order_view.xml',
+        'views/purchase_order_views.xml',
     ],
-    'demo': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
