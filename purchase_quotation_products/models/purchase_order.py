@@ -6,7 +6,7 @@ from odoo import models, api, _
 from ast import literal_eval
 
 
-class purchase_order(models.Model):
+class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
     @api.multi
