@@ -3,11 +3,9 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api
-import logging
-_logger = logging.getLogger(__name__)
 
 
-class purchaseGlobalDiscountWizard(models.TransientModel):
+class PurchaseGlobalDiscountWizard(models.TransientModel):
     _name = "purchase.order.global_discount.wizard"
 
     # todo implement fixed amount
@@ -30,6 +28,5 @@ class purchaseGlobalDiscountWizard(models.TransientModel):
         self.ensure_one()
         order = self.env['purchase.order'].browse(
             self._context.get('active_id', False))
-        for line in order.order_line:
-            line.discount = self.amount
+        order.order_line.write({'discount': self.amount})
         return True
