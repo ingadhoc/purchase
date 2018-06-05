@@ -17,12 +17,12 @@
              <xpath expr="//tree//field[1]" position="before">
                 <field name="qty_purchase"/>
             </xpath>
-            <xpath expr="//field[contains(@name,'lst_price')]" position="replace">
+            <field name="lst_price" position="replace">
                 <field name="standard_price" readonly="1"/>
-            </xpath>
-            <xpath expr="//field[contains(@name,'default_code')]" position="attributes">
+            </field>
+            <field name="default_code" position="attributes">
                 <attribute name="readonly">1</attribute>
-            </xpath>
+            </field>
             <xpath expr="//field[contains(@name,'name')]" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
