@@ -19,7 +19,7 @@ class AccountInvoice(models.Model):
             action_read = actions.read()[0]
             context = literal_eval(action_read['context'])
             context['force_line_edit'] = True
-            context['search_default_to_invoice'] = True
+            context['search_default_not_invoiced'] = True
             context['search_default_invoice_qty'] = True
             action_read['context'] = context
             action_read['domain'] = [
