@@ -27,7 +27,7 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
 
     partner_id = fields.Many2one(
         'res.partner',
-        default=get_partner_id,
+        default=lambda self: self.get_partner_id(),
         required=True,
     )
     invoice_id = fields.Many2one(
@@ -38,12 +38,13 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         "('state', '=', 'draft'), "
         "('type', 'in', ['in_invoice', 'in_refund'])]",
     )
-    voucher = fields.Char('Voucher')
+    voucher = fields.Char(
+    )
 
     @api.model
     def get_purchase_lines(self):
-        active_ids = self._context.get('active_ids')
-        active_model = self._context.get('active_model')
+        active_ids = self._context.get('active_ids', [])
+        active_model = self._context.get('active_model', False)
         if active_model != 'purchase.order.line':
             raise UserError(_(
                 'This wizard must be called from purchase lines'))

@@ -25,7 +25,7 @@ class PurchaseOrderLine(models.Model):
         ('invoiced', 'Invoice Received'),
     ],
         string='Invoice Status',
-        compute='_get_invoiced',
+        compute='_compute_invoice_status',
         store=True,
         readonly=True,
         copy=False,
@@ -37,7 +37,7 @@ class PurchaseOrderLine(models.Model):
         ('received', 'Received'),
     ],
         string='Delivery Status',
-        compute='_get_received',
+        compute='_compute_delivery_status',
         store=True,
         readonly=True,
         copy=False,
@@ -58,43 +58,29 @@ class PurchaseOrderLine(models.Model):
         # al calcular por voucher no tenemos en cuenta el metodo de facturacion
         # es decir, que calculamos como si fuese metodo segun lo recibido
         voucher = self._context.get('voucher', False)
-        if voucher:
-            lines = self.filtered(
-                lambda x: x.order_id.state in ['purchase', 'done'])
-            moves = self.env['stock.move'].search([
-                ('id', 'in', lines.mapped('move_ids').ids),
-                ('state', '=', 'done'),
-                ('picking_id.voucher_ids.name', 'ilike', voucher),
-            ])
-            for line in lines:
-                line.qty_on_voucher = sum(
+        if not voucher:
+            return
+        lines = self.filtered(
+            lambda x: x.order_id.state in ['purchase', 'done'])
+        moves = self.env['stock.move'].search([
+            ('id', 'in', lines.mapped('move_ids').ids),
+            ('state', '=', 'done'),
+            ('picking_id.voucher_ids.name', 'ilike', voucher),
+        ])
+        for line in lines:
+            line.update({
+                'qty_on_voucher': sum(
                     moves.filtered(
                         lambda x: x.id in line.move_ids.ids).mapped(
                         'product_uom_qty'))
-
-    # backport of fix made on odoo v10, on odoo v9 refunds are also summed
-    @api.depends('invoice_lines.invoice_id.state')
-    def _compute_qty_invoiced(self):
-        for line in self:
-            qty = 0.0
-            for inv_line in line.invoice_lines:
-                if inv_line.invoice_id.state not in ['cancel']:
-                    if inv_line.invoice_id.type == 'in_invoice':
-                        qty += inv_line.uom_id._compute_qty_obj(
-                            inv_line.uom_id, inv_line.quantity,
-                            line.product_uom)
-                    elif inv_line.invoice_id.type == 'in_refund':
-                        qty -= inv_line.uom_id._compute_qty_obj(
-                            inv_line.uom_id, inv_line.quantity,
-                            line.product_uom)
-            line.qty_invoiced = qty
+            })
 
     @api.multi
     def button_cancel_remaining(self):
-        # TODO faltaría proteger cancel remaining de kits (analogo a en ventas)
-        # si es que se da el mismo error de que no se cancela bien. No pudimos
-        # ni testearlo porque en realidad no se puede confirmar compra con kit.
-        # Cargada incidencia a odoo con id 808056
+        # la cancelación de kits no está bien resuelta ya que odoo
+        # solo computa la cantidad entregada cuando todo el kit se entregó.
+        # Cuestión que, por ahora, desactivamos la cancelación de kits.
+        bom_enable = 'bom_ids' in self.env['product.template']._fields
         for rec in self:
             old_product_qty = rec.product_qty
             # TODO tal vez cambiar en v10
@@ -106,16 +92,17 @@ class PurchaseOrderLine(models.Model):
                     'You can not cancel remianing qty to receive because '
                     'there are more product invoiced than the received. '
                     'You should correct invoice or ask for a refund'))
+            if bom_enable:
+                bom = self.env['mrp.bom']._bom_find(
+                    product=rec.product_id)
+                if bom.type == 'phantom':
+                    raise UserError(_(
+                        "Cancel remaining can't be called for Kit Products "
+                        "(products with a bom of type kit)."))
             rec.product_qty = rec.qty_received
-
-            # si fue generado por procurements usamos el cancel de procurements
-            if rec.procurement_ids:
-                rec.procurement_ids.button_cancel_remaining()
-            else:
-                to_cancel_moves = rec.move_ids.filtered(
-                    lambda x: x.state != 'done')
-                to_cancel_moves.action_cancel()
-
+            to_cancel_moves = rec.move_ids.filtered(
+                lambda x: x.state != 'done')
+            to_cancel_moves._action_cancel()
             rec.order_id.message_post(
                 body=_(
                     'Cancel remaining call for line "%s" (id %s), line '
@@ -125,28 +112,21 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def _compute_vouchers(self):
         for rec in self:
-            rec.vouchers = ', '.join(rec.mapped(
-                'move_ids.picking_id.voucher_ids.display_name'))
+            rec.update({'vouchers': ', '.join(rec.mapped(
+                'move_ids.picking_id.voucher_ids.display_name'))})
 
     @api.depends(
         'order_id.state', 'qty_received', 'product_qty',
-        'order_id.manually_set_received')
-    def _get_received(self):
+        'order_id.force_delivered_status')
+    def _compute_delivery_status(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for line in self:
-            # on v9 odoo consider done with no more to purchase, PR has been
-            # deny, if we change it here we should change odoo behaviour on
-            # purchase orders
-            # al final dejamos  nuestro criterio porque es confuso para
-            # clientes y de hecho odoo, a diferencia de lo que dice el boton
-            # si te deja crear las facturas en done
-            # if line.state != 'purchase':
             if line.state not in ('purchase', 'done'):
                 line.delivery_status = 'no'
                 continue
-            if line.order_id.manually_set_received:
-                line.delivery_status = 'received'
+            if line.order_id.force_delivered_status:
+                line.delivery_status = line.order_id.force_delivered_status
                 continue
 
             if float_compare(
@@ -162,47 +142,14 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends(
         'order_id.state', 'qty_invoiced', 'product_qty', 'qty_to_invoice',
-        'order_id.manually_set_invoiced')
-    def _get_invoiced(self):
+        'order_id.force_invoiced_status')
+    def _compute_invoice_status(self):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for line in self:
-            # on v9 odoo consider done with no more to purchase, PR has been
-            # deny, if we change it here we should change odoo behaviour on
-            # purchase orders
-            # al final dejamos  nuestro criterio porque es confuso para
-            # clientes y de hecho odoo, a diferencia de lo que dice el boton
-            # si te deja crear las facturas en done
-            # if order.state != 'purchase':
-            if line.state not in ('purchase', 'done'):
-                line.invoice_status = 'no'
+            if line.order_id.force_invoiced_status:
+                line.invoice_status = line.order_id.force_invoiced_status
                 continue
-            if line.order_id.manually_set_invoiced:
-                line.invoice_status = 'invoiced'
-                continue
-
-            # usamos qty_to_invoice para compatibilidad con el de return
-            # y ademas que tenga en cuenta si el producto es lo recibido o lo
-            # pedido
-            # if float_compare(
-            #         line.qty_invoiced, line.product_qty,
-            #         precision_digits=precision) == -1:
-            #     line.invoice_status = 'to invoice'
-            # elif float_compare(
-            #         line.qty_invoiced, line.product_qty,
-            #         precision_digits=precision) >= 0:
-            #     line.invoice_status = 'invoiced'
-            # else:
-            #     line.invoice_status = 'no'
-
-            # this code was from an OCA module but it seams to be wrong
-            # TODO remove this
-            # if line.product_id.purchase_method == 'receive' and not \
-            #         line.move_ids.filtered(lambda x: x.state == 'done'):
-            #     line.invoice_status = 'to invoice'
-            #     # We would like to put 'no', but that would break standard
-            #     # odoo tests.
-            #     continue
 
             if abs(float_compare(line.qty_to_invoice, 0.0,
                                  precision_digits=precision)) == 1:
@@ -213,11 +160,8 @@ class PurchaseOrderLine(models.Model):
             else:
                 line.invoice_status = 'no'
 
-
-# modificaciones para facilitar creacion de factura
-    # este campo no existe en POL, robamos de SOL
     qty_to_invoice = fields.Float(
-        compute='_get_to_invoice_qty',
+        compute='_compute_qty_to_invoice',
         string='To Invoice',
         store=True,
         readonly=True,
@@ -227,7 +171,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends(
         'qty_invoiced', 'qty_received', 'order_id.state')
-    def _get_to_invoice_qty(self):
+    def _compute_qty_to_invoice(self):
         for line in self:
             if line.order_id.state in ['purchase', 'done']:
                 if line.product_id.purchase_method == 'purchase':
@@ -332,15 +276,19 @@ class PurchaseOrderLine(models.Model):
         invoice_id = self._context.get('active_id', False)
         if not invoice_id:
             return True
+        AccountInvoice = self.env['account.invoice']
+        AccountInvoiceLine = self.env['account.invoice.line']
         for rec in self:
-            lines = rec.env['account.invoice.line'].search([
+            lines = AccountInvoiceLine.search([
                 ('invoice_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
-            if self.env['account.invoice'].browse(invoice_id)\
-                    .type == 'in_refund':
-                rec.invoice_qty = -1.0 * sum(lines.mapped('quantity'))
-            else:
-                rec.invoice_qty = sum(lines.mapped('quantity'))
+            invoice_qty = -1.0 * sum(
+                lines.mapped('quantity')) if AccountInvoice.browse(
+                invoice_id).type == 'in_refund' else sum(
+                    lines.mapped('quantity'))
+            rec.update({
+                'invoice_qty': invoice_qty
+            })
 
     @api.multi
     def _inverse_invoice_qty(self):
@@ -353,7 +301,7 @@ class PurchaseOrderLine(models.Model):
         purchase_lines = self.env['account.invoice.line']
         do_not_compute = self._context.get('do_not_compute')
         for rec in self:
-            lines = rec.env['account.invoice.line'].search([
+            lines = purchase_lines.search([
                 ('invoice_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
             # TODO ver como agregamos esta validacion de otra manera
@@ -368,15 +316,15 @@ class PurchaseOrderLine(models.Model):
             #         'Verifique la configuración de facturación de sus '
             #         'productos y/o la receipción de la mercadería.'))
             if lines:
-                # si existitan lineas y la cantidad es zero borramos
+                # if there are lines and the amount is zero, we delete
                 if not rec.invoice_qty:
                     lines.unlink()
                 else:
                     (lines - lines[0]).unlink()
                     lines[0].quantity = sign * rec.invoice_qty
             else:
-                # si no hay lineas y no se puso cantidad entonces no hacemos
-                # nada
+                # If there are no lines and there is no quantity, then we
+                # do not do nothing
                 if not rec.invoice_qty:
                     continue
                 data = invoice._prepare_invoice_line_from_po_line(rec)
@@ -416,8 +364,8 @@ class PurchaseOrderLine(models.Model):
     @api.model
     def _search_invoice_qty(self, operator, operand):
         """
-        implementamos solo el caso "('invoice_qty', '!=', False)" que es el que
-        usamos en la vista y unico que nos interesa por ahora
+        we just implemented the case "('invoice_qty', '! =', False)" which
+        is the one we use in the view and only one that interests us for now
         """
         invoice_id = self._context.get('active_id', False)
         active_model = self._context.get('active_model', False)
@@ -428,9 +376,10 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
-            # si filtramos por un voucher, mandamos esa cantidad
-            rec.invoice_qty = rec.qty_on_voucher or (
-                rec.qty_to_invoice + rec.invoice_qty)
+            rec.update({
+                'invoice_qty': rec.qty_on_voucher or (
+                    rec.qty_to_invoice + rec.invoice_qty)
+            })
 
     @api.onchange('product_qty', 'product_uom')
     def _onchange_quantity(self):
@@ -455,3 +404,20 @@ class PurchaseOrderLine(models.Model):
                     to_uom_id=self.product_uom.id)
             self.price_unit = price_unit
         return res
+
+    @api.onchange('product_qty')
+    def _onchange_product_qty(self):
+        if (
+                self.state == 'purchase' and
+                self.product_id.type in ['product', 'consu'] and
+                self.product_qty < self._origin.product_qty):
+            warning_mess = {
+                'title': _('Ordered quantity decreased!'),
+                'message': (
+                    '¡Está reduciendo la cantidad pedida! Recomendamos usar'
+                    ' el botón para cancelar remanente y'
+                    ' luego setear la cantidad deseada.'),
+            }
+            self.product_qty = self._origin.product_qty
+            return {'warning': warning_mess}
+        return {}
