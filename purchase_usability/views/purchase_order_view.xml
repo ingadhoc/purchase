@@ -44,6 +44,9 @@
                     </div>
 
                 </field>
+                <field name="order_line" position="before">
+                    <button name="update_prices" string="Update Prices" type="object" attrs="{'invisible':[('state','not in',['draft','sent'])]}" groups="base.group_no_one"/>
+                </field>
             </field>
         </record>
 

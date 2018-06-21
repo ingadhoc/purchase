@@ -178,3 +178,8 @@ class PurchaseOrder(models.Model):
         result['domain'] = "[('id', 'in', " + str(self.invoice_ids.ids) + ")]"
         result['views'] = []
         return result
+
+    @api.multi
+    def update_prices(self):
+        for line in self.order_line:
+            line._onchange_quantity()
