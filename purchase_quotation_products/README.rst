@@ -20,11 +20,17 @@ This module adds a button in purchase_order to search products, change de quanti
 Installation
 ============
 
+To install this module, you need to:
+
+#. Just install this module.
 
 
 Configuration
 =============
 
+To configure this module, you need to:
+
+#. No configuration nedeed.
 
 Usage
 =====

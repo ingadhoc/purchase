@@ -40,7 +40,6 @@ class PurchaseOrder(models.Model):
                 views=[[view_id, 'tree']],
                 display_name=_('Quotation Products'),
             ))
-        print ('action_read', action_read)
         return action_read
 
     @api.multi

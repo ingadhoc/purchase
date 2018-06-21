@@ -5,6 +5,7 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_product_tree_view"/>
         <field name="mode">primary</field>
+        <field name="priority">40</field>
         <field name="arch" type="xml">
             <tree position="attributes">
                 <attribute name="edit">true</attribute>
@@ -23,7 +24,7 @@
             <field name="default_code" position="attributes">
                 <attribute name="readonly">1</attribute>
             </field>
-            <xpath expr="//field[contains(@name,'name')]" position="attributes">
+            <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
             <xpath expr="//field[contains(@name,'attribute_value_ids')]" position="attributes">

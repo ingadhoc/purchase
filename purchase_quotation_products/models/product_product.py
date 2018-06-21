@@ -8,6 +8,14 @@ from odoo import models, fields, api, _
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
+    qty_purchase = fields.Float(
+        string='Quantity',
+        compute='_compute_qty_purchase',
+        inverse='_inverse_qty_purchase',
+        help="Technical field. Used to compute the quantity of products"
+        " related to a purchase order using the context",
+    )
+
     @api.multi
     def _compute_qty_purchase(self):
         purchase_order_id = self._context.get('active_id', False)
@@ -45,13 +53,6 @@ class ProductProduct(models.Model):
                 lines[0]._onchange_quantity()
             else:
                 purchase_order.add_products(rec, qty)
-
-    qty_purchase = fields.Float(
-        string='Quantity',
-        compute='_compute_qty_purchase',
-        inverse='_inverse_qty_purchase',
-        help="Technical field. Used to compute the quantity of products"
-        " related to a purchase order using the context")
 
     @api.multi
     def action_product_form(self):
