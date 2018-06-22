@@ -182,4 +182,7 @@ class PurchaseOrder(models.Model):
     @api.multi
     def update_prices(self):
         for line in self.order_line:
+            # use this because the _onchange_quantity function evaluate if
+            # price_unit it's not setting to set the value.
+            line.price_unit = False
             line._onchange_quantity()
