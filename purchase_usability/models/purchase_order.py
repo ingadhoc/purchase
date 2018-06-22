@@ -178,3 +178,11 @@ class PurchaseOrder(models.Model):
         result['domain'] = "[('id', 'in', " + str(self.invoice_ids.ids) + ")]"
         result['views'] = []
         return result
+
+    @api.multi
+    def update_prices(self):
+        for line in self.order_line:
+            # use this because the _onchange_quantity function evaluate if
+            # price_unit it's not setting to set the value.
+            line.price_unit = False
+            line._onchange_quantity()

@@ -14,6 +14,9 @@
                 <field name="purchase_id" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                <field name="invoice_line_ids" position="before">
+                    <button name="update_purchase_invoice_prices" string="Update Prices" type="object" attrs="{'invisible':[('state','not in',['draft','sent'])]}" groups="base.group_no_one"/>
+                </field>
             </field>
         </record>
 </data>

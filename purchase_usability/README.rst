@@ -20,6 +20,7 @@ On purchase orders:
 #. Add print PO on purchase and done status
 #. Add button to force "invoiced" only for admin with tec features
 #. Add button to change the currency and update the prices of the order lines
+#. Add button to update Price Unit for each lines in the order.
 
 On purchase lines:
 #. Add delivery status and invoice status on purchase lines
@@ -36,6 +37,7 @@ On stock moves:
 
 On purchase invoices:
 #. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that shouldt be invoiced, you still have de possiblity to add them
+#. Add button to update Price Unit in each lines of the purchase invoice.
 
 
 TODO: tal vez querramos implementar que el check de procurements sea analogo al de moves para que se marque realizado si moves en done o cancel, buscar en purchase "return all(move.state == 'done' for move in procurement.move_ids)"
