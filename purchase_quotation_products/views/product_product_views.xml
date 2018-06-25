@@ -27,16 +27,16 @@
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
-            <xpath expr="//field[contains(@name,'attribute_value_ids')]" position="attributes">
+            <xpath expr="//field[@name='attribute_value_ids']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
-            <xpath expr="//field[contains(@name,'price')]" position="attributes">
+            <xpath expr="//field[@name='price']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
-            <xpath expr="//field[contains(@name,'uom_id')]" position="attributes">
+            <xpath expr="//field[@name='uom_id']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
-            <xpath expr="//field[contains(@name,'barcode')]" position="attributes">
+            <xpath expr="//field[@name='barcode']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
         </field>
