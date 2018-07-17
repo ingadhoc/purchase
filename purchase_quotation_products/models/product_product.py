@@ -6,6 +6,7 @@ from odoo import models, fields, api, _
 from openerp.osv.orm import setup_modifiers
 from lxml import etree
 
+
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
