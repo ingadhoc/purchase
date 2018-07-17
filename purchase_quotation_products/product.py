@@ -76,9 +76,8 @@ class ProductProduct(models.Model):
                     self.uom_po_id) for line in lines])
 
     @api.one
-    def _set_qty_purchase(self):
+    def _set_qty_purchase(self, qty):
         purchase_order_id = self._context.get('active_id', False)
-        qty = self.qty_purchase
         if purchase_order_id:
             lines = self.env['purchase.order.line'].search([
                 ('order_id', '=', purchase_order_id),
@@ -94,7 +93,7 @@ class ProductProduct(models.Model):
     qty_purchase = fields.Float(
         string='Quantity',
         compute='_get_qty_purchase',
-        inverse='_set_qty_purchase')
+    )
 
     @api.multi
     def action_product_form(self):
@@ -111,3 +110,24 @@ class ProductProduct(models.Model):
             'res_id': self.id,
             'view_id': view_id,
         }
+
+    @api.multi
+    def write(self, vals):
+        """
+        Si en vals solo viene qty y purchase_quotation_products entonces es un
+        dummy write y hacemos esto para que usuarios sin permiso de escribir
+        en productos puedan modificar la cantidad
+        """
+        # usamos 'qty_purchase' in vals y no vals.get('qty_purchase') porque
+        # se podria estar pasando qty_purchase = 0 y queremos que igal entre
+        if self._context.get('purchase_quotation_products') and \
+                len(vals) == 1 and 'qty_purchase' in vals:
+            # en vez de hacerlo con sudo lo hacemos asi para que se guarde
+            # bien el usuario creador y ademas porque SUPERADMIN podria no
+            # tener el permiso de editar productos
+            # self = self.sudo()
+            qty = vals.get('qty_purchase')
+            for rec in self:
+                rec._set_qty_purchase(qty)
+            return True
+        return super(ProductProduct, self).write(vals)
