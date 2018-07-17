@@ -18,8 +18,6 @@ class PurchaseOrder(models.Model):
         action_read = False
         actions = self.env.ref(
             'product.product_normal_action_sell')
-        view_id = self.env['ir.model.data'].xmlid_to_res_id(
-            'purchase_quotation_products.product_product_tree_view')
         if actions:
             action_read = actions.read()[0]
             context = literal_eval(action_read['context'])
@@ -37,7 +35,6 @@ class PurchaseOrder(models.Model):
             action_read.update(dict(
                 context=context,
                 name=_('Quotation Products'),
-                views=[[view_id, 'tree']],
                 display_name=_('Quotation Products'),
             ))
         return action_read
