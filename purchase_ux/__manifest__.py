@@ -18,8 +18,8 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Usability Improvements',
-    'version': '9.0.1.17.0',
+    'name': 'Purchase UX',
+    'version': '11.0.1.0.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -30,22 +30,20 @@
     ],
     'depends': [
         'purchase',
-        # we add stock voucher to hav voucher information on purchase line
+        # we add stock voucher to have voucher information on purchase line
         'stock_voucher',
-        'stock_usability',
     ],
     'data': [
-        'wizard/purchase_change_currency_view.xml',
-        'wizard/purchase_order_line_add_to_invoice_view.xml',
-        'views/account_invoice_view.xml',
-        'views/purchase_view.xml',
-        'views/purchase_order_view.xml',
-        'views/purchase_line_view.xml',
-        'views/stock_move_view.xml',
+        'wizards/purchase_change_currency_views.xml',
+        'wizards/purchase_order_line_add_to_invoice_views.xml',
+        'views/account_invoice_views.xml',
+        'views/ir_ui_menu.xml',
+        'views/purchase_order_views.xml',
+        'views/purchase_line_views.xml',
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }

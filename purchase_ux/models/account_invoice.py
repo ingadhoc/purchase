@@ -13,16 +13,21 @@ class AccountInvoice(models.Model):
     def add_purchase_line_moves(self):
         self.ensure_one()
         actions = self.env.ref(
-            'purchase_usability.action_purchase_line_tree')
+            'purchase_ux.action_purchase_line_tree')
         if actions:
             action_read = actions.read()[0]
             context = literal_eval(action_read['context'])
-            context['force_line_edit'] = True
-            context['search_default_not_invoiced'] = True
-            context['search_default_invoice_qty'] = True
-            action_read['context'] = context
-            action_read['domain'] = [
-                ('partner_id.commercial_partner_id', '=',
-                    self.partner_id.commercial_partner_id.id),
-            ]
+            context.update(dict(
+                force_line_edit=True,
+                search_default_not_invoiced=True,
+                search_default_invoice_qty=True,
+            ))
+            action_read.update(
+                context=context,
+                domain=[
+                    ('partner_id.commercial_partner_id', '=',
+                     self.partner_id.commercial_partner_id.id),
+                ],
+            )
+
         return action_read
