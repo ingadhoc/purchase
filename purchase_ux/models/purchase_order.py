@@ -67,7 +67,6 @@ class PurchaseOrder(models.Model):
     @api.depends('force_invoiced_status', 'order_line.move_ids.state')
     def _get_invoiced(self):
         for order in self:
-            # if order.state != 'purchase':
             if order.state not in ('purchase', 'done'):
                 order.invoice_status = 'no'
                 continue
