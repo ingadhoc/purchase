@@ -67,9 +67,6 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="delivery_status"/>
-                <field name="invoice_status"/>
-                <!-- to display currency symbol on monetary widget -->
-                <field name="currency_id" invisible="1"/>
             </tree>
 
             <!-- como unificamos menus hacemos que sea mas visible cuales son las borrador -->
