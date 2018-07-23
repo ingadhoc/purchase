@@ -4,7 +4,7 @@
 ##############################################################################
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare
+from odoo.tools import float_compare, float_is_zero
 import odoo.addons.decimal_precision as dp
 from odoo.osv.orm import setup_modifiers
 from lxml import etree
@@ -20,9 +20,9 @@ class PurchaseOrderLine(models.Model):
         context={'show_purchase': True}
     )
     invoice_status = fields.Selection([
-        ('no', 'Not purchased'),
+        ('no', 'Nothing to Bill'),
         ('to invoice', 'Waiting Invoices'),
-        ('invoiced', 'Invoice Received'),
+        ('invoiced', 'No Bill to Receive'),
     ],
         string='Invoice Status',
         compute='_compute_invoice_status',
@@ -147,15 +147,15 @@ class PurchaseOrderLine(models.Model):
         precision = self.env['decimal.precision'].precision_get(
             'Product Unit of Measure')
         for line in self:
-            if line.order_id.force_invoiced_status:
+            if line.state not in ('purchase', 'done'):
+                line.invoice_status = 'no'
+            elif line.order_id.force_invoiced_status:
                 line.invoice_status = line.order_id.force_invoiced_status
-                continue
-
-            if abs(float_compare(line.qty_to_invoice, 0.0,
-                                 precision_digits=precision)) == 1:
+            elif not float_is_zero(
+                    line.qty_to_invoice, precision_digits=precision):
                 line.invoice_status = 'to invoice'
-            elif float_compare(line.qty_to_invoice, 0.0,
-                               precision_digits=precision) == 0:
+            elif float_compare(line.qty_invoiced, line.product_qty,
+                               precision_digits=precision) >= 0:
                 line.invoice_status = 'invoiced'
             else:
                 line.invoice_status = 'no'
