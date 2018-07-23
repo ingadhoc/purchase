@@ -40,6 +40,7 @@
         'views/ir_ui_menu.xml',
         'views/purchase_order_views.xml',
         'views/purchase_line_views.xml',
+        'views/product_template_views.xml',
     ],
     'demo': [
     ],

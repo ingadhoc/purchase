@@ -41,6 +41,10 @@ On purchase invoices:
 
 #. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them
 
+On Products:
+
+#. Allows to search by suppliers and to group by main supplier on product and product variants.
+
 
 
 Installation
