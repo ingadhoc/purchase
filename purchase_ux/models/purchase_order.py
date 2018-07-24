@@ -36,6 +36,19 @@ class PurchaseOrder(models.Model):
         default='no'
     )
 
+    with_returns = fields.Boolean(
+        compute='_compute_with_returns',
+        store=True,
+    )
+
+    @api.depends('order_line.qty_returned')
+    def _compute_with_returns(self):
+        for order in self:
+            if any(line.qty_returned for line in order.order_line):
+                order.with_returns = True
+            else:
+                order.with_returns = False
+
     @api.depends(
         'state', 'order_line.qty_received', 'order_line.product_qty',
         'force_delivered_status')

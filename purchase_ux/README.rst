@@ -26,12 +26,14 @@ On purchase orders:
 #. Add print PO on purchase and done status
 #. Add button to force "invoiced" only for admin with tec features
 #. Add button to change the currency and update the prices of the order lines
+#. Add a to filter by PO with billable returns.
 
 On purchase lines:
 
 #. Add delivery status and invoice status on purchase lines
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
 #. If not seller is defined or seller price is 0, then sugget accounting cost
+#. Add return quantity when you return products with "To Refund" option.
 
 On incoming pickings:
 
