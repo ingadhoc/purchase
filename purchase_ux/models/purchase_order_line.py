@@ -421,3 +421,24 @@ class PurchaseOrderLine(models.Model):
             self.product_qty = self._origin.product_qty
             return {'warning': warning_mess}
         return {}
+
+    qty_returned = fields.Float(
+        string='Returned',
+        copy=False,
+        default=0.0,
+        # digits=dp.get_precision('Product Unit of Measure'),
+        readonly=True,
+        compute='_compute_qty_returned'
+    )
+
+    @api.depends('order_id.state', 'move_ids.state')
+    def _compute_qty_returned(self):
+        for line in self:
+            qty = 0.0
+            for move in line.move_ids.filtered(
+                    lambda m: m.state == 'done' and
+                    m.location_id.usage != 'supplier' and m.to_refund):
+                qty += move.product_uom._compute_quantity(
+                    move.product_uom_qty,
+                    line.product_uom)
+            line.qty_returned = qty

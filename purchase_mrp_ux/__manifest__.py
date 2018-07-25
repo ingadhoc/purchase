@@ -18,27 +18,18 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Usability interatction with Refund management',
-    'version': '9.0.1.2.0',
-    'category': 'Purchases',
+    'name': 'Purchase MRP UX',
+    'version': '11.0.1.0.0',
+    'category': 'Purchase Management',
     'sequence': 14,
-    'summary': '',
-    "author": "Eficent, Odoo Community Association (OCA), ADHOC SA",
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    'images': [
-    ],
+    'summary': '',
     'depends': [
-        'sale_stock_picking_return_invoicing',
-        'purchase_usability',
+        'purchase_mrp',
     ],
-    'data': [
-        'views/purchase_order_view.xml',
-        'wizards/stock_return_picking_view.xml',
-    ],
-    'demo': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
