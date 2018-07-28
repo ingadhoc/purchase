@@ -7,4 +7,7 @@ from odoo import models, fields
 class StockWarehouseOrderpoint(models.Model):
     _inherit = 'stock.warehouse.orderpoint'
 
-    suggest = fields.Boolean(string='Suggest', default=True)
+    suggest = fields.Boolean(
+        string='Suggest',
+        default=True,
+    )

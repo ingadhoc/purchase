@@ -3,23 +3,22 @@
 
 {
     'name': 'Purchase Suggest',
-    'version': '9.0.1.4.0',
+    'version': '11.0.1.0.0',
     'category': 'Purchase',
     'license': 'AGPL-3',
     'summary': 'Suggest POs from special suggest orderpoints',
-    'author': 'Akretion,ADHOCSA',
+    'author': 'Akretion,ADHOC SA',
     'website': 'http://www.akretion.com',
     'depends': [
         'purchase',
-        'product_supplier_search',
         # 'purchase_suggest',
-        'stock_usability',
+        'stock_ux',
         'product_replenishment_cost',
     ],
     'conflicts': ['procurement_suggest'],
     'data': [
-        'stock_view.xml',
+        'views/stock_view.xml',
         'wizard/purchase_suggest_view.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
