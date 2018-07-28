@@ -6,7 +6,6 @@
 -->
 
 <odoo>
-<data>
 
 <record id="view_warehouse_orderpoint_form" model="ir.ui.view">
     <field name="name">procurement_suggest.orderpoint.form</field>
@@ -43,5 +42,4 @@
 </record>
 
 
-</data>
 </odoo>
