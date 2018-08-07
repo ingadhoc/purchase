@@ -27,6 +27,7 @@ On purchase orders:
 #. Add button to force "invoiced" only for admin with tec features
 #. Add button to change the currency and update the prices of the order lines
 #. Add a to filter by PO with billable returns.
+#. Add link from invoices to the purchase orders that generate it.
 
 On purchase lines:
 
