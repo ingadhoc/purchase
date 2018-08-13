@@ -5,7 +5,7 @@
 ##############################################################################
 from openerp import models, fields, api, _
 from openerp.exceptions import UserError
-from openerp.tools.float_utils import float_compare
+from openerp.tools.float_utils import float_compare, float_is_zero
 import openerp.addons.decimal_precision as dp
 from openerp.osv.orm import setup_modifiers
 from lxml import etree
@@ -21,7 +21,7 @@ class PurchaseOrderLine(models.Model):
         context={'show_purchase': True}
     )
     invoice_status = fields.Selection([
-        ('no', 'Not purchased'),
+        ('no', 'Nothing to Bill'),
         ('to invoice', 'Waiting Invoices'),
         ('invoiced', 'Invoice Received'),
     ],
@@ -204,12 +204,11 @@ class PurchaseOrderLine(models.Model):
             #     # We would like to put 'no', but that would break standard
             #     # odoo tests.
             #     continue
-
-            if abs(float_compare(line.qty_to_invoice, 0.0,
-                                 precision_digits=precision)) == 1:
+            if not float_is_zero(
+                    line.qty_to_invoice, precision_digits=precision):
                 line.invoice_status = 'to invoice'
-            elif float_compare(line.qty_to_invoice, 0.0,
-                               precision_digits=precision) == 0:
+            elif float_compare(line.qty_invoiced, line.product_qty,
+                               precision_digits=precision) >= 0:
                 line.invoice_status = 'invoiced'
             else:
                 line.invoice_status = 'no'
