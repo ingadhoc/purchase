@@ -25,6 +25,10 @@ class PurchaseOrder(models.Model):
         track_visibility='onchange',
         copy=False,
     )
+    invoice_status = fields.Selection([
+        ('no', 'Nothing to Bill'),
+        ('to invoice', 'Waiting Invoices'),
+        ('invoiced', 'Invoice Received')])
     delivery_status = fields.Selection([
         ('no', 'Not purchased'),
         ('to receive', 'To Receive'),
@@ -77,7 +81,7 @@ class PurchaseOrder(models.Model):
     def button_reopen(self):
         self.write({'state': 'purchase'})
 
-    @api.depends('manually_set_invoiced', 'order_line.move_ids.state')
+    @api.depends('manually_set_invoiced', 'order_line.invoice_status')
     def _get_invoiced(self):
         # fix de esta funcion porque odoo no lo quiso arreglar
         # cambiamos != purchase por not in purchase, done
