@@ -112,6 +112,9 @@ class PurchaseOrderLine(models.Model):
             # si fue generado por procurements usamos el cancel de procurements
             if rec.procurement_ids:
                 rec.procurement_ids.button_cancel_remaining()
+                # hacemos analogo al cancel en ._check de stock que termina
+                # cancelando el procurement
+                rec.procurement_ids.write({'state': 'cancel'})
             else:
                 to_cancel_moves = rec.move_ids.filtered(
                     lambda x: x.state != 'done')
