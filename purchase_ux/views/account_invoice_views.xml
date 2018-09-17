@@ -14,4 +14,20 @@
             </field>
         </field>
     </record>
+
+    <record id="invoice_supplier_form" model="ir.ui.view">
+        <field name="name">invoice.supplier.form.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <notebook>
+                <page string="Purchase Orders" name="purchase_orders">
+                    <field name="purchase_order_ids" invisible="0"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
 </odoo>
+
+

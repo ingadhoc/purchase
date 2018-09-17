@@ -2,12 +2,24 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api
+from odoo import models, fields, api
 from ast import literal_eval
 
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
+
+    purchase_order_ids = fields.Many2many(
+        'purchase.order',
+        compute='_compute_purchase_orders'
+    )
+
+    @api.multi
+    def _compute_purchase_orders(self):
+        for rec in self:
+            rec.purchase_order_ids = self.env['purchase.order.line'].search(
+                [('invoice_lines', 'in', rec.invoice_line_ids.ids)]).mapped(
+                'order_id')
 
     @api.multi
     def add_purchase_line_moves(self):

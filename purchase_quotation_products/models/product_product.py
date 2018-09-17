@@ -86,6 +86,15 @@ class ProductProduct(models.Model):
         if purchase_quotation_products and view_type == 'tree':
             doc = etree.XML(res['arch'])
 
+            # replace uom_id to uom_po_id field
+            node = doc.xpath("//field[@name='uom_id']")[0]
+            replacement_xml = """
+                <field name="uom_po_id"/>
+                """
+            uom_po_id_node = etree.fromstring(replacement_xml)
+            node.getparent().replace(node, uom_po_id_node)
+            res['fields'].update(self.fields_get(['uom_po_id']))
+
             # make all fields not editable
             for node in doc.xpath("//field"):
                 node.set('readonly', '1')
