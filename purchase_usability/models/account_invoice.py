@@ -42,5 +42,5 @@ class AccountInvoice(models.Model):
                     line.product_id.uom_id != line.uom_id):
                 price_unit = self.env['product.uom']._compute_price(
                     line.product_id.uom_id.id, price_unit,
-                    to_uom_id=line.product_uom.id)
+                    to_uom_id=line.uom_id.id)
             line.update({'price_unit': price_unit})
