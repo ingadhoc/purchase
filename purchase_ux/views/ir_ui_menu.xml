@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!--Make Incoming Producs Menu only visible to tec features-->
+    <!--Hide Incoming Producs Menu -->
     <record model="ir.ui.menu" id="purchase.menu_action_picking_tree_in_move">
-        <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+        <field name="active" eval="False"/>
     </record>
 
-    <!--Make Requests for Quotation Menu only visible to tec features-->
+    <!--Hide Requests for Quotation Menu -->
     <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
-        <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+        <field name="active" eval="False"/>
     </record>
 
 </odoo>
