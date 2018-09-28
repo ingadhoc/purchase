@@ -3,14 +3,14 @@
 # * purchase_suggest
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 9.0c\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 22:23+0000\n"
-"PO-Revision-Date: 2017-03-05 22:23+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-09-17 13:18+0000\n"
+"PO-Revision-Date: 2018-09-17 13:18+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/adhoc/teams/46451/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_generate_add_products_without_order_point
-msgid "Add products without order point"
+msgid "Add Products Without Order Point"
 msgstr ""
 
 #. module: purchase_suggest
@@ -69,7 +69,7 @@ msgstr "Date de création"
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_currency_id
-msgid "Currency id"
+msgid "Currency"
 msgstr ""
 
 #. module: purchase_suggest
@@ -182,7 +182,7 @@ msgstr "Dernière mise à jour"
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_location_rotation
-msgid "Location rotation"
+msgid "Location Rotation"
 msgstr ""
 
 #. module: purchase_suggest
@@ -191,8 +191,7 @@ msgid "Main Supplier"
 msgstr ""
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:266
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:373
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:429
 #, python-format
 msgid "Make sure you have at least an incoming picking type defined"
 msgstr "Make sure you have at least an incoming picking type defined"
@@ -223,20 +222,23 @@ msgid "Minimum Inventory Rule"
 msgstr "Règle de stock minimum"
 
 #. module: purchase_suggest
+#: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_tree
+msgid "Mult. Qty"
+msgstr ""
+
+#. module: purchase_suggest
 #: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_search
 msgid "Negative Forecast"
 msgstr ""
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:365
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:472
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:533
 #, python-format
 msgid "No purchase orders created or updated"
 msgstr "Aucune commande fournisseur créée ou mise-à-jour"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:358
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:465
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:526
 #, python-format
 msgid "No supplier configured for product '%s'."
 msgstr "Aucune fournisseur configuré pour l'article '%s'."
@@ -258,6 +260,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_outgoing_qty
 msgid "Outgoing Quantity"
 msgstr "Quantité sortante"
+
+#. module: purchase_suggest
+#: model:ir.model,name:purchase_suggest.model_procurement_group
+msgid "Procurement Requisition"
+msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_product_id
@@ -287,8 +294,7 @@ msgid "Purchase UoM"
 msgstr ""
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:325
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:432
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:493
 #, python-format
 msgid "Purchase order updated from purchase suggestions."
 msgstr "Purchase order updated from purchase suggestions."
@@ -297,6 +303,11 @@ msgstr "Purchase order updated from purchase suggestions."
 #: model:ir.model,name:purchase_suggest.model_purchase_suggest_po_create
 msgid "PurchaseSuggestPoCreate"
 msgstr "PurchaseSuggestPoCreate"
+
+#. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_qty_multiple
+msgid "Qty Multiple"
+msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_qty_available
@@ -330,8 +341,8 @@ msgstr "Réel"
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_replenishment_cost
-msgid "Replenishment cost"
-msgstr "Coût de réapprovisionnement"
+msgid "Replenishment Cost"
+msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_rotation
@@ -342,6 +353,18 @@ msgstr ""
 #: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_search
 msgid "Seller"
 msgstr "Fournisseur"
+
+#. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_po_create_only_update_if_same_user
+msgid "Solo actualizar si mismo usuario"
+msgstr ""
+
+#. module: purchase_suggest
+#: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_po_create_only_update_if_same_user
+msgid ""
+"Solo se va a actualizar el PC si existe un PC generado por mi usuario, si no"
+" se va a generar uno nuevo."
+msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.model,name:purchase_suggest.model_purchase_suggest_generate
@@ -385,8 +408,7 @@ msgstr ""
 "saisissez la quantité dans la dernière colonne."
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:102
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:134
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:159
 #, python-format
 msgid ""
 "There are 2 orderpoints (%s and %s) for the same product on stock location "
@@ -396,8 +418,7 @@ msgstr ""
 "l'emplacement de stock %s ou l'un de ses enfants."
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:174
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:229
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:272
 #, python-format
 msgid "There are no purchase suggestions to generate."
 msgstr "Aucune suggestion d'achat à faire."
@@ -439,6 +460,7 @@ msgstr ""
 #. module: purchase_suggest
 #: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_max_qty
 #: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_min_qty
+#: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_qty_multiple
 msgid "in the unit of measure for the product"
 msgstr ""
 
