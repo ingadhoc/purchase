@@ -42,8 +42,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
             ('state', '=', 'draft'), ('product_id', '=', product.id)])
         draft_po_qty = 0.0
         for line in polines:
-            qty_product_po_uom = self.env['product.uom']._compute_qty_obj(
-                line.product_uom, line.product_qty, line.product_id.uom_id)
+            qty_product_po_uom = line.product_uom._compute_quantity(
+                line.product_qty, line.product_id.uom_id)
             draft_po_qty += qty_product_po_uom
 
         porderline_id = False
@@ -167,7 +167,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         # TODO tal vez querramos agregar parametro para setear si solo product
         # o tambien consumibles
         if self.add_products_without_order_point:
-            product_ids = products_dict.keys()
+            product_ids = [k for k in products_dict.keys()]
             product_domain = self._prepare_product_domain()
             product_domain += [
                 ('type', '=', 'product'),
@@ -213,7 +213,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
             'Stock levels qty computed on %d products', len(products_dict))
 
         product_ids = []
-        for product_id, qty_dict in products_dict.iteritems():
+        for product_id, qty_dict in products_dict.items():
             qty_dict['virtual_available'] =\
                 virtual_qties[product_id]['virtual_available']
             qty_dict['incoming_qty'] =\
