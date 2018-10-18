@@ -3,14 +3,14 @@
 
 {
     'name': 'Purchase Suggest',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.1.0',
     'category': 'Purchase',
     'license': 'AGPL-3',
     'summary': 'Suggest POs from special suggest orderpoints',
     'author': 'Akretion,ADHOC SA',
     'website': 'http://www.akretion.com',
     'depends': [
-        'purchase',
+        'purchase_ux',
         # 'purchase_suggest',
         'stock_ux',
         'product_replenishment_cost',
