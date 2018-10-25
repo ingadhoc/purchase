@@ -68,12 +68,8 @@ class PurchaseOrderLine(models.Model):
             ('picking_id.voucher_ids.name', 'ilike', voucher),
         ])
         for line in lines:
-            line.update({
-                'qty_on_voucher': sum(
-                    moves.filtered(
-                        lambda x: x.id in line.move_ids.ids).mapped(
-                        'product_uom_qty'))
-            })
+            line.qty_on_voucher = sum(moves.filtered(
+                lambda x: x.id in line.move_ids.ids).mapped('product_uom_qty'))
 
     @api.multi
     def button_cancel_remaining(self):
@@ -112,8 +108,8 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def _compute_vouchers(self):
         for rec in self:
-            rec.update({'vouchers': ', '.join(rec.mapped(
-                'move_ids.picking_id.voucher_ids.display_name'))})
+            rec.vouchers = ', '.join(rec.mapped(
+                'move_ids.picking_id.voucher_ids.display_name'))
 
     @api.depends(
         'order_id.state', 'qty_received', 'product_qty',
@@ -286,9 +282,7 @@ class PurchaseOrderLine(models.Model):
                 lines.mapped('quantity')) if AccountInvoice.browse(
                 invoice_id).type == 'in_refund' else sum(
                     lines.mapped('quantity'))
-            rec.update({
-                'invoice_qty': invoice_qty
-            })
+            rec.invoice_qty = invoice_qty
 
     @api.multi
     def _inverse_invoice_qty(self):
@@ -376,10 +370,8 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
-            rec.update({
-                'invoice_qty': rec.qty_on_voucher or (
-                    rec.qty_to_invoice + rec.invoice_qty)
-            })
+            rec.invoice_qty = rec.qty_on_voucher or (
+                rec.qty_to_invoice + rec.invoice_qty)
 
     @api.onchange('product_qty', 'product_uom')
     def _onchange_quantity(self):

@@ -35,7 +35,7 @@ class ProductProduct(models.Model):
                 line.product_qty,
                 line.product_uom,
                 rec.uom_po_id) for line in lines])
-            rec.update({'qty_purchase': value})
+            rec.qty_purchase = value
 
     @api.multi
     def _set_qty_purchase(self, qty):
