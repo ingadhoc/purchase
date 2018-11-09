@@ -24,6 +24,10 @@
                 <field name="force_invoiced_status" groups="base.group_no_one"/>
                 <field name="force_delivered_status" groups="base.group_no_one"/>
             </field>
+            <!-- agregamos boton de actualizar precios a las lineas -->
+            <field name="order_line" position="before">
+                <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the order. Are you sure you wish to continue?"/>
+            </field>
             <!-- agregamos boton de cancelar linea -->
             <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="after">
                 <field name="delivery_status" invisible="1"/>

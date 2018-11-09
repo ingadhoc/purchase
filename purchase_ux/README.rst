@@ -28,6 +28,7 @@ On purchase orders:
 #. Add button to change the currency and update the prices of the order lines
 #. Add a to filter by PO with billable returns.
 #. Add link from invoices to the purchase orders that generate it.
+#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
 
 On purchase lines:
 
@@ -42,7 +43,8 @@ On incoming pickings:
 
 On purchase invoices:
 
-#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them
+#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them.
+#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 
 On Products:
 

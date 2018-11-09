@@ -43,3 +43,38 @@ class AccountInvoice(models.Model):
             )
 
         return action_read
+
+    @api.multi
+    def update_prices_with_supplier_cost(self):
+        net_price_installed = 'net_price' in self.env[
+            'product.supplierinfo']._fields
+        for rec in self.invoice_line_ids.filtered('price_unit'):
+            seller = rec.product_id._select_seller(
+                partner_id=rec.invoice_id.partner_id,
+                # usamos minimo de cantidad 0 porque si no seria complicado
+                # y generariamos registros para cada cantidad que se esta
+                # comprando
+                quantity=0.0,
+                date=rec.invoice_id.date_invoice and
+                rec.invoice_id.date_invoice[:10],
+                # idem quantity, no lo necesitamos
+                uom_id=False,
+            )
+            if not seller:
+                seller = self.env['product.supplierinfo'].create({
+                    'date_start': rec.invoice_id.date_invoice and
+                    rec.invoice_id.date_invoice[:10],
+                    'name': rec.invoice_id.partner_id.id,
+                    'product_tmpl_id': rec.product_id.product_tmpl_id.id,
+                })
+            price_unit = rec.price_unit
+            if rec.uom_id and seller.product_uom != rec.uom_id:
+                price_unit = rec.uom_id._compute_price(
+                    price_unit, seller.product_uom)
+
+            if net_price_installed:
+                seller.net_price = rec.invoice_id.currency_id.compute(
+                    price_unit, seller.currency_id)
+            else:
+                seller.price = rec.invoice_id.currency_id.compute(
+                    price_unit, seller.currency_id)
