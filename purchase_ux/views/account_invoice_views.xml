@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="invoice_line_ids" position="before">
                 <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" states='draft'/>
+                <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the invoice. Are you sure you wish to continue?"/>
             </field>
             <!-- We hide the native field to add from purchase order. We do not delete it because it would lose behavior from purchase order when creating invoice that adds the lines with the onchange -->
             <field name="purchase_id" position="attributes">
