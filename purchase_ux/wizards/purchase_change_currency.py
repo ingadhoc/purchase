@@ -52,5 +52,5 @@ class PurchaseChangeCurrency(models.TransientModel):
         purchase_order = self.get_purchase()
         for line in purchase_order.order_line:
             line.price_unit = self.currency_id.round(
-                line.price_unit * self.currency_rate),
+                line.price_unit * self.currency_rate)
         purchase_order.currency_id = self.currency_id.id
