@@ -39,7 +39,9 @@ class PurchaseSuggestGenerate(models.TransientModel):
 
         # get purchase lines quantity
         polines = self.env['purchase.order.line'].search([
-            ('state', '=', 'draft'), ('product_id', '=', product.id)])
+            ('state', 'in', ['draft', 'sent']),
+            ('product_id', '=', product.id)]
+        )
         draft_po_qty = 0.0
         for line in polines:
             qty_product_po_uom = line.product_uom._compute_quantity(
