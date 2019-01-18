@@ -385,8 +385,9 @@ class PurchaseOrderLine(models.Model):
             price_unit = self.product_id.standard_price
             if (
                     price_unit and
-                    self.order_id.currency_id != self.product_id.currency_id):
-                price_unit = self.product_id.currency_id.compute(
+                    self.order_id.currency_id != self.product_id.
+                    user_company_currency_id):
+                price_unit = self.product_id.user_company_currency_id.compute(
                     price_unit, self.order_id.currency_id)
             if (
                     price_unit and self.product_uom and
