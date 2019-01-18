@@ -32,6 +32,8 @@
         'purchase',
         # we add stock voucher to have voucher information on purchase line
         'stock_voucher',
+        # for use user_company_currency_id
+        'product_ux',
     ],
     'data': [
         'wizards/purchase_change_currency_views.xml',

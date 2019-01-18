@@ -22,8 +22,8 @@ class ProcurementRule(models.Model):
             price_unit = product_id.standard_price
             if (
                     price_unit and
-                    po.currency_id != product_id.currency_id):
-                price_unit = product_id.currency_id.compute(
+                    po.currency_id != product_id.user_company_currency_id):
+                price_unit = product_id.user_company_currency_id.compute(
                     price_unit, po.currency_id)
             if (
                     price_unit and res['product_uom'] and
