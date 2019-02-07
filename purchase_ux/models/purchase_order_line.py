@@ -158,7 +158,7 @@ class PurchaseOrderLine(models.Model):
 
     qty_to_invoice = fields.Float(
         compute='_compute_qty_to_invoice',
-        string='To Invoice',
+        string='Cantidad en factura actual',
         store=True,
         readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
@@ -230,7 +230,8 @@ class PurchaseOrderLine(models.Model):
                     'name': 'action_add_all_to_invoice',
                     'type': 'object',
                     'icon': 'fa-plus-square',
-                    'string': _('Add all to invoice'),
+                    'string': _('Agregar las cantidades en '
+                                '"Para Facturar" a la factura actual'),
                 }))
 
             # add button tu open form
