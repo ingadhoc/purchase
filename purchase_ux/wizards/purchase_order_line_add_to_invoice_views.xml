@@ -22,7 +22,7 @@
         </field>
     </record>
 
-    <act_window id="action_purchase_order_line_add_to_invoice" multi="True" key2="client_action_multi" name="Add all to invoice" res_model="purchase.order.line.add_to_invoice" src_model="purchase.order.line" view_mode="form" target="new" view_type="form"/>
+    <act_window id="action_purchase_order_line_add_to_invoice" multi="True" key2="client_action_multi" name="Agregar todo en 'Para Facturar' a la factura a elegir" res_model="purchase.order.line.add_to_invoice" src_model="purchase.order.line" view_mode="form" target="new" view_type="form"/>
 
 
 </odoo>
