@@ -383,12 +383,14 @@ class PurchaseOrderLine(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not self.price_unit:
-            price_unit = self.product_id.standard_price
+            price_unit = self.with_context(
+                force_company=self.order_id.company_id.id
+            ).product_id.standard_price
             if (
-                    price_unit and
-                    self.order_id.currency_id != self.product_id.
-                    user_company_currency_id):
-                price_unit = self.product_id.user_company_currency_id.compute(
+                price_unit and
+                self.order_id.currency_id != self.order_id.company_id.
+                    currency_id):
+                price_unit = self.order_id.company_id.currency_id.compute(
                     price_unit, self.order_id.currency_id)
             if (
                     price_unit and self.product_uom and
