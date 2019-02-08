@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 23:55+0000\n"
+"POT-Creation-Date: 2019-02-07 15:22+0000\n"
 "PO-Revision-Date: 2018-08-23 20:30+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
@@ -31,10 +31,14 @@ msgstr "Add Purchase Lines"
 
 #. module: purchase_ux
 #: code:addons/purchase_ux/models/purchase_order_line.py:233
-#: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
 #, python-format
-msgid "Add all to invoice"
-msgstr "Add all to invoice"
+msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
+msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -94,6 +98,11 @@ msgid ""
 msgstr ""
 "Cancel remaining quanitity to be received. This will set line quantity equal"
 " to received qty and will cancel remaining moves"
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_qty_to_invoice
+msgid "Cantidad en factura actual"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_change_currency
@@ -297,13 +306,13 @@ msgid "Only users with \"%s / %s\" can Set Received manually"
 msgstr "Only users with \"%s / %s\" can Set Received manually"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:243
+#: code:addons/purchase_ux/models/purchase_order_line.py:244
 #, python-format
 msgid "Open Purchase Line Form View"
 msgstr "Open Purchase Line Form View"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:407
+#: code:addons/purchase_ux/models/purchase_order_line.py:408
 #, python-format
 msgid "Ordered quantity decreased!"
 msgstr "Ordered quantity decreased!"
@@ -329,7 +338,7 @@ msgid "Product Template"
 msgstr "Plantilla de producto"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:260
+#: code:addons/purchase_ux/models/purchase_order_line.py:261
 #, python-format
 msgid "Purchase Line"
 msgstr "Purchase Line"
@@ -450,11 +459,6 @@ msgstr "This wizard must be called from purchase lines"
 #: model:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
 msgid "This wizard will change the currency of the purchase order"
 msgstr "This wizard will change the currency of the purchase order"
-
-#. module: purchase_ux
-#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_qty_to_invoice
-msgid "To Invoice"
-msgstr "Para facturar"
 
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
