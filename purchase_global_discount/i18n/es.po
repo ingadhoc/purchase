@@ -3,14 +3,15 @@
 # * purchase_global_discount
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 9.0c\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-10 15:28+0000\n"
-"PO-Revision-Date: 2018-03-10 15:28+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-11-22 23:55+0000\n"
+"PO-Revision-Date: 2018-05-30 23:17+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +82,7 @@ msgstr "Establecer Descuento Global"
 #. module: purchase_global_discount
 #: model:ir.ui.view,arch_db:purchase_global_discount.view_purchase_global_discount_wizard_form
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #. module: purchase_global_discount
 #: model:ir.ui.view,arch_db:purchase_global_discount.view_purchase_global_discount_wizard_form
@@ -91,4 +92,4 @@ msgstr "o"
 #. module: purchase_global_discount
 #: model:ir.model,name:purchase_global_discount.model_purchase_order_global_discount_wizard
 msgid "purchase.order.global_discount.wizard"
-msgstr ""
+msgstr "purchase.order.global_discount.wizard"

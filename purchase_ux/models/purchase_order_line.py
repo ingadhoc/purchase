@@ -160,7 +160,7 @@ class PurchaseOrderLine(models.Model):
 
     qty_to_invoice = fields.Float(
         compute='_compute_qty_to_invoice',
-        string='To Invoice',
+        string='Cantidad en factura actual',
         store=True,
         readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
@@ -232,7 +232,8 @@ class PurchaseOrderLine(models.Model):
                     'name': 'action_add_all_to_invoice',
                     'type': 'object',
                     'icon': 'fa-plus-square',
-                    'string': _('Add all to invoice'),
+                    'string': _('Agregar las cantidades en '
+                                '"Para Facturar" a la factura actual'),
                 }))
 
             # add button tu open form
@@ -384,11 +385,14 @@ class PurchaseOrderLine(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not self.price_unit:
-            price_unit = self.product_id.standard_price
+            price_unit = self.with_context(
+                force_company=self.order_id.company_id.id
+            ).product_id.standard_price
             if (
-                    price_unit and
-                    self.order_id.currency_id != self.product_id.currency_id):
-                price_unit = self.product_id.currency_id.compute(
+                price_unit and
+                self.order_id.currency_id != self.order_id.company_id.
+                    currency_id):
+                price_unit = self.order_id.company_id.currency_id.compute(
                     price_unit, self.order_id.currency_id)
             if (
                     price_unit and self.product_uom and

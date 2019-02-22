@@ -457,7 +457,6 @@ class PurchaseSuggestPoCreate(models.TransientModel):
         self = self.with_context(company_id=company.id)
         polo = self.env['purchase.order.line']
         poo = self.env['purchase.order']
-        puo = self.env['product.uom']
         pick_type = self._location2pickingtype(company, location)
         domain = [
             ('partner_id', '=', partner.id),
@@ -479,8 +478,8 @@ class PurchaseSuggestPoCreate(models.TransientModel):
                 ])
                 if existing_polines:
                     existing_poline = existing_polines[0]
-                    existing_poline.product_qty += puo._compute_qty_obj(
-                        uom, qty_to_order, existing_poline.product_uom)
+                    existing_poline.product_qty += uom._compute_quantity(
+                        qty_to_order, existing_poline.product_uom)
                     existing_poline._onchange_quantity()
                 else:
                     pol_vals = self._prepare_purchase_order_line(
@@ -532,7 +531,7 @@ class PurchaseSuggestPoCreate(models.TransientModel):
         if not po_to_create:
             raise UserError(_('No purchase orders created or updated'))
         po_ids = []
-        for (seller, company), po_lines in po_to_create.iteritems():
+        for (seller, company), po_lines in po_to_create.items():
             assert location, 'No stock location'
             po = self._create_update_purchase_order(
                 seller, company, po_lines, location)

@@ -19,11 +19,12 @@ class ProcurementRule(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res['price_unit']:
-            price_unit = product_id.standard_price
+            price_unit = product_id.with_context(
+                force_company=values['company_id'].id).standard_price
+            company_currency = values['company_id'].currency_id
             if (
-                    price_unit and
-                    po.currency_id != product_id.currency_id):
-                price_unit = product_id.currency_id.compute(
+                    price_unit and po.currency_id != company_currency):
+                price_unit = company_currency.compute(
                     price_unit, po.currency_id)
             if (
                     price_unit and res['product_uom'] and

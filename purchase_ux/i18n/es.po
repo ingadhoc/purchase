@@ -3,14 +3,15 @@
 # * purchase_ux
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-17 13:18+0000\n"
-"PO-Revision-Date: 2018-09-17 13:18+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-02-07 15:22+0000\n"
+"PO-Revision-Date: 2018-08-23 20:30+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,11 +30,15 @@ msgid "Add Purchase Lines"
 msgstr "Add Purchase Lines"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:237
-#: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
+#: code:addons/purchase_ux/models/purchase_order_line.py:233
 #, python-format
-msgid "Add all to invoice"
-msgstr "Add all to invoice"
+msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
+msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -42,13 +47,31 @@ msgstr ""
 "All the selected lines are going to be added to the following invoice."
 
 #. module: purchase_ux
+#: model:ir.ui.view,arch_db:purchase_ux.view_invoice_supplier_purchase_form
+msgid ""
+"By accepting they will update (or create prices) for this provider and all "
+"products loaded on the invoice. Are you sure you wish to continue?"
+msgstr ""
+"Al aceptar, se actualizarán (o crearán precios) para este proveedor y todos "
+"los productos cargados en la factura. ¿Seguro que desea continuar?"
+
+#. module: purchase_ux
+#: model:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid ""
+"By accepting they will update (or create prices) for this provider and all "
+"products loaded on the order. Are you sure you wish to continue?"
+msgstr ""
+"Al aceptar, se actualizarán (o crearán precios) para este proveedor y todos "
+"los productos cargados en el pedido. ¿Seguro que desea continuar?"
+
+#. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
 #: model:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:107
+#: code:addons/purchase_ux/models/purchase_order_line.py:103
 #, python-format
 msgid ""
 "Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
@@ -58,7 +81,7 @@ msgstr ""
 "%s"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:99
+#: code:addons/purchase_ux/models/purchase_order_line.py:95
 #, python-format
 msgid ""
 "Cancel remaining can't be called for Kit Products (products with a bom of "
@@ -75,6 +98,11 @@ msgid ""
 msgstr ""
 "Cancel remaining quanitity to be received. This will set line quantity equal"
 " to received qty and will cancel remaining moves"
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_qty_to_invoice
+msgid "Cantidad en factura actual"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_change_currency
@@ -215,7 +243,7 @@ msgstr "Última actualización el"
 #: model:ir.model.fields,field_description:purchase_ux.field_product_template_main_seller_id
 #: model:ir.ui.view,arch_db:purchase_ux.product_template_search_view
 msgid "Main Seller"
-msgstr ""
+msgstr "Proveedor Principal"
 
 #. module: purchase_ux
 #: code:addons/purchase_ux/models/purchase_order.py:115
@@ -278,13 +306,13 @@ msgid "Only users with \"%s / %s\" can Set Received manually"
 msgstr "Only users with \"%s / %s\" can Set Received manually"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:247
+#: code:addons/purchase_ux/models/purchase_order_line.py:244
 #, python-format
 msgid "Open Purchase Line Form View"
 msgstr "Open Purchase Line Form View"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:415
+#: code:addons/purchase_ux/models/purchase_order_line.py:408
 #, python-format
 msgid "Ordered quantity decreased!"
 msgstr "Ordered quantity decreased!"
@@ -307,10 +335,10 @@ msgstr "Regla de abastecimiento"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Plantilla de producto"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:264
+#: code:addons/purchase_ux/models/purchase_order_line.py:261
 #, python-format
 msgid "Purchase Line"
 msgstr "Purchase Line"
@@ -351,7 +379,7 @@ msgstr "Purchase orders with all lines received."
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
 msgid "Purchase orders with billable returns"
-msgstr ""
+msgstr "Pedidos de compra con devoluciones facturables."
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_invoice_qty
@@ -375,12 +403,12 @@ msgstr "Recibido"
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_qty_returned
 msgid "Returned"
-msgstr ""
+msgstr "Devuelto"
 
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "Returned Quantity"
-msgstr ""
+msgstr "Cantidad devuelta"
 
 #. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_purchase_change_currency_currency_rate
@@ -433,11 +461,6 @@ msgid "This wizard will change the currency of the purchase order"
 msgstr "This wizard will change the currency of the purchase order"
 
 #. module: purchase_ux
-#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_qty_to_invoice
-msgid "To Invoice"
-msgstr "Para facturar"
-
-#. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
 #: model:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
 #: selection:purchase.order,delivery_status:0
@@ -446,10 +469,16 @@ msgid "To Receive"
 msgstr "Para recibir"
 
 #. module: purchase_ux
+#: model:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+#: model:ir.ui.view,arch_db:purchase_ux.view_invoice_supplier_purchase_form
+msgid "Update Supplier Prices"
+msgstr "Actualizar precios de proveedores"
+
+#. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_product_product_main_seller_id
 #: model:ir.model.fields,help:purchase_ux.field_product_template_main_seller_id
 msgid "Vendor of this product"
-msgstr ""
+msgstr "Proveedor de este producto"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice_voucher
@@ -471,10 +500,10 @@ msgstr "Waiting Invoices"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_with_returns
 #: model:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
 msgid "With Returns"
-msgstr ""
+msgstr "Con Devoluciones"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:91
+#: code:addons/purchase_ux/models/purchase_order_line.py:87
 #, python-format
 msgid ""
 "You can not cancel remianing qty to receive because there are more product "
