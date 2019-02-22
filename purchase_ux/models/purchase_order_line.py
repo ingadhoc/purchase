@@ -98,9 +98,7 @@ class PurchaseOrderLine(models.Model):
             rec.product_qty = rec.qty_received
             to_cancel_moves = rec.move_ids.filtered(
                 lambda x: x.state not in ['done', 'cancel'])
-            # to_cancel_moves.cancel_move()
             to_cancel_moves._cancel_quantity()
-            # to_cancel_moves._action_cancel()
             rec.order_id.message_post(
                 body=_(
                     'Cancel remaining call for line "%s" (id %s), line '
