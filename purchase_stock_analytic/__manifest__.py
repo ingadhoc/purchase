@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase Stock Analytic',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.1.0',
     'category': 'Purchase Management',
     'sequence': 14,
     'summary': '',
@@ -30,7 +30,7 @@
     ],
     'depends': [
         'purchase',
-        'stock_analytic',
+        'stock_analytic_tag',
     ],
     'data': [
     ],
