@@ -50,6 +50,10 @@ On Products:
 
 #. Allows to search by suppliers and to group by main supplier on product and product variants.
 
+On Stock Moves:
+
+#. Add button to access to purchase order related.
+
 
 
 Installation

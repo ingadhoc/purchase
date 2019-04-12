@@ -2,9 +2,13 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from . import account_invoice
-from . import purchase_order
-from . import purchase_order_line
-from . import procurement_rule
-from . import product_template
-from . import stock_move
+from odoo import models, fields
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    purchase_id = fields.Many2one(
+        related='purchase_line_id.order_id',
+        readonly=True,
+    )
