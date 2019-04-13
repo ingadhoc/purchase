@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-07 15:22+0000\n"
+"POT-Creation-Date: 2019-04-12 16:16+0000\n"
 "PO-Revision-Date: 2018-08-23 20:30+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
@@ -312,7 +312,12 @@ msgid "Open Purchase Line Form View"
 msgstr "Open Purchase Line Form View"
 
 #. module: purchase_ux
-#: code:addons/purchase_ux/models/purchase_order_line.py:408
+#: model:ir.model.fields,field_description:purchase_ux.field_stock_move_purchase_id
+msgid "Order Reference"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order_line.py:411
 #, python-format
 msgid "Ordered quantity decreased!"
 msgstr "Ordered quantity decreased!"
@@ -352,6 +357,7 @@ msgstr "Purchase Lines"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
 #: model:ir.model.fields,field_description:purchase_ux.field_account_invoice_purchase_order_ids
+#: model:ir.ui.view,arch_db:purchase_ux.view_move_form
 msgid "Purchase Order"
 msgstr "Orden de Compra"
 
@@ -430,6 +436,11 @@ msgstr "Selected lines must be from the same partner"
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "Set Invoiced"
 msgstr "Set Invoiced"
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_stock_move
+msgid "Stock Move"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.ui.view,arch_db:purchase_ux.purchase_order_form
