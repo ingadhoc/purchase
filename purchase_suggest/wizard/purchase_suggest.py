@@ -21,7 +21,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
         domain=[('supplier', '=', True)])
     location_id = fields.Many2one(
         'stock.location', string='Stock Location', required=True,
-        default=lambda self: self.env.ref('stock.stock_location_stock'))
+        default=lambda self: self._default_stock_location(),
+    )
     # Without this module, when we use orderpoints, if there are no orderpoints
     # for a consu product, Odoo will not suggest to re-order it.
     # But, with this module, Odoo will also suggest to re-order the consu
@@ -32,6 +33,13 @@ class PurchaseSuggestGenerate(models.TransientModel):
         'productos consumibles',
         default=True,
     )
+
+    @api.model
+    def _default_stock_location(self):
+        warehouse = self.env['stock.warehouse'].search([], limit=1)
+        if warehouse:
+            return warehouse.lot_stock_id.id
+        return False
 
     @api.multi
     def _prepare_suggest_line(self, product, qty_dict):
