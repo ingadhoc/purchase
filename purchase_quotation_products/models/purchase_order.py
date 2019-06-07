@@ -48,6 +48,7 @@ class PurchaseOrder(models.Model):
         vals = {
             'order_id': self.id,
             'product_id': product.id or False,
+            'partner_id': self.partner_id.id,
         }
         purchase_line = self.env['purchase.order.line'].new(vals)
         purchase_line.onchange_product_id()
