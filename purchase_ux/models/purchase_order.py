@@ -186,3 +186,8 @@ class PurchaseOrder(models.Model):
             else:
                 seller.price = rec.order_id.currency_id.compute(
                     price_unit, seller.currency_id)
+
+    @api.multi
+    def update_prices(self):
+        for line in self.order_line:
+            line._onchange_quantity()
