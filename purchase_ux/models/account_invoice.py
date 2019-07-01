@@ -78,3 +78,13 @@ class AccountInvoice(models.Model):
             else:
                 seller.price = rec.invoice_id.currency_id.compute(
                     price_unit, seller.currency_id)
+
+    @api.onchange('purchase_id')
+    def purchase_order_change(self):
+        """ This fixes that odoo creates the PO without the fp and our patch
+        of account._onchange_company compute wrong the taxes.
+        TODO improve this. If a different fp is selected on the PO than the
+        partner default one, then odoo changes the fp when calling super.
+        """
+        self.fiscal_position_id = self.purchase_id.fiscal_position_id
+        return super().purchase_order_change()
