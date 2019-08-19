@@ -164,14 +164,14 @@ class PurchaseOrder(models.Model):
                 # comprando
                 quantity=0.0,
                 date=rec.order_id.date_order and
-                rec.order_id.date_order[:10],
+                rec.order_id.date_order.date(),
                 # idem quantity, no lo necesitamos
                 uom_id=False,
             )
             if not seller:
                 seller = self.env['product.supplierinfo'].create({
                     'date_start': rec.order_id.date_order and
-                    rec.order_id.date_order[:10],
+                    rec.order_id.date_order.date(),
                     'name': rec.order_id.partner_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
                 })
