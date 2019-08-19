@@ -8,17 +8,7 @@ from odoo import models, fields, api
 class PurchaseGlobalDiscountWizard(models.TransientModel):
     _name = "purchase.order.global_discount.wizard"
 
-    # todo implement fixed amount
-    # type = fields.Selection([
-    #     ('percentage', 'Percentage'),
-    #     ('fixed_amount', 'Fixed Amount'),
-    #     ],
-    #     'Type',
-    #     required=True,
-    #     default='percentage',
-    #     )
     amount = fields.Float(
-        # 'Amount',
         'Discount',
         required=True,
     )
