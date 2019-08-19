@@ -118,13 +118,13 @@ class PurchaseOrder(models.Model):
     def write(self, vals):
         self.check_force_invoiced_status(vals)
         self.check_force_delivered_status(vals)
-        return super(PurchaseOrder, self).write(vals)
+        return super().write(vals)
 
     @api.model
     def create(self, vals):
         self.check_force_invoiced_status(vals)
         self.check_force_delivered_status(vals)
-        return super(PurchaseOrder, self).create(vals)
+        return super().create(vals)
 
     @api.model
     def check_force_invoiced_status(self, vals):
@@ -145,14 +145,6 @@ class PurchaseOrder(models.Model):
                 group.category_id.name, group.name))
 
     @api.multi
-    def action_view_invoice(self):
-        # we fix that if we create an invoice from an
-        # PO send the currency in the context
-        result = super(PurchaseOrder, self).action_view_invoice()
-        result['context'].update({'default_currency_id': self.currency_id.id})
-        return result
-
-    @api.multi
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
@@ -164,14 +156,14 @@ class PurchaseOrder(models.Model):
                 # comprando
                 quantity=0.0,
                 date=rec.order_id.date_order and
-                rec.order_id.date_order[:10],
+                rec.order_id.date_order.date(),
                 # idem quantity, no lo necesitamos
                 uom_id=False,
             )
             if not seller:
                 seller = self.env['product.supplierinfo'].create({
                     'date_start': rec.order_id.date_order and
-                    rec.order_id.date_order[:10],
+                    rec.order_id.date_order.date(),
                     'name': rec.order_id.partner_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
                 })
@@ -181,11 +173,13 @@ class PurchaseOrder(models.Model):
                     price_unit, seller.product_uom)
 
             if net_price_installed:
-                seller.net_price = rec.order_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.net_price = rec.order_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.order_id.company_id,
+                    rec.order_id.date_order or fields.Date.today())
             else:
-                seller.price = rec.order_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.price = rec.order_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.order_id.company_id,
+                    rec.order_id.date_order or fields.Date.today())
 
     @api.multi
     def update_prices(self):

@@ -13,6 +13,5 @@ class ProductTemplate(models.Model):
     main_seller_id = fields.Many2one(
         string="Main Seller",
         related='seller_ids.name',
-        readonly=True,
         store=True,
     )

@@ -6,7 +6,7 @@
         <field name="model">purchase.order</field>
         <!-- for compatibility with purchase_stock_picking_return_invoicing -->
         <field name="priority">10</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
         <field name="arch" type="xml">
             <!-- add print button -->
             <button name="action_view_picking" position="before">
@@ -61,8 +61,8 @@
                 <separator/>
             </filter>
             <group>
-                <filter string="Invoice Satus" domain="[]" context="{'group_by':'invoice_status'}"/>
-                <filter string="Delivery Satus" domain="[]" context="{'group_by':'delivery_status'}"/>
+                <filter name="invoice_status" string="Invoice Satus" domain="[]" context="{'group_by':'invoice_status'}"/>
+                <filter name="delivery_status" string="Delivery Satus" domain="[]" context="{'group_by':'delivery_status'}"/>
             </group>
         </field>
     </record>

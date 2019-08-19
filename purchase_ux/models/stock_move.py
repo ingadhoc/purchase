@@ -10,5 +10,4 @@ class StockMove(models.Model):
 
     purchase_id = fields.Many2one(
         related='purchase_line_id.order_id',
-        readonly=True,
     )

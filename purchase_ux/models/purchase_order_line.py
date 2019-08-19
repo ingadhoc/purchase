@@ -53,6 +53,32 @@ class PurchaseOrderLine(models.Model):
         digits=dp.get_precision('Product Unit of Measure'),
     )
 
+    invoice_qty = fields.Float(
+        string='Invoice Quantity',
+        compute='_compute_invoice_qty',
+        inverse='_inverse_invoice_qty',
+        search='_search_invoice_qty',
+        digits=dp.get_precision('Product Unit of Measure'),
+    )
+
+    qty_to_invoice = fields.Float(
+        compute='_compute_qty_to_invoice',
+        string='Cantidad en factura actual',
+        store=True,
+        readonly=True,
+        digits=dp.get_precision('Product Unit of Measure'),
+        default=0.0
+    )
+
+    qty_returned = fields.Float(
+        string='Returned',
+        copy=False,
+        default=0.0,
+        # digits=dp.get_precision('Product Unit of Measure'),
+        readonly=True,
+        compute='_compute_qty_returned'
+    )
+
     @api.multi
     def _compute_qty_on_voucher(self):
         # al calcular por voucher no tenemos en cuenta el metodo de facturacion
@@ -156,15 +182,6 @@ class PurchaseOrderLine(models.Model):
             else:
                 line.invoice_status = 'no'
 
-    qty_to_invoice = fields.Float(
-        compute='_compute_qty_to_invoice',
-        string='Cantidad en factura actual',
-        store=True,
-        readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
-        default=0.0
-    )
-
     @api.depends(
         'qty_invoiced', 'qty_received', 'order_id.state')
     def _compute_qty_to_invoice(self):
@@ -184,7 +201,7 @@ class PurchaseOrderLine(models.Model):
         If we came from invoice, we send in context 'force_line_edit'
         and we change tree view to make editable and also field qty
         """
-        res = super(PurchaseOrderLine, self).fields_view_get(
+        res = super().fields_view_get(
             view_id=view_id, view_type=view_type,
             toolbar=toolbar, submenu=submenu)
         force_line_edit = self._context.get(
@@ -255,17 +272,13 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_line_form(self):
         self.ensure_one()
-        # view_id = self.env['ir.model.data'].xmlid_to_res_id(
-        #     'product.product_normal_form_view')
         return {
             'name': _('Purchase Line'),
             'view_type': 'form',
             "view_mode": 'form',
             'res_model': 'purchase.order.line',
             'type': 'ir.actions.act_window',
-            # 'domain': [('id', 'in', self.apps_product_ids.ids)],
             'res_id': self.id,
-            # 'view_id': view_id,
         }
 
     @api.multi
@@ -348,14 +361,6 @@ class PurchaseOrderLine(models.Model):
             # aca
             rec._compute_qty_invoiced()
 
-    invoice_qty = fields.Float(
-        string='Quantity',
-        compute='_compute_invoice_qty',
-        inverse='_inverse_invoice_qty',
-        search='_search_invoice_qty',
-        digits=dp.get_precision('Product Unit of Measure'),
-    )
-
     @api.model
     def _search_invoice_qty(self, operator, operand):
         """
@@ -376,7 +381,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.onchange('product_qty', 'product_uom')
     def _onchange_quantity(self):
-        res = super(PurchaseOrderLine, self)._onchange_quantity()
+        res = super()._onchange_quantity()
         if not self.product_id:
             return
 
@@ -390,8 +395,10 @@ class PurchaseOrderLine(models.Model):
                 price_unit and
                 self.order_id.currency_id != self.order_id.company_id.
                     currency_id):
-                price_unit = self.order_id.company_id.currency_id.compute(
-                    price_unit, self.order_id.currency_id)
+                price_unit = self.order_id.company_id.currency_id._convert(
+                    price_unit, self.order_id.currency_id,
+                    self.order_id.company_id,
+                    self.order_id.date_order or fields.Date.today())
             if (
                     price_unit and self.product_uom and
                     self.product_id.uom_id != self.product_uom):
@@ -417,15 +424,6 @@ class PurchaseOrderLine(models.Model):
             self.product_qty = self._origin.product_qty
             return {'warning': warning_mess}
         return {}
-
-    qty_returned = fields.Float(
-        string='Returned',
-        copy=False,
-        default=0.0,
-        # digits=dp.get_precision('Product Unit of Measure'),
-        readonly=True,
-        compute='_compute_qty_returned'
-    )
 
     @api.depends('order_id.state', 'move_ids.state')
     def _compute_qty_returned(self):

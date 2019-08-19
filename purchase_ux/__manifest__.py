@@ -29,7 +29,7 @@
     'images': [
     ],
     'depends': [
-        'purchase',
+        'purchase_stock',
         # we add stock voucher to have voucher information on purchase line
         'stock_ux',
         # for use user_company_currency_id
@@ -47,7 +47,7 @@
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
