@@ -5,17 +5,17 @@
 from odoo import models, api
 
 
-class ProcurementRule(models.Model):
-    _inherit = 'procurement.rule'
+class StockRule(models.Model):
+    _inherit = 'stock.rule'
 
     @api.multi
     def _prepare_purchase_order_line(
-            self, product_id, product_qty, product_uom, values, po, supplier):
+            self, product_id, product_qty, product_uom, values, po, partner):
         self.ensure_one()
-        res = super(ProcurementRule, self)._prepare_purchase_order_line(
+        res = super()._prepare_purchase_order_line(
             product_id=product_id, product_qty=product_qty,
             product_uom=product_uom, values=values,
-            po=po, supplier=supplier)
+            po=po, partner=partner)
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res['price_unit']:
@@ -36,7 +36,7 @@ class ProcurementRule(models.Model):
 
     def _update_purchase_order_line(
             self, product_id, product_qty, product_uom, values, line, partner):
-        res = super(ProcurementRule, self)._update_purchase_order_line(
+        res = super()._update_purchase_order_line(
             product_id, product_qty, product_uom, values, line, partner)
 
         # if price was not computed (not seller or seller price = 0.0), then
