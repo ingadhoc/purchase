@@ -145,14 +145,6 @@ class PurchaseOrder(models.Model):
                 group.category_id.name, group.name))
 
     @api.multi
-    def action_view_invoice(self):
-        # we fix that if we create an invoice from an
-        # PO send the currency in the context
-        result = super().action_view_invoice()
-        result['context'].update({'default_currency_id': self.currency_id.id})
-        return result
-
-    @api.multi
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
