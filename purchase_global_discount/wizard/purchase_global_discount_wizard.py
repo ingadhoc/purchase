@@ -7,6 +7,7 @@ from odoo import models, fields, api
 
 class PurchaseGlobalDiscountWizard(models.TransientModel):
     _name = "purchase.order.global_discount.wizard"
+    _description = "Transient model to apply global discounts on POs"
 
     amount = fields.Float(
         'Discount',
