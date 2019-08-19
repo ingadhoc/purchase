@@ -43,8 +43,9 @@ class PurchaseChangeCurrency(models.TransientModel):
             currency = purchase_order.currency_id.with_context(
                 date=purchase_order.
                 date_order or fields.Date.context_today(self))
-            self.currency_rate = currency.compute(
-                1.0, self.currency_id)
+            self.currency_rate = currency._convert(
+                1.0, self.currency_id, purchase_order.company_id,
+                purchase_order.date_order or fields.Date.context_today(self))
 
     @api.multi
     def change_currency(self):

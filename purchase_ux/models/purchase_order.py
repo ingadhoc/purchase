@@ -181,11 +181,13 @@ class PurchaseOrder(models.Model):
                     price_unit, seller.product_uom)
 
             if net_price_installed:
-                seller.net_price = rec.order_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.net_price = rec.order_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.order_id.company_id,
+                    rec.order_id.date_order or fields.Date.today())
             else:
-                seller.price = rec.order_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.price = rec.order_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.order_id.company_id,
+                    rec.order_id.date_order or fields.Date.today())
 
     @api.multi
     def update_prices(self):

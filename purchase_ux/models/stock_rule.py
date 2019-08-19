@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api
+from odoo import models, api, fields
 
 
 class StockRule(models.Model):
@@ -24,8 +24,9 @@ class StockRule(models.Model):
             company_currency = values['company_id'].currency_id
             if (
                     price_unit and po.currency_id != company_currency):
-                price_unit = company_currency.compute(
-                    price_unit, po.currency_id)
+                price_unit = company_currency._convert(
+                    price_unit, po.currency_id, values['company_id'],
+                    po.date_order or fields.Date.today())
             if (
                     price_unit and res['product_uom'] and
                     product_id.uom_id.id != res['product_uom']):

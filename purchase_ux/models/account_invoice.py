@@ -56,7 +56,7 @@ class AccountInvoice(models.Model):
                 # comprando
                 quantity=0.0,
                 date=rec.invoice_id.date_invoice and
-                rec.invoice_id.date_invoice[:10],
+                rec.invoice_id.date_invoice.date(),
                 # idem quantity, no lo necesitamos
                 uom_id=False,
             )
@@ -73,11 +73,13 @@ class AccountInvoice(models.Model):
                     price_unit, seller.product_uom)
 
             if net_price_installed:
-                seller.net_price = rec.invoice_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.net_price = rec.invoice_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.invoice_id.company_id,
+                    rec.invoice_id.date_invoice or fields.Date.today())
             else:
-                seller.price = rec.invoice_id.currency_id.compute(
-                    price_unit, seller.currency_id)
+                seller.price = rec.invoice_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.invoice_id.company_id,
+                    rec.invoice_id.date_invoice or fields.Date.today())
 
     @api.onchange('purchase_id')
     def purchase_order_change(self):
