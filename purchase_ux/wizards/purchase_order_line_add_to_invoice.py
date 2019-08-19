@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class PurchaseOrderLineAddToInvoice(models.TransientModel):
     _name = 'purchase.order.line.add_to_invoice'
+    _description = 'purchase.order.line.add_to_invoice'
 
     # we need to make this wizard because we loose in context the invoice from
     # where we have come. It is also usefull if you are on purchase lines

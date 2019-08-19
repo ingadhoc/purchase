@@ -54,7 +54,7 @@ class PurchaseOrderLine(models.Model):
     )
 
     invoice_qty = fields.Float(
-        string='Quantity',
+        string='Invoice Quantity',
         compute='_compute_invoice_qty',
         inverse='_inverse_invoice_qty',
         search='_search_invoice_qty',
@@ -395,8 +395,10 @@ class PurchaseOrderLine(models.Model):
                 price_unit and
                 self.order_id.currency_id != self.order_id.company_id.
                     currency_id):
-                price_unit = self.order_id.company_id.currency_id.compute(
-                    price_unit, self.order_id.currency_id)
+                price_unit = self.order_id.company_id.currency_id._convert(
+                    price_unit, self.order_id.currency_id,
+                    self.order_id.company_id,
+                    self.order_id.date_order or fields.Date.today())
             if (
                     price_unit and self.product_uom and
                     self.product_id.uom_id != self.product_uom):
