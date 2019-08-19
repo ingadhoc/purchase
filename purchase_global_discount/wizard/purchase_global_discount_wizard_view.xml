@@ -5,7 +5,6 @@
         <field name="model">purchase.order.global_discount.wizard</field>
         <field name="arch" type="xml">
             <form string="Global Discount">
-                <!-- <field name="type"/> -->
                 <group>
                     <field name="amount"/>
                 </group>
