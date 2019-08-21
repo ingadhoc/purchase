@@ -19,9 +19,13 @@ class PurchaseSuggestGenerate(models.TransientModel):
     seller_ids = fields.Many2many(
         'res.partner', string='Suppliers',
         domain=[('supplier', '=', True)])
+    warehouse_id = fields.Many2one(
+        'stock.warehouse', 'Warehouse',
+        ondelete="cascade", required=True,
+        help='For now used only to compute stock rotation',
+    )
     location_id = fields.Many2one(
-        'stock.location', string='Stock Location', required=True,
-        default=lambda self: self.env.ref('stock.stock_location_stock'))
+        'stock.location', string='Stock Location', required=True,)
     # Without this module, when we use orderpoints, if there are no orderpoints
     # for a consu product, Odoo will not suggest to re-order it.
     # But, with this module, Odoo will also suggest to re-order the consu
@@ -32,6 +36,24 @@ class PurchaseSuggestGenerate(models.TransientModel):
         'productos consumibles',
         default=True,
     )
+
+    @api.model
+    def default_get(self, fields):
+        res = super().default_get(fields)
+        warehouse = None
+        if 'warehouse_id' not in res:
+            warehouse = self.env['stock.warehouse'].search(
+                [('company_id', '=', self.env.user.company_id.id)], limit=1)
+        if warehouse:
+            res['warehouse_id'] = warehouse.id
+            res['location_id'] = warehouse.lot_stock_id.id
+        return res
+
+    @api.onchange('warehouse_id')
+    def onchange_warehouse_id(self):
+        """ Finds location id for changed warehouse. """
+        if self.warehouse_id:
+            self.location_id = self.warehouse_id.lot_stock_id.id
 
     @api.multi
     def _prepare_suggest_line(self, product, qty_dict):
@@ -61,9 +83,9 @@ class PurchaseSuggestGenerate(models.TransientModel):
         if float_compare(
                 future_qty, min_qty,
                 precision_rounding=qty_dict['uom_rounding']) < 0:
-                # no entendi bien porque pero el scheduller busca menor igual
-                # nosotros solo queremos ordenar si se va por debajo
-                # precision_rounding=product.uom_id.rounding) <= 0:
+            # no entendi bien porque pero el scheduller busca menor igual
+            # nosotros solo queremos ordenar si se va por debajo
+            # precision_rounding=product.uom_id.rounding) <= 0:
             qty_to_order = max(min_qty, max_qty) - future_qty
 
             reste = (qty_multiple > 0 and qty_to_order % qty_multiple or 0.0)
@@ -93,8 +115,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
             'last_po_line_id': porderline_id,
             'qty_to_order': qty_to_order,
             'rotation': product.get_product_rotation(),
-            'location_rotation': product.get_product_rotation(
-                self.location_id),
+            'warehouse_rotation': product.get_product_rotation(
+                self.warehouse_id.view_location_id),
             'seller_id': product.main_seller_id.id,
             'currency_id': product.currency_id.id,
             'replenishment_cost': product.replenishment_cost,
@@ -299,7 +321,7 @@ class PurchaseSuggest(models.TransientModel):
     rotation = fields.Float(
         readonly=True,
     )
-    location_rotation = fields.Float(
+    warehouse_rotation = fields.Float(
         readonly=True,
     )
     order_amount = fields.Monetary(

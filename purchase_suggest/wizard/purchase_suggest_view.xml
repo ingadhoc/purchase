@@ -25,7 +25,8 @@
                 <field name="add_products_without_order_point"/>
                 <field name="categ_ids" widget="many2many_tags"/>
                 <field name="seller_ids" widget="many2many_tags"/>
-                <field name="location_id"/>
+                <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
+                <field name="location_id" groups="stock.group_stock_multi_locations"/>
             </group>
             <footer>
                 <button type="object" name="run" string="Generate" class="oe_highlight"/>
@@ -72,7 +73,7 @@
             <field name="replenishment_cost"/>
             <field name="order_amount"/>
             <field name="rotation"/>
-            <field name="location_rotation"/>
+            <field name="warehouse_rotation"/>
             <field name="currency_id" invisible="1"/>
         </tree>
     </field>
