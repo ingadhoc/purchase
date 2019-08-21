@@ -29,6 +29,7 @@ On purchase orders:
 #. Add a to filter by PO with billable returns.
 #. Add link from invoices to the purchase orders that generate it.
 #. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
+#. Add a button "Update Prices" to update prices from provider to purchase order lines.
 
 On purchase lines:
 
