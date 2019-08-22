@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 23:55+0000\n"
+"POT-Creation-Date: 2019-08-21 18:10+0000\n"
 "PO-Revision-Date: 2018-08-23 20:30+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
@@ -122,6 +122,11 @@ msgstr ""
 " unidad de medida de compra!)"
 
 #. module: purchase_suggest
+#: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_generate_warehouse_id
+msgid "For now used only to compute stock rotation"
+msgstr ""
+
+#. module: purchase_suggest
 #: model:ir.model.fields,help:purchase_suggest.field_purchase_suggest_virtual_available
 msgid ""
 "Forecast quantity in the unit of measure of the product (computed as "
@@ -190,17 +195,12 @@ msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: purchase_suggest
-#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_location_rotation
-msgid "Location Rotation"
-msgstr "Rotación en ubicación"
-
-#. module: purchase_suggest
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_seller_id
 msgid "Main Supplier"
 msgstr "Proveedor Principal"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:429
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:453
 #, python-format
 msgid "Make sure you have at least an incoming picking type defined"
 msgstr "Asegurese que tiene al menos un Tipo de albarán entrante definido"
@@ -241,13 +241,13 @@ msgid "Negative Forecast"
 msgstr "Previsiones Negativas / Roturas de stock"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:532
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:556
 #, python-format
 msgid "No purchase orders created or updated"
 msgstr "No se generaron o actualizaron Pedidos de Compra"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:525
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:549
 #, python-format
 msgid "No supplier configured for product '%s'."
 msgstr "No hay proveedor configurado para el producto '%s'."
@@ -306,7 +306,7 @@ msgid "Purchase UoM"
 msgstr "UdM de Compra"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:492
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:516
 #, python-format
 msgid "Purchase order updated from purchase suggestions."
 msgstr "Pedido de compra compra actualizado desde sugerido de compras."
@@ -425,7 +425,7 @@ msgstr ""
 " valor en la última columna"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:159
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:183
 #, python-format
 msgid ""
 "There are 2 orderpoints (%s and %s) for the same product on stock location "
@@ -435,7 +435,7 @@ msgstr ""
 "%s o sus hijas"
 
 #. module: purchase_suggest
-#: code:addons/purchase_suggest/wizard/purchase_suggest.py:272
+#: code:addons/purchase_suggest/wizard/purchase_suggest.py:296
 #, python-format
 msgid "There are no purchase suggestions to generate."
 msgstr "No hay sugerido de compra para generar"
@@ -461,6 +461,16 @@ msgstr "UdM"
 #: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_last_po_uom
 msgid "UoM of the Last Order"
 msgstr "UdM de la última compra"
+
+#. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_generate_warehouse_id
+msgid "Warehouse"
+msgstr ""
+
+#. module: purchase_suggest
+#: model:ir.model.fields,field_description:purchase_suggest.field_purchase_suggest_warehouse_rotation
+msgid "Warehouse Rotation"
+msgstr ""
 
 #. module: purchase_suggest
 #: model:ir.ui.view,arch_db:purchase_suggest.purchase_suggest_generate_form
