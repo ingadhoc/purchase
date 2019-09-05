@@ -9,7 +9,7 @@ class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
     def _prepare_stock_moves(self, picking):
-        res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
+        res = super()._prepare_stock_moves(picking)
         for rec in res:
             rec['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
         return res
