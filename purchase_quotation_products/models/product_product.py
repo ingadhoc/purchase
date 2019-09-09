@@ -3,7 +3,7 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api, _
-from openerp.osv.orm import setup_modifiers
+from odoo.osv.orm import setup_modifiers
 from lxml import etree
 
 
@@ -11,7 +11,7 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     qty_purchase = fields.Float(
-        string='Quantity',
+        string='Quantity to Purchase',
         compute='_compute_qty_purchase',
         help="Technical field. Used to compute the quantity of products"
         " related to a purchase order using the context",
@@ -20,9 +20,8 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_qty_purchase(self):
         purchase_order_id = self._context.get('active_id', False)
-        ProductUom = self.env['product.uom']
         if not purchase_order_id:
-            self.update({'qty_purchase': 0})
+            self.qty_purchase = 0
             return
 
         purchase_order_lines = self.env['purchase.order'].browse(
@@ -31,9 +30,8 @@ class ProductProduct(models.Model):
         for rec in self:
             lines = purchase_order_lines.filtered(
                 lambda x: x.product_id == rec)
-            value = sum([ProductUom._compute_quantity(
+            value = sum([line.product_uom._compute_quantity(
                 line.product_qty,
-                line.product_uom,
                 rec.uom_po_id) for line in lines])
             rec.qty_purchase = value
 
@@ -56,15 +54,13 @@ class ProductProduct(models.Model):
     @api.multi
     def action_product_form(self):
         self.ensure_one()
-        view_id = self.env['ir.model.data'].xmlid_to_res_id(
-            'product.product_normal_form_view')
+        view_id = self.env.ref('product.product_normal_form_view').id
         return {
             'name': _('Product'),
             'view_type': 'form',
             "view_mode": 'form',
             'res_model': 'product.product',
             'type': 'ir.actions.act_window',
-            # 'domain': [('id', 'in', self.apps_product_ids.ids)],
             'res_id': self.id,
             'view_id': view_id,
         }
