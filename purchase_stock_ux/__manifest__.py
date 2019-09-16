@@ -18,8 +18,8 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase UX',
-    'version': '12.0.1.1.0',
+    'name': 'Purchase Stock UX',
+    'version': '12.0.1.0.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -29,20 +29,22 @@
     'images': [
     ],
     'depends': [
-        'purchase',
+        'purchase_ux',
+        'purchase_stock',
+        'stock_ux',
+        # for use user_company_currency_id
+        'product_ux',
+
     ],
     'data': [
-        'wizards/purchase_change_currency_views.xml',
-        'wizards/purchase_order_line_add_to_invoice_views.xml',
-        'views/account_invoice_views.xml',
         'views/ir_ui_menu.xml',
         'views/purchase_order_views.xml',
         'views/purchase_line_views.xml',
-        'views/product_template_views.xml',
+        'views/stock_move_views.xml',
     ],
     'demo': [
     ],
     'installable': True,
-    'auto_install': False,
+    'auto_install': True,
     'application': False,
 }

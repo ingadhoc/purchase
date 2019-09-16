@@ -6,12 +6,12 @@
         <field name="model">purchase.order</field>
         <!-- for compatibility with purchase_stock_picking_return_invoicing -->
         <field name="priority">10</field>
-        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <!-- add print button -->
-            <button name="action_view_picking" position="before">
+            <xpath expr="//header/button[@name='action_rfq_send']" position="after">
                 <button name="print_quotation" string="Print PO" type="object" states="purchase,done" groups="base.group_user"/>
-            </button>
+            </xpath>
 
             <button name="button_done" position="after">
                 <button name="button_set_invoiced" type="object" string="Set Invoiced" attrs="{'invisible': ['|', ('state', '!=', 'done'), ('invoice_status', '!=', 'to invoice')]}" confirm="This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?" groups="base.group_no_one"/>
@@ -22,19 +22,12 @@
 
             <field name="invoice_status" position="before">
                 <field name="force_invoiced_status" groups="base.group_no_one"/>
-                <field name="force_delivered_status" groups="base.group_no_one"/>
             </field>
             <!-- agregamos boton de actualizar precios a las lineas -->
             <field name="order_line" position="before">
                 <button name="update_prices" string="Update Prices" help="Actualiza los precios de las líneas con los precios del proveedor definidos en los productos" type="object" states="draft,sent"/>
                 <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the order. Are you sure you wish to continue?"/>
             </field>
-            <!-- agregamos boton de cancelar linea -->
-            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="after">
-                <field name="delivery_status" invisible="1"/>
-                <button name="button_cancel_remaining" type="object" string="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" attrs="{'invisible': [('delivery_status', '!=', 'to receive')]}" groups="purchase.group_purchase_manager"/>
-                <field name="qty_returned" string="Returned Quantity" attrs="{'invisible': [('qty_returned', '=', 0.0)]}" invisible="not context.get('show_purchase')"/>
-            </xpath>
             <field name="currency_id" position="replace">
                 <label for="currency_id" groups="base.group_multi_currency"/>
                 <div groups="base.group_multi_currency">
@@ -52,17 +45,9 @@
         <field name="arch" type="xml">
             <filter name="invoiced" position="after">
                 <separator/>
-                <filter name="with_returns" string="With Returns" domain="[('with_returns','=', True)]" help="Purchase orders with billable returns"/>
-                <separator/>
-            </filter>
-            <filter name="not_invoiced" position="before">
-                <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]" help="Purchase orders that include lines not received."/>
-                <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]" help="Purchase orders with all lines received."/>
-                <separator/>
             </filter>
             <group>
                 <filter name="invoice_status" string="Invoice Satus" domain="[]" context="{'group_by':'invoice_status'}"/>
-                <filter name="delivery_status" string="Delivery Satus" domain="[]" context="{'group_by':'delivery_status'}"/>
             </group>
         </field>
     </record>
@@ -72,10 +57,6 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_tree"/>
         <field name="arch" type="xml">
-            <tree>
-                <field name="delivery_status"/>
-            </tree>
-
             <!-- como unificamos menus hacemos que sea mas visible cuales son las borrador -->
             <tree position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>

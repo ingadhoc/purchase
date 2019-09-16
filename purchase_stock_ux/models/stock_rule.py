@@ -47,8 +47,10 @@ class StockRule(models.Model):
                 force_company=values['company_id'].id).standard_price
             company_currency = values['company_id'].currency_id
             if (price_unit and line.order_id.currency_id != company_currency):
-                price_unit = company_currency.compute(
-                    price_unit, line.order_id.currency_id)
+                price_unit = company_currency._convert(
+                    price_unit, line.order_id.currency_id,
+                    values['company_id'],
+                    line.order_id.date_order or fields.Date.today())
             if (
                     price_unit and product_uom and
                     product_id.uom_id != product_uom):

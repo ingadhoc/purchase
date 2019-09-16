@@ -10,38 +10,34 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-===========
-Purchase UX
-===========
+=================
+Purchase Stock UX
+=================
 
 Several Improvements to purchases
 
 On purchase orders:
 
-#. Make button send by email also available on done state on purchase orders
-#. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
-#. Make purchase quotations menu only visible with technical features
-#. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-#. Add print PO on purchase and done status
-#. Add button to force "invoiced" only for admin with tec features
-#. Add button to change the currency and update the prices of the order lines
+#. Add delivery status on purchases
 #. Add a to filter by PO with billable returns.
-#. Add link from invoices to the purchase orders that generate it.
-#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
-#. Add a button "Update Prices" to update prices from provider to purchase order lines.
 
 On purchase lines:
 
-#. If not seller is defined or seller price is 0, then sugget accounting cost
+#. Add delivery status and invoice status on purchase lines
+#. Add button on purchase lines to allow cancelling of remaining qty to be received
+#. Add return quantity when you return products with "To Refund" option.
+
+On incoming pickings:
+
+#. Add button "Add Purchase Lines" to add moves from other pickings that are still pending.
 
 On purchase invoices:
 
 #. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them.
-#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 
-On Products:
+On Stock Moves:
 
-#. Allows to search by suppliers and to group by main supplier on product and product variants.
+#. Add button to access to purchase order related.
 
 
 

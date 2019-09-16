@@ -22,13 +22,11 @@
                 <attribute name="delete">false</attribute>
             </tree>
             <field name="product_qty" position="after">
-                <field name="qty_received"/>
                 <field name="qty_invoiced"/>
                 <!-- to display currency symbol on monetary widget -->
                 <field name="currency_id" invisible="1"/>
             </field>
             <tree>
-                <field name="vouchers"/>
                 <field name="state" invisible="1"/>
             </tree>
         </field>
@@ -53,12 +51,8 @@
         <field name="inherit_id" ref="purchase.purchase_order_line_search"/>
         <field name="arch" type="xml">
             <filter position="before">
-                <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]" context="{'voucher': self}"/>
                 <filter name="draft" string="Quotations" domain="[('state','in',('draft','sent','to approve'))]"/>
                 <filter name="approved" string="Purchase Orders" domain="[('state','in',('purchase','done'))]"/>
-                <separator/>
-                <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]"/>
-                <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]"/>
                 <separator/>
                 <filter name="not_invoiced" string="Not Invoiced" domain="[('invoice_status','=', 'to invoice')]"/>
                 <filter name="invoiced" string="Invoiced" domain="[('invoice_status','=', 'invoiced')]"/>
