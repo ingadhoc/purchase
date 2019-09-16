@@ -22,7 +22,6 @@ On purchase orders:
 #. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
 #. Make purchase quotations menu only visible with technical features
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-#. Add delivery status on purchases
 #. Add print PO on purchase and done status
 #. Add button to force "invoiced" only for admin with tec features
 #. Add button to change the currency and update the prices of the order lines
@@ -33,14 +32,7 @@ On purchase orders:
 
 On purchase lines:
 
-#. Add delivery status and invoice status on purchase lines
-#. Add button on purchase lines to allow cancelling of remaining qty to be received
 #. If not seller is defined or seller price is 0, then sugget accounting cost
-#. Add return quantity when you return products with "To Refund" option.
-
-On incoming pickings:
-
-#. Add button "Add Purchase Lines" to add moves from other pickings that are still pending.
 
 On purchase invoices:
 
@@ -50,10 +42,6 @@ On purchase invoices:
 On Products:
 
 #. Allows to search by suppliers and to group by main supplier on product and product variants.
-
-On Stock Moves:
-
-#. Add button to access to purchase order related.
 
 
 

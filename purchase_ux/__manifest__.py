@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase UX',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.1.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -29,11 +29,7 @@
     'images': [
     ],
     'depends': [
-        'purchase_stock',
-        # we add stock voucher to have voucher information on purchase line
-        'stock_ux',
-        # for use user_company_currency_id
-        'product_ux',
+        'purchase',
     ],
     'data': [
         'wizards/purchase_change_currency_views.xml',
@@ -43,7 +39,6 @@
         'views/purchase_order_views.xml',
         'views/purchase_line_views.xml',
         'views/product_template_views.xml',
-        'views/stock_move_views.xml',
     ],
     'demo': [
     ],
