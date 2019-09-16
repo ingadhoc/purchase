@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="purchase_order_line_tree" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_qty" position="after">
+                <field name="qty_received"/>
+            </field>
+            <tree>
+                <field name="vouchers"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="purchase_order_line_search" model="ir.ui.view">
+        <field name="name">purchase.order.line.search</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_search"/>
+        <field name="arch" type="xml">
+            <filter position="before">
+                <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]" context="{'voucher': self}"/>
+                <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]"/>
+                <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+</odoo>
