@@ -5,6 +5,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
+from lxml import etree
 import odoo.addons.decimal_precision as dp
 import logging
 _logger = logging.getLogger(__name__)
@@ -155,3 +156,37 @@ class PurchaseOrderLine(models.Model):
                     move.product_uom_qty,
                     line.product_uom)
             line.qty_returned = qty
+
+    # Overwrite the origin method to introduce the qty_on_voucher
+    @api.multi
+    def action_add_all_to_invoice(self):
+        for rec in self:
+            rec.invoice_qty = rec.qty_on_voucher or (
+                rec.qty_to_invoice + rec.invoice_qty)
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form',
+                        toolbar=False, submenu=False):
+        """
+        If we came from invoice, we send in context 'force_line_edit'
+        and we change tree view to make editable and also field qty
+        """
+        res = super().fields_view_get(
+            view_id=view_id, view_type=view_type,
+            toolbar=toolbar, submenu=submenu)
+        if self._context.get('force_line_edit') and view_type == 'tree':
+            doc = etree.XML(res['arch'])
+            placeholder = doc.xpath("//field[1]")[0]
+            placeholder.addprevious(
+                etree.Element('field', {
+                    'name': 'qty_on_voucher',
+                    'readonly': '1',
+                    # on enterprise view is not refres
+                    # 'invisible': "not context.get('voucher', False)",
+                }))
+
+            res['fields'].update(self.fields_get(
+                ['qty_on_voucher']))
+            res['arch'] = etree.tostring(doc)
+
+        return res

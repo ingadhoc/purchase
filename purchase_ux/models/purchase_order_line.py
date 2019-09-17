@@ -90,21 +90,12 @@ class PurchaseOrderLine(models.Model):
         res = super().fields_view_get(
             view_id=view_id, view_type=view_type,
             toolbar=toolbar, submenu=submenu)
-        force_line_edit = self._context.get(
-            'force_line_edit')
+        force_line_edit = self._context.get('force_line_edit')
         if force_line_edit and view_type == 'tree':
             doc = etree.XML(res['arch'])
             # add to invoice qty field (before setupmodifis because if not
             # it remains editable)
             placeholder = doc.xpath("//field[1]")[0]
-            placeholder.addprevious(
-                etree.Element('field', {
-                    'name': 'qty_on_voucher',
-                    'readonly': '1',
-                    # on enterprise view is not refres
-                    # 'invisible': "not context.get('voucher', False)",
-                }))
-            placeholder = doc.xpath("//field[2]")[0]
             placeholder.addprevious(
                 etree.Element('field', {
                     'name': 'qty_to_invoice',
@@ -124,8 +115,7 @@ class PurchaseOrderLine(models.Model):
                     'readonly': '0',
                 }))
             res['fields'].update(self.fields_get(
-                ['invoice_qty', 'qty_to_invoice',
-                 'qty_on_voucher']))
+                ['invoice_qty', 'qty_to_invoice']))
 
             # add button to add all
             placeholder.addprevious(
@@ -262,8 +252,7 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
-            rec.invoice_qty = rec.qty_on_voucher or (
-                rec.qty_to_invoice + rec.invoice_qty)
+            rec.invoice_qty = (rec.qty_to_invoice + rec.invoice_qty)
 
     @api.onchange('product_qty', 'product_uom')
     def _onchange_quantity(self):
