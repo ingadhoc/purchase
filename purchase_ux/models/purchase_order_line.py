@@ -277,8 +277,7 @@ class PurchaseOrderLine(models.Model):
             if (
                     price_unit and self.product_uom and
                     self.product_id.uom_id != self.product_uom):
-                price_unit = self.env['product.uom']._compute_price(
-                    self.product_id.uom_id.id, price_unit,
-                    to_uom_id=self.product_uom.id)
+                price_unit = self.product_id.uom_id._compute_price(
+                    price_unit, self.product_uom)
             self.price_unit = price_unit
         return res
