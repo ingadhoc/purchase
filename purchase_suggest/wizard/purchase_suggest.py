@@ -158,7 +158,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
             'uom_id')
         for product_uom_read in product_uoms_read:
             uom_id = product_uom_read['uom_id'][0]
-            rounding = self.env['product.uom'].browse(uom_id).rounding
+            rounding = self.env['uom.uom'].browse(uom_id).rounding
 
             products_subset = self.env['product.product'].search(
                 product_domain + [('uom_id', '=', uom_id)])
@@ -203,7 +203,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 'uom_id')
             for product_uom_read in product_uoms_read:
                 uom_id = product_uom_read['uom_id'][0]
-                rounding = self.env['product.uom'].browse(uom_id).rounding
+                rounding = self.env['uom.uom'].browse(uom_id).rounding
                 new_products = self.env['product.product'].search(
                     product_domain + [('uom_id', '=', uom_id)])
                 for product in new_products:
@@ -365,10 +365,10 @@ class PurchaseSuggest(models.TransientModel):
     product_id = fields.Many2one(
         'product.product', string='Product', required=True, readonly=True)
     uom_id = fields.Many2one(
-        'product.uom', string='UoM', related='product_id.uom_id',
+        'uom.uom', string='UoM', related='product_id.uom_id',
         readonly=True)
     uom_po_id = fields.Many2one(
-        'product.uom', string='Purchase UoM', related='product_id.uom_po_id',
+        'uom.uom', string='Purchase UoM', related='product_id.uom_po_id',
         readonly=True)
     seller_id = fields.Many2one(
         'res.partner', string='Main Supplier', readonly=True,
@@ -513,7 +513,7 @@ class PurchaseSuggestPoCreate(models.TransientModel):
                     new_po_line.product_qty = qty_to_order
                     new_po_line._onchange_quantity()
             existing_po.message_post(
-                _('Purchase order updated from purchase suggestions.'))
+                body=_('Purchase order updated from purchase suggestions.'))
             return existing_po
         else:
             # create new PO
