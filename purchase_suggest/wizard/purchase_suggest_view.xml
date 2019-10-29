@@ -64,12 +64,12 @@
             <field name="min_qty" string="Min Qty"/>
             <field name="max_qty" string="Max Qty"/>
             <field name="qty_multiple" string="Mult. Qty"/>
-            <field name="uom_id" groups="product.group_uom"/>
+            <field name="uom_id" groups="uom.group_uom"/>
             <field name="last_po_date" widget="date"/>
             <field name="last_po_qty"/>
-            <field name="last_po_uom" groups="product.group_uom"/>
+            <field name="last_po_uom" groups="uom.group_uom"/>
             <field name="qty_to_order"/>
-            <field name="uom_po_id" groups="product.group_uom"/>
+            <field name="uom_po_id" groups="uom.group_uom"/>
             <field name="replenishment_cost"/>
             <field name="order_amount"/>
             <field name="rotation"/>

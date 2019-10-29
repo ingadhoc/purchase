@@ -10,9 +10,8 @@
     'author': 'Akretion,ADHOC SA',
     'website': 'http://www.akretion.com',
     'depends': [
-        'purchase_ux',
+        'purchase_stock_ux',
         # 'purchase_suggest',
-        'stock_ux',
         'product_replenishment_cost',
     ],
     'conflicts': ['procurement_suggest'],
@@ -20,5 +19,5 @@
         'views/stock_view.xml',
         'wizard/purchase_suggest_view.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
