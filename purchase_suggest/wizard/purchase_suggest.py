@@ -365,11 +365,9 @@ class PurchaseSuggest(models.TransientModel):
     product_id = fields.Many2one(
         'product.product', string='Product', required=True, readonly=True)
     uom_id = fields.Many2one(
-        'uom.uom', string='UoM', related='product_id.uom_id',
-        readonly=True)
+        'uom.uom', string='UoM', related='product_id.uom_id',)
     uom_po_id = fields.Many2one(
-        'uom.uom', string='Purchase UoM', related='product_id.uom_po_id',
-        readonly=True)
+        'uom.uom', string='Purchase UoM', related='product_id.uom_po_id',)
     seller_id = fields.Many2one(
         'res.partner', string='Main Supplier', readonly=True,
         domain=[('supplier', '=', True)])
@@ -395,13 +393,13 @@ class PurchaseSuggest(models.TransientModel):
         readonly=True)
     last_po_date = fields.Datetime(
         related='last_po_line_id.order_id.date_order',
-        string='Date of the Last Order', readonly=True)
+        string='Date of the Last Order')
     last_po_qty = fields.Float(
-        related='last_po_line_id.product_qty', readonly=True,
+        related='last_po_line_id.product_qty',
         digits=dp.get_precision('Product Unit of Measure'),
         string='Quantity of the Last Order')
     last_po_uom = fields.Many2one(
-        related='last_po_line_id.product_uom', readonly=True,
+        related='last_po_line_id.product_uom',
         string='UoM of the Last Order')
     orderpoint_id = fields.Many2one(
         'stock.warehouse.orderpoint', string='Re-ordering Rule',
