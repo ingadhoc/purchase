@@ -22,4 +22,4 @@ class PurchaseOrderLine(models.Model):
                     ", ".join(self.move_ids.filtered(
                         lambda x: x.to_refund).mapped('product_id.name')),
                     ))
-        return super(PurchaseOrderLine, self)._get_bom_delivered(bom=bom)
+        return super()._get_bom_delivered(bom=bom)
