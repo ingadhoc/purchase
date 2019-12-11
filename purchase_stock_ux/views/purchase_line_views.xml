@@ -8,6 +8,8 @@
         <field name="arch" type="xml">
             <field name="product_qty" position="after">
                 <field name="qty_received"/>
+                <field name="delivery_status" invisible="1"/>
+                <button name="button_cancel_remaining" type="object" string="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" attrs="{'invisible': [('delivery_status', '!=', 'to receive')]}" groups="purchase.group_purchase_manager"/>
             </field>
             <tree>
                 <field name="vouchers"/>
