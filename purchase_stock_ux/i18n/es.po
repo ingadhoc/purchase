@@ -1,0 +1,188 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * purchase_stock_ux
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-26 00:58+0000\n"
+"PO-Revision-Date: 2019-09-16 14:48+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: purchase_stock_ux
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:95
+#, python-format
+msgid ""
+"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
+"%s"
+msgstr ""
+"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
+"%s"
+
+#. module: purchase_stock_ux
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:87
+#, python-format
+msgid ""
+"Cancel remaining can't be called for Kit Products (products with a bom of "
+"type kit)."
+msgstr ""
+"Cancel remaining can't be called for Kit Products (products with a bom of "
+"type kit)."
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
+msgid ""
+"Cancel remaining quanitity to be received. This will set line quantity equal"
+" to received qty and will cancel remaining moves"
+msgstr ""
+"Cancel remaining quanitity to be received. This will set line quantity equal"
+" to received qty and will cancel remaining moves"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Delivery Satus"
+msgstr "Delivery Satus"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__delivery_status
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__delivery_status
+msgid "Delivery Status"
+msgstr "Delivery Status"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
+msgid "Force Delivered Status"
+msgstr "Force Delivered Status"
+
+#. module: purchase_stock_ux
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order,force_delivered_status:0
+#: selection:purchase.order.line,delivery_status:0
+msgid "Not purchased"
+msgstr "Not purchased"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_on_voucher
+msgid "On Voucher"
+msgstr "On Voucher"
+
+#. module: purchase_stock_ux
+#: code:addons/purchase_stock_ux/models/purchase_order.py:88
+#, python-format
+msgid "Only users with \"%s / %s\" can Set Received manually"
+msgstr "Only users with \"%s / %s\" can Set Received manually"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__purchase_id
+msgid "Order Reference"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:138
+#, python-format
+msgid "Ordered quantity decreased!"
+msgstr "Ordered quantity decreased!"
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_purchase_order
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_move_form
+msgid "Purchase Order"
+msgstr "Orden de Compra"
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de orden de compra"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Purchase orders that include lines not received."
+msgstr "Purchase orders that include lines not received."
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Purchase orders with all lines received."
+msgstr "Purchase orders with all lines received."
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Purchase orders with billable returns"
+msgstr "Pedidos de compra con devoluciones facturables."
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order,force_delivered_status:0
+#: selection:purchase.order.line,delivery_status:0
+msgid "Received"
+msgstr "Recibido"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_returned
+msgid "Returned"
+msgstr "Devuelto"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
+msgid "Returned Quantity"
+msgstr "Cantidad devuelta"
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_stock_rule
+msgid "Stock Rule"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
+msgid ""
+"This will set line quantity equal to received qty and will cancel remaining "
+"moves. This can not be undone. Are you sure you want to continue?"
+msgstr ""
+"This will set line quantity equal to received qty and will cancel remaining "
+"moves. This can not be undone. Are you sure you want to continue?"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+#: selection:purchase.order,delivery_status:0
+#: selection:purchase.order.line,delivery_status:0
+msgid "To Receive"
+msgstr "Para recibir"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__vouchers
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
+msgid "Vouchers"
+msgstr "Remitos"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__with_returns
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "With Returns"
+msgstr "Con Devoluciones"
+
+#. module: purchase_stock_ux
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:79
+#, python-format
+msgid ""
+"You can not cancel remianing qty to receive because there are more product "
+"invoiced than the received. You should correct invoice or ask for a refund"
+msgstr ""
+"You can not cancel remianing qty to receive because there are more product "
+"invoiced than the received. You should correct invoice or ask for a refund"

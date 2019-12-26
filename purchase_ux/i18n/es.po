@@ -1,0 +1,385 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * purchase_ux
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-26 00:58+0000\n"
+"PO-Revision-Date: 2019-07-11 22:39+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "(change)"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid ""
+"Actualiza los precios de las líneas con los precios del proveedor definidos "
+"en los productos"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_invoice_supplier_purchase_form
+msgid "Add Purchase Lines"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order_line.py:126
+#, python-format
+msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
+msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
+msgid "All the selected lines are going to be added to the following invoice."
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_invoice_supplier_purchase_form
+msgid ""
+"By accepting they will update (or create prices) for this provider and all "
+"products loaded on the invoice. Are you sure you wish to continue?"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid ""
+"By accepting they will update (or create prices) for this provider and all "
+"products loaded on the order. Are you sure you wish to continue?"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
+msgid "Cancel"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__qty_to_invoice
+msgid "Cantidad en factura actual"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase_ux.action_purchase_change_currency
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
+msgid "Change Currency"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_change_currency
+msgid "Change Currency Purchase Order"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__currency_id
+msgid "Change to"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
+msgid "Confirm"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
+msgid "Confirm Draft Invoices"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__create_uid
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__create_date
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__currency_rate
+msgid "Currency Rate"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__display_name
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid "En Factura actual"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid ""
+"Filtra las lineas que estan cargadas en el picking de contexto (si es que "
+"existe uno)"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__force_invoiced_status
+msgid "Force Invoiced Status"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__id
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__id
+msgid "ID"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_account_invoice
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__invoice_id
+msgid "Invoice"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
+msgid "Invoice Currency"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__invoice_qty
+msgid "Invoice Quantity"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
+msgid "Invoice Satus"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__invoice_status
+msgid "Invoice Status"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid "Invoiced"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency____last_update
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__write_uid
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__write_date
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_product_product__main_seller_id
+#: model:ir.model.fields,field_description:purchase_ux.field_product_template__main_seller_id
+#: model_terms:ir.ui.view,arch_db:purchase_ux.product_template_search_view
+msgid "Main Seller"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order.py:55
+#, python-format
+msgid "Manually setted as invoiced"
+msgstr ""
+
+#. module: purchase_ux
+#: selection:purchase.order,force_invoiced_status:0
+#: selection:purchase.order.line,invoice_status:0
+msgid "No Bill to Receive"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/wizards/purchase_change_currency.py:31
+#, python-format
+msgid "No Purchase Order on context as \"active_id\""
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid "Not Invoiced"
+msgstr ""
+
+#. module: purchase_ux
+#: selection:purchase.order,force_invoiced_status:0
+#: selection:purchase.order.line,invoice_status:0
+msgid "Nothing to Bill"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/wizards/purchase_change_currency.py:41
+#, python-format
+msgid "Old Currency And New Currency can not be the same"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order.py:46
+#: code:addons/purchase_ux/models/purchase_order.py:72
+#, python-format
+msgid "Only users with \"%s / %s\" can Set Invoiced manually"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order_line.py:137
+#, python-format
+msgid "Open Purchase Line Form View"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__order_id
+msgid "Order Reference"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__partner_id
+msgid "Partner"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Print PO"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/models/purchase_order_line.py:152
+#, python-format
+msgid "Purchase Line"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree
+#: model:ir.ui.menu,name:purchase_ux.menu_action_purchase_line_tree
+msgid "Purchase Lines"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_order
+#: model:ir.model.fields,field_description:purchase_ux.field_account_invoice__purchase_order_ids
+msgid "Purchase Order"
+msgstr "Orden de Compra"
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de orden de compra"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.invoice_supplier_form
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
+msgid "Quotations"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_change_currency__currency_rate
+msgid "Select a currency rate to apply on the purchase order"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_change_currency__currency_id
+msgid "Select a currency to apply on the purchase order"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:25
+#, python-format
+msgid "Selected lines must be from the same partner"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Set Invoiced"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid ""
+"This order will be setted as invoiced. This operation can't be undone. Are "
+"you sure do you want to continue?"
+msgstr ""
+
+#. module: purchase_ux
+#: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:50
+#, python-format
+msgid "This wizard must be called from purchase lines"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
+msgid "This wizard will change the currency of the purchase order"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Update Prices"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_invoice_supplier_purchase_form
+msgid "Update Supplier Prices"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_product_product__main_seller_id
+#: model:ir.model.fields,help:purchase_ux.field_product_template__main_seller_id
+msgid "Vendor of this product"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
+msgid "Voucher"
+msgstr ""
+
+#. module: purchase_ux
+#: selection:purchase.order.line,invoice_status:0
+msgid "Waiting Invoices"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
+msgid "or"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
+msgid "purchase.order.line.add_to_invoice"
+msgstr ""
