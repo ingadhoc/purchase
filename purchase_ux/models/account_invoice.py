@@ -48,7 +48,7 @@ class AccountInvoice(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.invoice_line_ids.filtered('price_unit'):
+        for rec in self.invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit):
             seller = rec.product_id._select_seller(
                 partner_id=rec.invoice_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
