@@ -48,7 +48,8 @@ class AccountInvoice(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit):
+        for rec in self.with_context(
+                force_company=self.company_id.id).invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit):
             seller = rec.product_id._select_seller(
                 partner_id=rec.invoice_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
@@ -65,7 +66,9 @@ class AccountInvoice(models.Model):
                     'date_start': rec.invoice_id.date_invoice and
                     rec.invoice_id.date_invoice.date(),
                     'name': rec.invoice_id.partner_id.id,
+                    'currency_id': rec.invoice_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
+                    'company_id': self.company_id.id,
                 })
             price_unit = rec.price_unit
             if rec.uom_id and seller.product_uom != rec.uom_id:
