@@ -156,7 +156,7 @@ class PurchaseOrder(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.order_line.filtered('price_unit'):
+        for rec in self.order_line.with_context(force_company=self.company_id.id).filtered('price_unit'):
             seller = rec.product_id._select_seller(
                 partner_id=rec.order_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
@@ -173,7 +173,9 @@ class PurchaseOrder(models.Model):
                     'date_start': rec.order_id.date_order and
                     rec.order_id.date_order[:10],
                     'name': rec.order_id.partner_id.id,
+                    'currency_id': rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
+                    'company_id': self.company_id.id,
                 })
             price_unit = rec.price_unit
             if rec.product_uom and seller.product_uom != rec.product_uom:
