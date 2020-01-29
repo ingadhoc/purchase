@@ -17,7 +17,7 @@ class PurchaseOrder(models.Model):
         copy=False,
     )
 
-    @api.depends('force_invoiced_status', 'order_line.move_ids.state')
+    @api.depends('force_invoiced_status')
     def _get_invoiced(self):
         for order in self:
             if order.state not in ('purchase', 'done'):
