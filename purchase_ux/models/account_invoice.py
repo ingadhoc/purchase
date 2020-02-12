@@ -62,7 +62,7 @@ class AccountInvoice(models.Model):
                 uom_id=False,
             )
             if not seller:
-                seller = self.env['product.supplierinfo'].create({
+                seller = self.env['product.supplierinfo'].sudo().create({
                     'date_start': rec.invoice_id.date_invoice and
                     rec.invoice_id.date_invoice[:10],
                     'name': rec.invoice_id.partner_id.id,
