@@ -29,7 +29,7 @@
     'depends': [
         'purchase_mrp',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
