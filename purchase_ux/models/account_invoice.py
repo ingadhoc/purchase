@@ -14,14 +14,12 @@ class AccountInvoice(models.Model):
         compute='_compute_purchase_orders'
     )
 
-    @api.multi
     def _compute_purchase_orders(self):
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order.line'].search(
                 [('invoice_lines', 'in', rec.invoice_line_ids.ids)]).mapped(
                 'order_id')
 
-    @api.multi
     def add_purchase_line_moves(self):
         self.ensure_one()
         actions = self.env.ref(
@@ -44,7 +42,6 @@ class AccountInvoice(models.Model):
 
         return action_read
 
-    @api.multi
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields

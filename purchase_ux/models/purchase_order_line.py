@@ -4,11 +4,8 @@
 ##############################################################################
 from odoo import models, fields, api, _
 from odoo.tools import float_compare, float_is_zero
-import odoo.addons.decimal_precision as dp
 from odoo.osv.orm import setup_modifiers
 from lxml import etree
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class PurchaseOrderLine(models.Model):
@@ -36,7 +33,7 @@ class PurchaseOrderLine(models.Model):
         compute='_compute_invoice_qty',
         inverse='_inverse_invoice_qty',
         search='_search_invoice_qty',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
     )
 
     qty_to_invoice = fields.Float(
@@ -44,7 +41,7 @@ class PurchaseOrderLine(models.Model):
         string='Cantidad en factura actual',
         store=True,
         readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         default=0.0
     )
 
@@ -145,7 +142,6 @@ class PurchaseOrderLine(models.Model):
             res['arch'] = etree.tostring(doc)
         return res
 
-    @api.multi
     def action_line_form(self):
         self.ensure_one()
         return {
@@ -157,7 +153,6 @@ class PurchaseOrderLine(models.Model):
             'res_id': self.id,
         }
 
-    @api.multi
     def _compute_invoice_qty(self):
         invoice_id = self._context.get('active_id', False)
         if not invoice_id:
@@ -174,7 +169,6 @@ class PurchaseOrderLine(models.Model):
                     lines.mapped('quantity'))
             rec.invoice_qty = invoice_qty
 
-    @api.multi
     def _inverse_invoice_qty(self):
         invoice_id = self._context.get('active_id', False)
         active_model = self._context.get('active_model', False)
@@ -249,7 +243,6 @@ class PurchaseOrderLine(models.Model):
             return []
         return [('invoice_lines.invoice_id', 'in', [invoice_id])]
 
-    @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
             rec.invoice_qty = (rec.qty_to_invoice + rec.invoice_qty)

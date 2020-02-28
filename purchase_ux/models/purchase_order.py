@@ -39,7 +39,6 @@ class PurchaseOrder(models.Model):
             else:
                 order.invoice_status = 'no'
 
-    @api.multi
     def button_set_invoiced(self):
         if not self.user_has_groups('base.group_system'):
             group = self.env.ref('base.group_system').sudo()
@@ -54,7 +53,6 @@ class PurchaseOrder(models.Model):
         self.order_line.write({'qty_to_invoice': 0.0})
         self.message_post(body=_('Manually setted as invoiced'))
 
-    @api.multi
     def write(self, vals):
         self.check_force_invoiced_status(vals)
         return super().write(vals)
@@ -73,7 +71,6 @@ class PurchaseOrder(models.Model):
                 'Only users with "%s / %s" can Set Invoiced manually') % (
                 group.category_id.name, group.name))
 
-    @api.multi
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
@@ -112,7 +109,6 @@ class PurchaseOrder(models.Model):
                     price_unit, seller.currency_id, rec.order_id.company_id,
                     rec.order_id.date_order or fields.Date.today())
 
-    @api.multi
     def update_prices(self):
         for line in self.order_line:
             line._onchange_quantity()

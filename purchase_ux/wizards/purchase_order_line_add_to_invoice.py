@@ -51,7 +51,6 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
                 'This wizard must be called from purchase lines'))
         return self.env[active_model].browse(active_ids)
 
-    @api.multi
     def confirm(self):
         self.ensure_one()
         pol = self.get_purchase_lines()
