@@ -3,8 +3,11 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api, _
-from odoo.osv.orm import setup_modifiers
 from lxml import etree
+from odoo.addons.base.models.ir_ui_view import (
+    transfer_field_to_modifiers,
+    transfer_node_to_modifiers,
+    transfer_modifiers_to_node)
 
 
 class ProductProduct(models.Model):
@@ -17,6 +20,7 @@ class ProductProduct(models.Model):
         " related to a purchase order using the context",
     )
 
+    @api.depends_context('active_id')
     def _compute_qty_purchase(self):
         purchase_order_id = self._context.get('active_id', False)
         if not purchase_order_id:
@@ -90,8 +94,13 @@ class ProductProduct(models.Model):
 
             # make all fields not editable
             for node in doc.xpath("//field"):
-                node.set('readonly', '1')
-                setup_modifiers(node, res['fields'], in_tree_view=True)
+                node.set('readonly', 'True')
+                field = res['fields']
+                modifiers = {}
+                if field is not None:
+                    transfer_field_to_modifiers(field, modifiers)
+                transfer_node_to_modifiers(node, modifiers, in_tree_view=True)
+                transfer_modifiers_to_node(modifiers, node)
 
             # add qty field
             placeholder = doc.xpath("//field[1]")[0]
@@ -118,7 +127,7 @@ class ProductProduct(models.Model):
                 node.set('edit', 'true')
                 node.set('create', 'false')
                 node.set('editable', 'top')
-            res['arch'] = etree.tostring(doc)
+            res['arch'] = etree.tostring(doc, encoding='unicode')
         return res
 
     def write(self, vals):
