@@ -4,10 +4,7 @@
 ##############################################################################
 from odoo import models, fields, api, _
 from lxml import etree
-from odoo.addons.base.models.ir_ui_view import (
-    transfer_field_to_modifiers,
-    transfer_node_to_modifiers,
-    transfer_modifiers_to_node)
+import json
 
 
 class ProductProduct(models.Model):
@@ -94,13 +91,10 @@ class ProductProduct(models.Model):
 
             # make all fields not editable
             for node in doc.xpath("//field"):
-                node.set('readonly', 'True')
-                field = res['fields']
-                modifiers = {}
-                if field is not None:
-                    transfer_field_to_modifiers(field, modifiers)
-                transfer_node_to_modifiers(node, modifiers, in_tree_view=True)
-                transfer_modifiers_to_node(modifiers, node)
+                node.set('readonly', '1')
+                modifiers = json.loads(node.get("modifiers") or "{}")
+                modifiers['readonly'] = True
+                node.set("modifiers", json.dumps(modifiers))
 
             # add qty field
             placeholder = doc.xpath("//field[1]")[0]
