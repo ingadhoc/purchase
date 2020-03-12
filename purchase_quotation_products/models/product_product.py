@@ -17,7 +17,6 @@ class ProductProduct(models.Model):
         " related to a purchase order using the context",
     )
 
-    @api.multi
     def _compute_qty_purchase(self):
         purchase_order_id = self._context.get('active_id', False)
         if not purchase_order_id:
@@ -35,7 +34,6 @@ class ProductProduct(models.Model):
                 rec.uom_po_id) for line in lines])
             rec.qty_purchase = value
 
-    @api.multi
     def _set_qty_purchase(self, qty):
         self.ensure_one()
         purchase_order_id = self._context.get('active_id', False)
@@ -51,7 +49,6 @@ class ProductProduct(models.Model):
                 self.env['purchase.order'].browse(
                     purchase_order_id).add_products(self, qty)
 
-    @api.multi
     def action_product_form(self):
         self.ensure_one()
         view_id = self.env.ref('product.product_normal_form_view').id
@@ -124,7 +121,6 @@ class ProductProduct(models.Model):
             res['arch'] = etree.tostring(doc)
         return res
 
-    @api.multi
     def write(self, vals):
         """
         Si en vals solo viene qty y purchase_quotation_products entonces es un

@@ -9,7 +9,6 @@ from ast import literal_eval
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    @api.multi
     def add_products_to_quotation(self):
         """ In order to filter the products of the partner the "product supplier
         search" module need to be installed
@@ -39,7 +38,6 @@ class PurchaseOrder(models.Model):
             ))
         return action_read
 
-    @api.multi
     def add_products(self, product, qty):
         """This method create line in cache to prepare the order line that
         it's added to purchase order
