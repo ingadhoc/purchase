@@ -19,10 +19,9 @@
 ##############################################################################
 {
     'name': 'Purchase Quotation Products',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Purchase Management',
     'sequence': 14,
-    'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -34,9 +33,7 @@
     'data': [
         'views/purchase_order_views.xml',
     ],
-    'demo': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }

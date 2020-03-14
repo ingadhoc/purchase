@@ -3,8 +3,8 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api, _
-from odoo.osv.orm import setup_modifiers
 from lxml import etree
+import json
 
 
 class ProductProduct(models.Model):
@@ -17,7 +17,7 @@ class ProductProduct(models.Model):
         " related to a purchase order using the context",
     )
 
-    @api.multi
+    @api.depends_context('active_id')
     def _compute_qty_purchase(self):
         purchase_order_id = self._context.get('active_id', False)
         if not purchase_order_id:
@@ -35,7 +35,6 @@ class ProductProduct(models.Model):
                 rec.uom_po_id) for line in lines])
             rec.qty_purchase = value
 
-    @api.multi
     def _set_qty_purchase(self, qty):
         self.ensure_one()
         purchase_order_id = self._context.get('active_id', False)
@@ -51,7 +50,6 @@ class ProductProduct(models.Model):
                 self.env['purchase.order'].browse(
                     purchase_order_id).add_products(self, qty)
 
-    @api.multi
     def action_product_form(self):
         self.ensure_one()
         view_id = self.env.ref('product.product_normal_form_view').id
@@ -94,7 +92,9 @@ class ProductProduct(models.Model):
             # make all fields not editable
             for node in doc.xpath("//field"):
                 node.set('readonly', '1')
-                setup_modifiers(node, res['fields'], in_tree_view=True)
+                modifiers = json.loads(node.get("modifiers") or "{}")
+                modifiers['readonly'] = True
+                node.set("modifiers", json.dumps(modifiers))
 
             # add qty field
             placeholder = doc.xpath("//field[1]")[0]
@@ -121,10 +121,9 @@ class ProductProduct(models.Model):
                 node.set('edit', 'true')
                 node.set('create', 'false')
                 node.set('editable', 'top')
-            res['arch'] = etree.tostring(doc)
+            res['arch'] = etree.tostring(doc, encoding='unicode')
         return res
 
-    @api.multi
     def write(self, vals):
         """
         Si en vals solo viene qty y purchase_quotation_products entonces es un
