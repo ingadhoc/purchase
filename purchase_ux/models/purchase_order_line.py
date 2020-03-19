@@ -4,8 +4,8 @@
 ##############################################################################
 from odoo import models, fields, api, _
 from odoo.tools import float_compare, float_is_zero
-from odoo.osv.orm import setup_modifiers
 from lxml import etree
+import json
 
 
 class PurchaseOrderLine(models.Model):
@@ -102,7 +102,9 @@ class PurchaseOrderLine(models.Model):
             # make all fields not editable
             for node in doc.xpath("//field"):
                 node.set('readonly', '1')
-                setup_modifiers(node, res['fields'], in_tree_view=True)
+                modifiers = json.loads(node.get("modifiers") or "{}")
+                modifiers['readonly'] = True
+                node.set("modifiers", json.dumps(modifiers))
 
             # add qty field
             placeholder.addprevious(
@@ -139,7 +141,7 @@ class PurchaseOrderLine(models.Model):
                 node.set('edit', 'true')
                 node.set('create', 'false')
                 node.set('editable', 'top')
-            res['arch'] = etree.tostring(doc)
+            res['arch'] = etree.tostring(doc, encoding='unicode')
         return res
 
     def action_line_form(self):
@@ -153,15 +155,16 @@ class PurchaseOrderLine(models.Model):
             'res_id': self.id,
         }
 
+    @api.depends_context('active_id')
     def _compute_invoice_qty(self):
         invoice_id = self._context.get('active_id', False)
         if not invoice_id:
             return True
-        AccountInvoice = self.env['account.invoice']
-        AccountInvoiceLine = self.env['account.invoice.line']
+        AccountInvoice = self.env['account.move']
+        AccountInvoiceLine = self.env['account.move.line']
         for rec in self:
             lines = AccountInvoiceLine.search([
-                ('invoice_id', '=', invoice_id),
+                ('move_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
             invoice_qty = -1.0 * sum(
                 lines.mapped('quantity')) if AccountInvoice.browse(
@@ -172,15 +175,16 @@ class PurchaseOrderLine(models.Model):
     def _inverse_invoice_qty(self):
         invoice_id = self._context.get('active_id', False)
         active_model = self._context.get('active_model', False)
-        if not invoice_id or active_model != 'account.invoice':
+        if not invoice_id or active_model != 'account.move':
             return True
-        invoice = self.env['account.invoice'].browse(invoice_id)
+        invoice = self.env['account.move'].browse(invoice_id)
         sign = invoice.type == 'in_refund' and -1.0 or 1.0
-        purchase_lines = self.env['account.invoice.line']
+        purchase_lines = self.env['account.move.line'].with_context(
+            check_move_validity=False)
         do_not_compute = self._context.get('do_not_compute')
         for rec in self:
             lines = purchase_lines.search([
-                ('invoice_id', '=', invoice_id),
+                ('move_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
             # TODO ver como agregamos esta validacion de otra manera
             # no funciona bien si, por ej, agregamos una cantidad y luego
@@ -205,11 +209,11 @@ class PurchaseOrderLine(models.Model):
                 # do not do nothing
                 if not rec.invoice_qty:
                     continue
-                data = invoice._prepare_invoice_line_from_po_line(rec)
+                data = rec._prepare_account_move_line(invoice)
                 data['quantity'] = sign * rec.invoice_qty
-                data['invoice_id'] = invoice_id
+                data['move_id'] = invoice_id
                 new_line = purchase_lines.new(data)
-                new_line._set_additional_fields(invoice)
+                new_line.account_id = new_line._get_computed_account()
                 # we force cache update of company_id value on invoice lines
                 # this fix right tax choose
                 # prevent price and name being overwrited
@@ -217,15 +221,18 @@ class PurchaseOrderLine(models.Model):
                     price_unit = new_line.price_unit
                     name = new_line.name
                     new_line.company_id = invoice.company_id
-                    new_line._onchange_product_id()
                     new_line.name = name
                     new_line.price_unit = price_unit
+                new_line._onchange_product_id()
+                new_line._onchange_price_subtotal()
+                # recomputamos impuestos
+                new_line._onchange_mark_recompute_taxes()
                 vals = new_line._convert_to_write(new_line._cache)
-                purchase_lines.create(vals)
-            # recomputamos impuestos
+                invoice_lines = purchase_lines.create(vals)
+                invoice_lines._onchange_balance()
+                invoice_lines.mapped('move_id')._onchange_invoice_line_ids()
             if do_not_compute:
                 continue
-            invoice.compute_taxes()
             # el depends de esta funcion no lo hace ejecutar desde aca pero si
             # si se edita en la factura (no estoy seguro porque), lo forzamos
             # aca
@@ -239,9 +246,9 @@ class PurchaseOrderLine(models.Model):
         """
         invoice_id = self._context.get('active_id', False)
         active_model = self._context.get('active_model', False)
-        if active_model != 'account.invoice':
+        if active_model != 'account.move':
             return []
-        return [('invoice_lines.invoice_id', 'in', [invoice_id])]
+        return [('invoice_lines.move_id', 'in', [invoice_id])]
 
     def action_add_all_to_invoice(self):
         for rec in self:
