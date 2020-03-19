@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_move_form_inherit_purchase" model="ir.ui.view">
+        <field name="name">account.move.supplier.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="purchase.view_move_form_inherit_purchase"/>
+        <field name="arch" type="xml">
+            <field name="invoice_line_ids" position="before">
+                <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" attrs="{'invisible': ['|',('state', '!=', 'draft'),('type', 'not in', ['in_invoice','in_refund'])]}"/>
+                <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the invoice. Are you sure you wish to continue?" attrs="{'invisible': [('type',  'not in', ['in_invoice','in_refund'])]}"/>
+            </field>
+            <!-- We hide the native field to add from purchase order. We do not delete it because it would lose behavior from purchase order when creating invoice that adds the lines with the onchange -->
+            <field name="purchase_vendor_bill_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <notebook>
+                <page string="Purchase Orders" name="purchase_orders" attrs="{'invisible': [('type',  'not in', ['in_invoice','in_refund'])]}">
+                    <field name="purchase_order_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+</odoo>

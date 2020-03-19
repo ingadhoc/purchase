@@ -34,7 +34,7 @@
     'data': [
         'wizards/purchase_change_currency_views.xml',
         'wizards/purchase_order_line_add_to_invoice_views.xml',
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
         'views/ir_ui_menu.xml',
         'views/purchase_order_views.xml',
         'views/purchase_line_views.xml',

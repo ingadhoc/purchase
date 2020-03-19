@@ -2,16 +2,17 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api
+from odoo import models, fields
 from ast import literal_eval
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     purchase_order_ids = fields.Many2many(
         'purchase.order',
-        compute='_compute_purchase_orders'
+        compute='_compute_purchase_orders',
+        string="Purchase Orders",
     )
 
     def _compute_purchase_orders(self):
@@ -46,47 +47,36 @@ class AccountInvoice(models.Model):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
         for rec in self.with_context(
-                force_company=self.company_id.id).invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit):
+                force_company=self.company_id.id).invoice_line_ids.filtered(
+                lambda x: x.product_id and x.price_unit):
             seller = rec.product_id._select_seller(
-                partner_id=rec.invoice_id.partner_id,
+                partner_id=rec.move_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
                 # y generariamos registros para cada cantidad que se esta
                 # comprando
                 quantity=0.0,
-                date=rec.invoice_id.date_invoice and
-                rec.invoice_id.date_invoice.date(),
+                date=rec.move_id.invoice_date,
                 # idem quantity, no lo necesitamos
                 uom_id=False,
             )
             if not seller:
                 seller = self.env['product.supplierinfo'].sudo().create({
-                    'date_start': rec.invoice_id.date_invoice and
-                    rec.invoice_id.date_invoice.date(),
-                    'name': rec.invoice_id.partner_id.id,
-                    'currency_id': rec.invoice_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
+                    'date_start': rec.move_id.invoice_date,
+                    'name': rec.move_id.partner_id.id,
+                    'currency_id': rec.move_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
                     'company_id': self.company_id.id,
                 })
             price_unit = rec.price_unit
-            if rec.uom_id and seller.product_uom != rec.uom_id:
-                price_unit = rec.uom_id._compute_price(
+            if rec.product_uom_id and seller.product_uom != rec.product_uom_id:
+                price_unit = rec.product_uom_id._compute_price(
                     price_unit, seller.product_uom)
 
             if net_price_installed:
-                seller.net_price = rec.invoice_id.currency_id._convert(
-                    price_unit, seller.currency_id, rec.invoice_id.company_id,
-                    rec.invoice_id.date_invoice or fields.Date.today())
+                seller.net_price = rec.move_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.move_id.company_id,
+                    rec.move_id.invoice_date or fields.Date.today())
             else:
-                seller.price = rec.invoice_id.currency_id._convert(
-                    price_unit, seller.currency_id, rec.invoice_id.company_id,
-                    rec.invoice_id.date_invoice or fields.Date.today())
-
-    @api.onchange('purchase_id')
-    def purchase_order_change(self):
-        """ This fixes that odoo creates the PO without the fp and our patch
-        of account._onchange_company compute wrong the taxes.
-        TODO improve this. If a different fp is selected on the PO than the
-        partner default one, then odoo changes the fp when calling super.
-        """
-        self.fiscal_position_id = self.purchase_id.fiscal_position_id
-        return super().purchase_order_change()
+                seller.price = rec.move_id.currency_id._convert(
+                    price_unit, seller.currency_id, rec.move_id.company_id,
+                    rec.move_id.invoice_date or fields.Date.today())
