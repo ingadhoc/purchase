@@ -32,7 +32,7 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         required=True,
     )
     invoice_id = fields.Many2one(
-        'account.invoice',
+        'account.move',
         'Invoice',
         required=True,
         domain="[('partner_id.commercial_partner_id', '=', partner_id), "
@@ -51,7 +51,6 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
                 'This wizard must be called from purchase lines'))
         return self.env[active_model].browse(active_ids)
 
-    @api.multi
     def confirm(self):
         self.ensure_one()
         pol = self.get_purchase_lines()
@@ -60,6 +59,5 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
             do_not_compute=True,
             voucher=self.voucher,
             active_id=self.invoice_id.id,
-            active_model='account.invoice').action_add_all_to_invoice()
+            active_model='account.move').action_add_all_to_invoice()
         pol._compute_qty_invoiced()
-        self.invoice_id.compute_taxes()

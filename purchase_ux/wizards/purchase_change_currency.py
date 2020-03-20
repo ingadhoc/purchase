@@ -21,7 +21,6 @@ class PurchaseChangeCurrency(models.TransientModel):
         help="Select a currency rate to apply on the purchase order",
     )
 
-    @api.multi
     def get_purchase(self):
         self.ensure_one()
         purchase_order = self.env['purchase.order'].browse(
@@ -47,7 +46,6 @@ class PurchaseChangeCurrency(models.TransientModel):
                 1.0, self.currency_id, purchase_order.company_id,
                 purchase_order.date_order or fields.Date.context_today(self))
 
-    @api.multi
     def change_currency(self):
         self.ensure_one()
         purchase_order = self.get_purchase()
