@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record model="ir.ui.menu" id="purchase.menu_product_pricelist_action2_purchase">
+        <field name="sequence">30</field>
+        <field name="parent_id" ref="purchase.menu_purchase_products"/>
+    </record>
+
+</odoo>
