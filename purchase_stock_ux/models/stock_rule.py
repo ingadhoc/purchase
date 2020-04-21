@@ -13,9 +13,7 @@ class StockRule(models.Model):
             self, product_id, product_qty, product_uom, values, po, partner):
         self.ensure_one()
         res = super()._prepare_purchase_order_line(
-            product_id=product_id, product_qty=product_qty,
-            product_uom=product_uom, values=values,
-            po=po, partner=partner)
+            product_id, product_qty, product_uom, values, po, partner)
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res['price_unit']:
