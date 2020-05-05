@@ -20,7 +20,6 @@
     <record id="action_purchase_global_discount_wizard_form" model="ir.actions.act_window">
         <field name="name">Global Discount Wizard</field>
         <field name="res_model">purchase.order.global_discount.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
