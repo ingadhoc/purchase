@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<odoo>
-
-    <!--Hide Incoming Producs Menu -->
-    <record model="ir.ui.menu" id="purchase_stock.menu_action_picking_tree_in_move">
-        <field name="active" eval="False"/>
-    </record>
-
-</odoo>

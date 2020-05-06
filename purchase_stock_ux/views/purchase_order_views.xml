@@ -25,7 +25,7 @@
     <record id="view_purchase_order_filter" model="ir.ui.view">
         <field name="name">purchase.order.filter</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase_ux.view_purchase_order_filter"/>
+        <field name="inherit_id" ref="purchase_ux.purchase_order_view_search"/>
         <field name="arch" type="xml">
             <filter name="invoiced" position="after">
                 <separator/>

@@ -70,7 +70,6 @@ class PurchaseOrder(models.Model):
             else:
                 order.delivery_status = 'no'
 
-    @api.multi
     def write(self, vals):
         self.check_force_delivered_status(vals)
         return super().write(vals)

@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase Stock UX',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -32,19 +32,16 @@
         'purchase_ux',
         'purchase_stock',
         'stock_ux',
-        # for use user_company_currency_id
-        'product_ux',
 
     ],
     'data': [
-        'views/ir_ui_menu.xml',
         'views/purchase_order_views.xml',
         'views/purchase_line_views.xml',
         'views/stock_move_views.xml',
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'application': False,
 }
