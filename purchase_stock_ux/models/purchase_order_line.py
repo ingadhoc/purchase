@@ -6,7 +6,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 from lxml import etree
-import odoo.addons.decimal_precision as dp
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -33,24 +32,24 @@ class PurchaseOrderLine(models.Model):
     qty_on_voucher = fields.Float(
         compute="_compute_qty_on_voucher",
         string="On Voucher",
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
     )
 
     qty_returned = fields.Float(
         string='Returned',
         copy=False,
         default=0.0,
-        # digits=dp.get_precision('Product Unit of Measure'),
         readonly=True,
         compute='_compute_qty_returned'
     )
 
-    @api.multi
+    @api.depends_context('voucher')
     def _compute_qty_on_voucher(self):
         # al calcular por voucher no tenemos en cuenta el metodo de facturacion
         # es decir, que calculamos como si fuese metodo segun lo recibido
         voucher = self._context.get('voucher', False)
         if not voucher:
+            self.update({'qty_on_voucher': 0.0})
             return
         lines = self.filtered(
             lambda x: x.order_id.state in ['purchase', 'done'])
@@ -63,7 +62,6 @@ class PurchaseOrderLine(models.Model):
             line.qty_on_voucher = sum(moves.filtered(
                 lambda x: x.id in line.move_ids.ids).mapped('product_uom_qty'))
 
-    @api.multi
     def button_cancel_remaining(self):
         # la cancelación de kits no está bien resuelta ya que odoo
         # solo computa la cantidad entregada cuando todo el kit se entregó.
@@ -97,7 +95,6 @@ class PurchaseOrderLine(models.Model):
                     'qty updated from %s to %s') % (
                         rec.name, rec.id, old_product_qty, rec.product_qty))
 
-    @api.multi
     def _compute_vouchers(self):
         for rec in self:
             rec.vouchers = ', '.join(rec.mapped(
@@ -158,7 +155,6 @@ class PurchaseOrderLine(models.Model):
             line.qty_returned = qty
 
     # Overwrite the origin method to introduce the qty_on_voucher
-    @api.multi
     def action_add_all_to_invoice(self):
         for rec in self:
             rec.invoice_qty = rec.qty_on_voucher or (

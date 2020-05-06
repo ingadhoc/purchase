@@ -2,13 +2,12 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api, fields
+from odoo import models, fields
 
 
 class StockRule(models.Model):
     _inherit = 'stock.rule'
 
-    @api.multi
     def _prepare_purchase_order_line(
             self, product_id, product_qty, product_uom, values, po, partner):
         self.ensure_one()
