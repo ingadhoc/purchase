@@ -2,7 +2,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
-import odoo.addons.decimal_precision as dp
 from odoo.tools import float_compare, float_is_zero
 from odoo.exceptions import UserError
 import logging
@@ -17,8 +16,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
     categ_ids = fields.Many2many(
         'product.category', string='Product Categories')
     seller_ids = fields.Many2many(
-        'res.partner', string='Suppliers',
-        domain=[('supplier', '=', True)])
+        'res.partner', string='Suppliers')
     warehouse_id = fields.Many2one(
         'stock.warehouse', 'Warehouse',
         ondelete="cascade", required=True,
@@ -55,7 +53,6 @@ class PurchaseSuggestGenerate(models.TransientModel):
         if self.warehouse_id:
             self.location_id = self.warehouse_id.lot_stock_id.id
 
-    @api.multi
     def _prepare_suggest_line(self, product, qty_dict):
         self.ensure_one()
 
@@ -123,7 +120,6 @@ class PurchaseSuggestGenerate(models.TransientModel):
         }
         return sline
 
-    @api.multi
     def _prepare_product_domain(self):
         self.ensure_one()
         product_domain = []
@@ -135,7 +131,6 @@ class PurchaseSuggestGenerate(models.TransientModel):
                 ('main_seller_id', 'in', self.seller_ids.ids))
         return product_domain
 
-    @api.multi
     def generate_products_dict(self):
         """
         Esta funcion genera un diccionario con solo lo que es necesario
@@ -218,7 +213,6 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     }
         return products_dict
 
-    @api.multi
     def run(self):
         self.ensure_one()
         logger.info('Starting to compute the purchase suggestions')
@@ -279,7 +273,6 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     'Created a procurement suggestion for product ID %d',
                     product_id)
         p_suggest_lines_sorted = p_suggest_lines
-
         if p_suggest_lines_sorted:
             p_suggest_ids = []
             for p_suggest_line in p_suggest_lines_sorted:
@@ -312,7 +305,7 @@ class PurchaseSuggest(models.TransientModel):
     )
     virtual_available = fields.Float(
         string='Forecasted Quantity',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         readonly=True,
         help="Forecast quantity in the unit of measure of the product "
         "(computed as Quantity On Hand - Outgoing + Incoming + Draft PO "
@@ -331,17 +324,15 @@ class PurchaseSuggest(models.TransientModel):
     )
     qty_multiple = fields.Float(
         string="Qty Multiple", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure for the product"
     )
 
-    @api.multi
     @api.depends('qty_to_order', 'replenishment_cost')
     def _compute_order_amount(self):
         for rec in self:
             rec.order_amount = rec.replenishment_cost * rec.qty_to_order
 
-    @api.multi
     def action_traceability(self):
         self.ensure_one()
         action = self.env.ref('stock.act_product_stock_move_open')
@@ -373,19 +364,19 @@ class PurchaseSuggest(models.TransientModel):
         domain=[('supplier', '=', True)])
     qty_available = fields.Float(
         string='Quantity On Hand', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure of the product")
     incoming_qty = fields.Float(
         string='Incoming Quantity', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure of the product")
     outgoing_qty = fields.Float(
         string='Outgoing Quantity', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure of the product")
     draft_po_qty = fields.Float(
         string='Draft PO Quantity', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="Draft purchase order quantity in the unit of measure "
         "of the product (NOT in the purchase unit of measure !)")
     last_po_line_id = fields.Many2one(
@@ -396,7 +387,7 @@ class PurchaseSuggest(models.TransientModel):
         string='Date of the Last Order')
     last_po_qty = fields.Float(
         related='last_po_line_id.product_qty',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         string='Quantity of the Last Order')
     last_po_uom = fields.Many2one(
         related='last_po_line_id.product_uom',
@@ -408,15 +399,15 @@ class PurchaseSuggest(models.TransientModel):
         'stock.location', string='Stock Location', readonly=True)
     min_qty = fields.Float(
         string="Min Quantity", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     max_qty = fields.Float(
         string="Max Quantity", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     qty_to_order = fields.Float(
         string='Quantity to Order',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="Quantity to order in the purchase unit of measure for the "
         "product")
 
@@ -527,7 +518,6 @@ class PurchaseSuggestPoCreate(models.TransientModel):
                 new_po_line._onchange_quantity()
             return new_po
 
-    @api.multi
     def create_po(self):
         self.ensure_one()
         # group by supplier

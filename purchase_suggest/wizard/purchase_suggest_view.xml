@@ -153,14 +153,12 @@
 </record>
 
 <act_window id="purchase_suggest_po_create_action"
-            multi="True"
-            key2="client_action_multi"
             name="Create Purchase Orders"
+            binding_model="purchase.suggest"
+            binding_views="list"
             res_model="purchase.suggest.po.create"
-            src_model="purchase.suggest"
             view_mode="form"
             target="new" />
-
 
 </data>
 </odoo>
