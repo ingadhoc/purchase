@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Suggest',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Purchase',
     'license': 'AGPL-3',
     'summary': 'Suggest POs from special suggest orderpoints',
@@ -19,5 +19,5 @@
         'views/stock_view.xml',
         'wizard/purchase_suggest_view.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
