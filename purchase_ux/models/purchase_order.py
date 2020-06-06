@@ -9,6 +9,8 @@ from odoo.exceptions import UserError
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    internal_notes = fields.Text('Internal Notes')
+
     force_invoiced_status = fields.Selection([
         ('no', 'Nothing to Bill'),
         ('invoiced', 'No Bill to Receive'),
@@ -16,6 +18,12 @@ class PurchaseOrder(models.Model):
         track_visibility='onchange',
         copy=False,
     )
+
+    @api.model
+    def _prepare_picking(self):
+        res = super(PurchaseOrder, self)._prepare_picking()
+        res['note'] = self.internal_notes
+        return res
 
     @api.depends('force_invoiced_status')
     def _get_invoiced(self):

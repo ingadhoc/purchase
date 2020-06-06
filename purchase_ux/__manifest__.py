@@ -30,6 +30,7 @@
     ],
     'depends': [
         'purchase',
+        'account_ux',
     ],
     'data': [
         'wizards/purchase_change_currency_views.xml',

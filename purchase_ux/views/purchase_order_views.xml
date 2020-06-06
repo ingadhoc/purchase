@@ -8,6 +8,20 @@
         <field name="priority">10</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
+
+            <!-- add internal notes -->
+            <field name="notes" position="before">
+                <div class="oe_clear">
+                    <label for="notes"/>
+                </div>
+            </field>
+            <field name="notes" position="after">
+                <div class="oe_clear">
+                    <label for="internal_notes"/>
+                </div>
+                <field name="internal_notes" class="oe_inline" placeholder="Internal Notes..."/>
+            </field>
+
             <!-- add print button -->
             <xpath expr="//header/button[@name='action_rfq_send']" position="after">
                 <button name="print_quotation" string="Print PO" type="object" states="purchase,done" groups="base.group_user"/>
