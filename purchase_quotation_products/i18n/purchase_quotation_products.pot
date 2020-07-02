@@ -36,19 +36,3 @@ msgstr ""
 #: view:purchase.order:purchase_quotation_products.purchase_order_form_view
 msgid "Search Products"
 msgstr ""
-
-#. module: purchase_quotation_products
-#: view:product.product:purchase_quotation_products.product_product_tree_view
-msgid "True"
-msgstr ""
-
-#. module: purchase_quotation_products
-#: view:product.product:purchase_quotation_products.product_product_tree_view
-msgid "false"
-msgstr ""
-
-#. module: purchase_quotation_products
-#: view:product.product:purchase_quotation_products.product_product_tree_view
-msgid "top"
-msgstr ""
-
