@@ -22,7 +22,6 @@ On purchase orders:
 #. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
 #. Make purchase quotations menu only visible with technical features
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-#. Add print PO on purchase and done status
 #. Add button to force "invoiced" only for admin with tec features
 #. Add button to change the currency and update the prices of the order lines
 #. Add a to filter by PO with billable returns.
