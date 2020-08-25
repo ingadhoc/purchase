@@ -93,6 +93,8 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     reste, 0.0,
                     precision_rounding=qty_dict['uom_rounding']) > 0:
                 qty_to_order += qty_multiple - reste
+            if product.uom_id != product.uom_po_id:
+                qty_to_order = product.uom_id._compute_quantity(qty_to_order, product.uom_po_id)
 
         sline = {
             'company_id': (
