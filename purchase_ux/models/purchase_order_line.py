@@ -221,9 +221,9 @@ class PurchaseOrderLine(models.Model):
                     price_unit = new_line.price_unit
                     name = new_line.name
                     new_line.company_id = invoice.company_id
+                    new_line._onchange_product_id()
                     new_line.name = name
                     new_line.price_unit = price_unit
-                new_line._onchange_product_id()
                 new_line._onchange_price_subtotal()
                 # recomputamos impuestos
                 new_line._onchange_mark_recompute_taxes()
