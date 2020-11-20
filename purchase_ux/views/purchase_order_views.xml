@@ -61,15 +61,19 @@
         </field>
     </record>
 
-    <record id="purchase_order_tree" model="ir.ui.view">
+    <record id="purchase_order_view_tree" model="ir.ui.view">
         <field name="name">purchase.order.tree</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
         <field name="arch" type="xml">
             <!-- como unificamos menus hacemos que sea mas visible cuales son las borrador -->
             <tree position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
             </tree>
+            <field name="state" position="attributes">
+                <attribute name="invisible">False</attribute>
+                <attribute name="optional">show</attribute>
+            </field>
         </field>
     </record>
 
