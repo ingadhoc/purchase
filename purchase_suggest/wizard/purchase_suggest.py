@@ -41,7 +41,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         warehouse = None
         if 'warehouse_id' not in res:
             warehouse = self.env['stock.warehouse'].search(
-                [('company_id', '=', self.env.user.company_id.id)], limit=1)
+                [('company_id', '=', self.env.company.id)], limit=1)
         if warehouse:
             res['warehouse_id'] = warehouse.id
             res['location_id'] = warehouse.lot_stock_id.id
