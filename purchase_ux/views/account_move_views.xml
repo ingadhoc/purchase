@@ -14,11 +14,11 @@
                 <attribute name="invisible">1</attribute>
             </field>
 
-            <notebook>
-                <page string="Purchase Orders" name="purchase_orders" attrs="{'invisible': [('type',  'not in', ['in_invoice','in_refund'])]}">
-                    <field name="purchase_order_ids"/>
-                </page>
-            </notebook>
+            <div name='button_box' position="inside">
+                <field name="has_purchases" invisible="1"/>
+                <button name="action_view_purchase_orders" class="oe_stat_button" icon="fa-shopping-cart" string="Purchase Orders" type="object" attrs="{'invisible': [('has_purchases', '=', False)]}" groups="purchase.group_purchase_user">
+                </button>
+            </div>
         </field>
     </record>
 
