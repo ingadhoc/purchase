@@ -9,17 +9,37 @@ from ast import literal_eval
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    # dejamos este campo por si alguien lo usaba y ademas lo re usamos abajo
     purchase_order_ids = fields.Many2many(
         'purchase.order',
         compute='_compute_purchase_orders',
         string="Purchase Orders",
     )
+    # en la ui agregamos este que seria mejor a nivel performance
+    has_purchases = fields.Boolean(
+        'sale.order',
+        compute='_compute_has_purchases'
+    )
 
     def _compute_purchase_orders(self):
         for rec in self:
-            rec.purchase_order_ids = self.env['purchase.order.line'].search(
-                [('invoice_lines', 'in', rec.invoice_line_ids.ids)]).mapped(
-                'order_id')
+            rec.purchase_order_ids = rec.invoice_line_ids.mapped(
+                'purchase_line_id.order_id')
+
+    def _compute_has_purchases(self):
+        moves = self.filtered(lambda move: move.is_purchase_document())
+        (self - moves).has_purchases = False
+        for rec in moves:
+            rec.has_purchases = any(line for line in rec.invoice_line_ids.mapped('purchase_line_id'))
+
+    def action_view_purchase_orders(self):
+        self.ensure_one()
+        if len(self.purchase_order_ids) > 1:
+            action_read = self.env.ref('purchase.purchase_form_action').read()[0]
+            action_read['domain'] = "[('id', 'in', %s)]" % self.purchase_order_ids.ids
+            return action_read
+        else:
+            return self.purchase_order_ids.get_formview_action()
 
     def add_purchase_line_moves(self):
         self.ensure_one()
