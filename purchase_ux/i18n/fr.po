@@ -12,12 +12,12 @@ msgstr ""
 "POT-Creation-Date: 2021-01-11 12:58+0000\n"
 "PO-Revision-Date: 2020-03-20 09:37+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"Language-Team: French (https://www.transifex.com/adhoc/teams/46451/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -70,7 +70,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Annuler"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__qty_to_invoice
@@ -107,13 +107,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__create_uid
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr "Créé par"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__create_date
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Date de création"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__currency_rate
@@ -124,7 +124,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__display_name
 msgid "Display Name"
-msgstr "Nombre Mostrado"
+msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -198,19 +198,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency____last_update
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice____last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__write_uid
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización realizada por"
+msgstr "Mis à jour par"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__write_date
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Dernière mise à jour"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_product_product__main_seller_id
@@ -302,7 +302,7 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de orden de compra"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__purchase_order_ids
