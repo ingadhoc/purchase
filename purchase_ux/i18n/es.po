@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020
+# Juan Rivero <jr@adhoc.com.ar>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 12:58+0000\n"
+"POT-Creation-Date: 2021-01-12 23:41+0000\n"
 "PO-Revision-Date: 2020-03-20 09:37+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020\n"
+"Last-Translator: Juan Rivero <jr@adhoc.com.ar>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -292,7 +293,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree
 #: model:ir.ui.menu,name:purchase_ux.menu_action_purchase_line_tree
 msgid "Purchase Lines"
-msgstr ""
+msgstr "Lineas de Pedidos de Compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
@@ -358,13 +359,13 @@ msgstr ""
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "Update Prices"
-msgstr ""
+msgstr "Actualizar Precios"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_move_form_inherit_purchase
 msgid "Update Supplier Prices"
-msgstr ""
+msgstr "Actualizar Precios de Proveedores"
 
 #. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_product_product__main_seller_id
