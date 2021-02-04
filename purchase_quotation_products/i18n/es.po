@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 23:41+0000\n"
+"POT-Creation-Date: 2021-02-01 12:38+0000\n"
 "PO-Revision-Date: 2020-03-12 14:58+0000\n"
 "Last-Translator: Juan Rivero <jr@adhoc.com.ar>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/purchase_quotation_products/models/product_product.py:0
 #, python-format
 msgid "Open Product Form View"
-msgstr ""
+msgstr "Abrir Vista Formulario del Producto"
 
 #. module: purchase_quotation_products
 #: code:addons/purchase_quotation_products/models/product_product.py:0
@@ -41,14 +41,14 @@ msgstr "Orden de Compra"
 #. module: purchase_quotation_products
 #: model:ir.model.fields,field_description:purchase_quotation_products.field_product_product__qty_purchase
 msgid "Quantity to Purchase"
-msgstr ""
+msgstr "Cantidad a Comprar"
 
 #. module: purchase_quotation_products
 #: code:addons/purchase_quotation_products/models/purchase_order.py:0
 #: code:addons/purchase_quotation_products/models/purchase_order.py:0
 #, python-format
 msgid "Quotation Products"
-msgstr ""
+msgstr "Productos en Presupuesto"
 
 #. module: purchase_quotation_products
 #: model_terms:ir.ui.view,arch_db:purchase_quotation_products.purchase_order_form_view
@@ -61,3 +61,5 @@ msgid ""
 "Technical field. Used to compute the quantity of products related to a "
 "purchase order using the context"
 msgstr ""
+"Campo técnico. Usado para computar la cantidad de productos relacionados a "
+"una orden de compra usando el contexto"
