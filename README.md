@@ -1,5 +1,3 @@
-[![Runbot Status](http://runbot.adhoc.com.ar/runbot/badge/flat/4/13.0.svg)](http://runbot.adhoc.com.ar/runbot/repo/github-com-ingadhoc-purchase-4)
-[![Build Status](https://travis-ci.org/ingadhoc/purchase.svg?branch=13.0)](https://travis-ci.org/ingadhoc/purchase)
 [![Coverage Status](https://coveralls.io/repos/ingadhoc/purchase/badge.png?branch=13.0)](https://coveralls.io/r/ingadhoc/purchase?branch=13.0)
 [![Code Climate](https://codeclimate.com/github/ingadhoc/purchase/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/purchase)
 
