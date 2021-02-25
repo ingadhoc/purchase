@@ -233,7 +233,9 @@ class PurchaseOrderLine(models.Model):
                 vals = new_line._convert_to_write(new_line._cache)
                 invoice_lines = purchase_lines.create(vals)
                 invoice_lines._onchange_balance()
-                invoice_lines.mapped('move_id')._onchange_invoice_line_ids()
+                invoice = invoice_lines.mapped('move_id')
+                invoice._recompute_dynamic_lines(recompute_all_taxes=True)
+                invoice._onchange_invoice_line_ids()
             if do_not_compute:
                 continue
             # el depends de esta funcion no lo hace ejecutar desde aca pero si
