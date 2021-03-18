@@ -97,7 +97,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
             'company_id': (
                 qty_dict['orderpoint'] and
                 qty_dict['orderpoint'].company_id.id or
-                self.env.user.company_id.id),
+                self.env.company.id),
             'product_id': product.id,
             # 'seller_id': qty_dict['product'].main_seller_id.id or False,
             'virtual_available': qty_dict['virtual_available'],
@@ -143,7 +143,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         products_dict = {}
         op_domain = [
             ('suggest', '=', True),
-            ('company_id', '=', self.env.user.company_id.id),
+            ('company_id', '=', self.env.company.id),
             ('location_id', 'child_of', self.location_id.id),
         ]
 
