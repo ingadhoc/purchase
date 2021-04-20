@@ -87,3 +87,7 @@ class PurchaseOrder(models.Model):
             raise UserError(_(
                 'Only users with "%s / %s" can Set Received manually') % (
                 group.category_id.name, group.name))
+
+    def button_cancel(self):
+        self = self.with_context(cancel_from_order=True)
+        return super().button_cancel()
