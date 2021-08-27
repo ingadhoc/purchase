@@ -11,10 +11,6 @@ import json
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    # add context so show purchase data by default
-    order_id = fields.Many2one(
-        context={'show_purchase': True}
-    )
     invoice_status = fields.Selection([
         ('no', 'Nothing to Bill'),
         ('to invoice', 'Waiting Invoices'),
