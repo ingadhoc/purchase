@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020
-# Juan Carreras <jc@adhoc.com.ar>, 2020
+# Juan Rivero <jr@adhoc.com.ar>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 12:57+0000\n"
+"POT-Creation-Date: 2021-02-06 10:13+0000\n"
 "PO-Revision-Date: 2020-05-06 19:51+0000\n"
-"Last-Translator: Juan Carreras <jc@adhoc.com.ar>, 2020\n"
+"Last-Translator: Juan Rivero <jr@adhoc.com.ar>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,13 +46,13 @@ msgstr ""
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Delivery Satus"
-msgstr ""
+msgstr "Estado de la recepción"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__delivery_status
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__delivery_status
 msgid "Delivery Status"
-msgstr "Estado de la entrega"
+msgstr "Estado de la recepción"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
@@ -64,7 +64,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__no
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__delivery_status__no
 msgid "Not purchased"
-msgstr ""
+msgstr "Nada para recibir"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_on_voucher
@@ -121,17 +121,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Received"
-msgstr ""
+msgstr "Recibido"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_returned
 msgid "Returned"
-msgstr ""
+msgstr "Devuelto"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
 msgid "Returned Quantity"
-msgstr ""
+msgstr "Cantidad Devuelta"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_stock_move
@@ -156,7 +156,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "To Receive"
-msgstr ""
+msgstr "A Recibir"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__vouchers
