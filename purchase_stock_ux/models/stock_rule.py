@@ -29,8 +29,8 @@ class StockRule(models.Model):
             if (
                     price_unit and res['product_uom'] and
                     product_id.uom_id.id != res['product_uom']):
-                price_unit = product_id.uom_id._compute_price(
-                    price_unit, to_uom_id=res['product_uom'])
+                product_uom = self.env['uom.uom'].browse(res['product_uom'])
+                price_unit = product_id.uom_id._compute_price(price_unit, product_uom)
             res['price_unit'] = price_unit
         return res
 
@@ -52,7 +52,6 @@ class StockRule(models.Model):
             if (
                     price_unit and product_uom and
                     product_id.uom_id != product_uom):
-                price_unit = product_id.uom_id._compute_price(
-                    price_unit, to_uom_id=product_uom.id)
+                price_unit = product_id.uom_id._compute_price(price_unit, product_uom)
             res['price_unit'] = price_unit
         return res
