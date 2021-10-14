@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Suggest',
-    'version': '13.0.1.0.0',
+    'version': '13.0.1.1.0',
     'category': 'Purchase',
     'license': 'AGPL-3',
     'summary': 'Suggest POs from special suggest orderpoints',
