@@ -362,8 +362,7 @@ class PurchaseSuggest(models.TransientModel):
     uom_po_id = fields.Many2one(
         'uom.uom', string='Purchase UoM', related='product_id.uom_po_id',)
     seller_id = fields.Many2one(
-        'res.partner', string='Main Supplier', readonly=True,
-        domain=[('supplier', '=', True)])
+        'res.partner', string='Main Supplier', readonly=True,)
     qty_available = fields.Float(
         string='Quantity On Hand', readonly=True,
         digits='Product Unit of Measure',

@@ -24,7 +24,7 @@
             <group name="name">
                 <field name="add_products_without_order_point"/>
                 <field name="categ_ids" widget="many2many_tags"/>
-                <field name="seller_ids" widget="many2many_tags"/>
+                <field name="seller_ids" widget="many2many_tags" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"/>
                 <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
                 <field name="location_id" groups="stock.group_stock_multi_locations"/>
             </group>
@@ -53,7 +53,7 @@
     <field name="model">purchase.suggest</field>
     <field name="arch" type="xml">
         <tree string="Purchase Suggestions" editable="bottom">
-            <field name="seller_id"/>
+            <field name="seller_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"/>
             <field name="product_id"/>
             <field name="qty_available"/>
             <field name="incoming_qty"/>
