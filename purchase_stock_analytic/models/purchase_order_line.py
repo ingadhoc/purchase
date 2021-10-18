@@ -11,5 +11,10 @@ class PurchaseOrderLine(models.Model):
     def _prepare_stock_moves(self, picking):
         res = super()._prepare_stock_moves(picking)
         for rec in res:
-            rec['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
+            account_analytic = self.account_analytic_id
+            analytic_tags = self.analytic_tag_ids
+            if account_analytic:
+                rec['analytic_account_id'] = account_analytic.id
+            if analytic_tags:
+                rec['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
         return res
