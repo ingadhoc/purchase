@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/ingadhoc/purchase/badge.png?branch=13.0)](https://coveralls.io/r/ingadhoc/purchase?branch=13.0)
+[![Coverage Status](https://coveralls.io/repos/ingadhoc/purchase/badge.png?branch=15.0)](https://coveralls.io/r/ingadhoc/purchase?branch=15.0)
 [![Code Climate](https://codeclimate.com/github/ingadhoc/purchase/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/purchase)
 
 # ADHOC purchase
@@ -10,7 +10,7 @@ ADHOC Odoo purchase Modules
 
 Translation Status
 ------------------
-[![Transifex Status](https://www.transifex.com/projects/p/ingadhoc-purchase-13-0/chart/image_png)](https://www.transifex.com/projects/p/ingadhoc-purchase-13-0)
+[![Transifex Status](https://www.transifex.com/projects/p/ingadhoc-purchase-15-0/chart/image_png)](https://www.transifex.com/projects/p/ingadhoc-purchase-15-0)
 
 ----
 
