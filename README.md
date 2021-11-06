@@ -1,4 +1,3 @@
-[![Coverage Status](https://coveralls.io/repos/ingadhoc/purchase/badge.png?branch=15.0)](https://coveralls.io/r/ingadhoc/purchase?branch=15.0)
 [![Code Climate](https://codeclimate.com/github/ingadhoc/purchase/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/purchase)
 
 # ADHOC purchase
