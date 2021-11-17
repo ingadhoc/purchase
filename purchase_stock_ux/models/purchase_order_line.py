@@ -56,7 +56,7 @@ class PurchaseOrderLine(models.Model):
         moves = self.env['stock.move'].search([
             ('id', 'in', lines.mapped('move_ids').ids),
             ('state', '=', 'done'),
-            ('picking_id.voucher_ids.name', 'ilike', voucher),
+            ('picking_id.vouchers', 'ilike', voucher[0]),
         ])
         for line in lines:
             line.qty_on_voucher = sum(moves.filtered(
