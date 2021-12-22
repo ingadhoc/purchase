@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase Quotation Products',
-    'version': '13.0.1.1.0',
+    'version': "15.0.1.0.0",
     'category': 'Purchase Management',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -33,7 +33,7 @@
     'data': [
         'views/purchase_order_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
