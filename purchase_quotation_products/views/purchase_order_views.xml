@@ -9,10 +9,6 @@
             <field name="order_line" position="before">
                 <button name="add_products_to_quotation" type="object" string="Search Products" states="draft,sent"/>
             </field>
-            <!-- campo date no requerido para que no haga falta crear una línea y se pueda ir a agregar productos directamente -->
-            <xpath expr='//page[2]//field[@name="date_planned"]' position='attributes'>
-                <attribute name="required">0</attribute>
-            </xpath>
         </field>
     </record>
 </odoo>
