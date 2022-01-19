@@ -216,10 +216,12 @@ class PurchaseOrderLine(models.Model):
                 if self.company_id != invoice.company_id:
                     price_unit = new_line.price_unit
                     name = new_line.name
+                    product_uom = new_line.product_uom_id
                     new_line.company_id = invoice.company_id
                     new_line._onchange_product_id()
                     new_line.name = name
                     new_line.price_unit = price_unit
+                    new_line.product_uom_id = product_uom
                 new_line._onchange_price_subtotal()
                 # recomputamos impuestos
                 new_line._onchange_mark_recompute_taxes()
