@@ -37,7 +37,7 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         required=True,
         domain="[('partner_id.commercial_partner_id', '=', partner_id), "
         "('state', '=', 'draft'), "
-        "('type', 'in', ['in_invoice', 'in_refund'])]",
+        "('move_type', 'in', ['in_invoice', 'in_refund'])]",
     )
     voucher = fields.Char(
     )

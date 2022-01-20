@@ -118,8 +118,7 @@ class PurchaseOrderLine(models.Model):
                     'name': 'action_add_all_to_invoice',
                     'type': 'object',
                     'icon': 'fa-plus-square',
-                    'string': _('Agregar las cantidades en '
-                                '"Para Facturar" a la factura actual'),
+                    'help': _('Agregar las cantidades en "Para Facturar" a la factura actual'),
                 }))
 
             # add button tu open form
@@ -129,7 +128,7 @@ class PurchaseOrderLine(models.Model):
                     'name': 'action_line_form',
                     'type': 'object',
                     'icon': 'fa-external-link',
-                    'string': _('Open Purchase Line Form View'),
+                    'help': _('Open Purchase Line Form View'),
                 }))
 
             # make tree view editable
@@ -164,7 +163,7 @@ class PurchaseOrderLine(models.Model):
                 ('purchase_line_id', '=', rec.id)])
             invoice_qty = -1.0 * sum(
                 lines.mapped('quantity')) if AccountInvoice.browse(
-                invoice_id).type == 'in_refund' else sum(
+                invoice_id).move_type == 'in_refund' else sum(
                     lines.mapped('quantity'))
             rec.invoice_qty = invoice_qty
 
@@ -174,7 +173,7 @@ class PurchaseOrderLine(models.Model):
         if not invoice_id or active_model != 'account.move':
             return True
         invoice = self.env['account.move'].browse(invoice_id)
-        sign = invoice.type == 'in_refund' and -1.0 or 1.0
+        sign = invoice.move_type == 'in_refund' and -1.0 or 1.0
         purchase_lines = self.env['account.move.line'].with_context(
             check_move_validity=False)
         do_not_compute = self._context.get('do_not_compute')
@@ -266,9 +265,7 @@ class PurchaseOrderLine(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not self.price_unit:
-            price_unit = self.with_context(
-                force_company=self.order_id.company_id.id
-            ).product_id.standard_price
+            price_unit = self.with_company(self.order_id.company_id.id).product_id.standard_price
             if (
                 price_unit and
                 self.order_id.currency_id != self.order_id.company_id.

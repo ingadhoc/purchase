@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_change_currency,access_purchase_change_currency,model_purchase_change_currency,purchase.group_purchase_user,1,1,1,0
+access_purchase_order_line_add_to_invoice,access_purchase_order_line_add_to_invoice,model_purchase_order_line_add_to_invoice,purchase.group_purchase_user,1,1,1,0
