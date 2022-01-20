@@ -66,8 +66,7 @@ class AccountMove(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.with_context(
-                force_company=self.company_id.id).invoice_line_ids.filtered(
+        for rec in self.with_company(self.company_id.id).invoice_line_ids.filtered(
                 lambda x: x.product_id and x.price_unit):
             seller = rec.product_id._select_seller(
                 partner_id=rec.move_id.partner_id,

@@ -18,12 +18,10 @@ Several Improvements to purchases
 
 On purchase orders:
 
-#. Odoo consider that a purchase order on done state has nothing to be invoiced, we change that behaviour to keep it as on sale orders
-#. Make purchase quotations menu only visible with technical features
+#. Hide purchase quotations menu.
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-#. Add button to force "invoiced" only for admin with tec features
+#. Add button to force invoice status, and it's only for admin with tec features.
 #. Add button to change the currency and update the prices of the order lines
-#. Add a to filter by PO with billable returns.
 #. Add link from invoices to the purchase orders that generate it.
 #. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
 #. Add internal notes pickings and send it to invoices
@@ -35,12 +33,12 @@ On purchase lines:
 
 On purchase invoices:
 
-#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them.
+#. Add a button "Add purchase lines" to access to a list of purchase lines from the vendor and select the lines to be included in the invoice.
 #. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 
 On Products:
 
-#. Allows to search by suppliers and to group by main supplier on product and product variants.
+#. Allows to group by main supplier on product and product variants.
 
 
 

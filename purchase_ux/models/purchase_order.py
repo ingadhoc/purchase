@@ -15,7 +15,7 @@ class PurchaseOrder(models.Model):
         ('no', 'Nothing to Bill'),
         ('invoiced', 'No Bill to Receive'),
     ],
-        track_visibility='onchange',
+        tracking=True,
         copy=False,
     )
 
@@ -82,7 +82,7 @@ class PurchaseOrder(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.order_line.with_context(force_company=self.company_id.id).filtered('price_unit'):
+        for rec in self.order_line.with_company(self.company_id.id).filtered('price_unit'):
             seller = rec.product_id._select_seller(
                 partner_id=rec.order_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
