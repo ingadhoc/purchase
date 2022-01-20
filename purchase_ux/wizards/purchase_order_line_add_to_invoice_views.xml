@@ -22,7 +22,14 @@
         </field>
     </record>
 
-    <act_window id="action_purchase_order_line_add_to_invoice" name="Agregar todo en 'Para Facturar' a la factura a elegir" res_model="purchase.order.line.add_to_invoice" binding_model="purchase.order.line" binding_views="list" view_mode="form" target="new"/>
+    <record id="action_purchase_order_line_add_to_invoice" model="ir.actions.act_window">
+        <field name="name">Agregar todo en 'Para Facturar' a la factura a elegir</field>
+        <field name="res_model">purchase.order.line.add_to_invoice</field>
+        <field name="binding_model">purchase.order.line</field>
+        <field name="binding_views">list</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 
 
 </odoo>
