@@ -99,21 +99,3 @@ class AccountMove(models.Model):
                 seller.price = rec.move_id.currency_id._convert(
                     price_unit, seller.currency_id, rec.move_id.company_id,
                     rec.move_id.invoice_date or fields.Date.today())
-
-    @api.onchange('purchase_vendor_bill_id', 'purchase_id')
-    def _onchange_purchase_auto_complete(self):
-        """
-        We need to use replacing and calling super function because, super func
-        delete purchase_id link
-        """
-        if not self.purchase_id:
-            return {}
-        narration = self.purchase_id.notes
-        internal_notes = self.purchase_id.internal_notes
-        if self.narration:
-            narration = '%s\n%s' % (self.narration, narration)
-        if self.internal_notes:
-            internal_notes = '%s\n%s' % (self.internal_notes, internal_notes)
-        self.narration = narration
-        self.internal_notes = internal_notes
-        return super()._onchange_purchase_auto_complete()

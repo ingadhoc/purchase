@@ -19,12 +19,6 @@ class PurchaseOrder(models.Model):
         copy=False,
     )
 
-    @api.model
-    def _prepare_picking(self):
-        res = super(PurchaseOrder, self)._prepare_picking()
-        res['note'] = self.internal_notes
-        return res
-
     @api.depends('force_invoiced_status')
     def _get_invoiced(self):
         for order in self:
@@ -120,3 +114,9 @@ class PurchaseOrder(models.Model):
     def update_prices(self):
         for line in self.order_line:
             line._onchange_quantity()
+
+    def _prepare_invoice(self):
+        result = super()._prepare_invoice()
+        if self.internal_notes:
+            result['internal_notes'] = self.internal_notes
+        return result
