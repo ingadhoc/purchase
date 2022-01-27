@@ -101,7 +101,7 @@ class PurchaseOrderLine(models.Model):
                 'move_ids.picking_id.voucher_ids.display_name'))
 
     @api.depends(
-        'order_id.state', 'qty_received', 'product_qty',
+        'order_id.state', 'qty_received', 'qty_returned', 'product_qty',
         'order_id.force_delivered_status')
     def _compute_delivery_status(self):
         precision = self.env['decimal.precision'].precision_get(
@@ -113,13 +113,12 @@ class PurchaseOrderLine(models.Model):
             if line.order_id.force_delivered_status:
                 line.delivery_status = line.order_id.force_delivered_status
                 continue
-
             if float_compare(
-                    line.qty_received, line.product_qty,
+                    (line.qty_received + line.qty_returned), line.product_qty,
                     precision_digits=precision) == -1:
                 line.delivery_status = 'to receive'
             elif float_compare(
-                    line.qty_received, line.product_qty,
+                    (line.qty_received + line.qty_returned), line.product_qty,
                     precision_digits=precision) >= 0:
                 line.delivery_status = 'received'
             else:
