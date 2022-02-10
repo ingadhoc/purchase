@@ -1,0 +1,16 @@
+<odoo noupdate="1">
+
+    <record model="ir.actions.server" id="action_cancel_order_massive">
+        <field name="name">Cancel Order</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">
+for rec in records:
+    rec.button_cancel()
+        </field>
+        <field name="state">code</field>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">list</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+    </record>
+
+</odoo>
