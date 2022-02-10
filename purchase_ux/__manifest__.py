@@ -33,6 +33,7 @@
         'account_ux',
     ],
     'data': [
+        'data/ir_actions_server_data.xml',
         'security/ir.model.access.csv',
         'wizards/purchase_change_currency_views.xml',
         'wizards/purchase_order_line_add_to_invoice_views.xml',
