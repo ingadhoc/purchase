@@ -29,11 +29,8 @@ On purchase lines:
 
 On incoming pickings:
 
-#. Add button "Add Purchase Lines" to add moves from other pickings that are still pending.
+#. Add moving internal notes of the PO to the picking.
 
-On purchase invoices:
-
-#. Add "add picking" functionlity on purchase invoices so picking lines that has some qty to be invoiced, is added to the invoice. This is different to "add PO" that add all lines no matter if they are to be invoiced or not. We keep this functionality because if a supplier send you an invoice of same lines that should be invoiced, you still have de possiblity to add them.
 
 On Stock Moves:
 

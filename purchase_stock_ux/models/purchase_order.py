@@ -14,7 +14,7 @@ class PurchaseOrder(models.Model):
         ('no', 'Not purchased'),
         ('received', 'Received'),
     ],
-        track_visibility='onchange',
+        tracking=True,
         copy=False,
     )
     delivery_status = fields.Selection([
@@ -91,3 +91,8 @@ class PurchaseOrder(models.Model):
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
         return super().button_cancel()
+
+    def _prepare_picking(self):
+        res = super(PurchaseOrder, self)._prepare_picking()
+        res['note'] = self.internal_notes
+        return res
