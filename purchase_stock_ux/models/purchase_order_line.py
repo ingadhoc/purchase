@@ -5,6 +5,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
+import json
 from lxml import etree
 import logging
 _logger = logging.getLogger(__name__)
@@ -173,15 +174,17 @@ class PurchaseOrderLine(models.Model):
             doc = etree.XML(res['arch'])
             placeholder = doc.xpath("//field[1]")[0]
             placeholder.addprevious(
-                etree.Element('field', {
-                    'name': 'qty_on_voucher',
-                    'readonly': '1',
-                    # on enterprise view is not refres
-                    # 'invisible': "not context.get('voucher', False)",
-                }))
+            etree.Element('field', {
+            'name': 'qty_on_voucher',
+            }))
 
-            res['fields'].update(self.fields_get(
-                ['qty_on_voucher']))
+            # make all fields not editable
+            node = doc.xpath("//field[1]")[0]
+            node.set('readonly', '1')
+            modifiers = json.loads(node.get("modifiers") or "{}")
+            modifiers['readonly'] = True
+            node.set("modifiers", json.dumps(modifiers))
+            res['fields'].update(self.fields_get(['qty_on_voucher']))
             res['arch'] = etree.tostring(doc)
 
         return res
