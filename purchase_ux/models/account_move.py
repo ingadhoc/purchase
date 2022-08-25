@@ -66,8 +66,7 @@ class AccountMove(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
-        for rec in self.with_company(self.company_id.id).invoice_line_ids.filtered(
-                lambda x: x.product_id and x.price_unit):
+        for rec in self.get_product_lines_to_update():
             seller = rec.product_id._select_seller(
                 partner_id=rec.move_id.partner_id,
                 # usamos minimo de cantidad 0 porque si no seria complicado
@@ -99,3 +98,7 @@ class AccountMove(models.Model):
                 seller.price = rec.move_id.currency_id._convert(
                     price_unit, seller.currency_id, rec.move_id.company_id,
                     rec.move_id.invoice_date or fields.Date.today())
+
+    def get_product_lines_to_update(self):
+        return self.with_context(force_company=self.company_id.id).invoice_line_ids.filtered(
+                lambda x: x.product_id and x.price_unit)
