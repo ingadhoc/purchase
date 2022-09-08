@@ -50,8 +50,8 @@ class StockRule(models.Model):
                     company_id,
                     line.order_id.date_order or fields.Date.today())
             if (
-                    price_unit and product_uom and
-                    product_id.uom_id != product_uom):
-                price_unit = product_id.uom_id._compute_price(price_unit, product_uom)
+                    price_unit and line.product_uom and
+                    product_id.uom_id != line.product_uom):
+                price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom)
             res['price_unit'] = price_unit
         return res
