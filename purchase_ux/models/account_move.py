@@ -35,7 +35,7 @@ class AccountMove(models.Model):
     def action_view_purchase_orders(self):
         self.ensure_one()
         if len(self.purchase_order_ids) > 1:
-            action_read = self.env.ref('purchase.purchase_form_action').read()[0]
+            action_read = self.env.ref('purchase.purchase_form_action').sudo().read()[0]
             action_read['domain'] = "[('id', 'in', %s)]" % self.purchase_order_ids.ids
             return action_read
         else:
