@@ -18,7 +18,7 @@ class PurchaseOrder(models.Model):
         actions = self.env.ref(
             'product.product_normal_action_sell')
         if actions:
-            action_read = actions.read()[0]
+            action_read = actions.sudo().read()[0]
             context = literal_eval(action_read['context'])
             if 'search_default_filter_to_sell' in context:
                 context.pop('search_default_filter_to_sell')
