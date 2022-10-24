@@ -35,7 +35,7 @@ class AccountMove(models.Model):
     def action_view_purchase_orders(self):
         self.ensure_one()
         if len(self.purchase_order_ids) > 1:
-            action_read = self.env.ref('purchase.purchase_form_action').sudo().read()[0]
+            action_read = self.env["ir.actions.actions"]._for_xml_id('purchase.purchase_form_action')
             action_read['domain'] = "[('id', 'in', %s)]" % self.purchase_order_ids.ids
             return action_read
         else:
@@ -43,23 +43,21 @@ class AccountMove(models.Model):
 
     def add_purchase_line_moves(self):
         self.ensure_one()
-        actions = self.env.ref(
+        action_read = self.env["ir.actions.actions"]._for_xml_id(
             'purchase_ux.action_purchase_line_tree')
-        if actions:
-            action_read = actions.sudo().read()[0]
-            context = literal_eval(action_read['context'])
-            context.update(dict(
-                force_line_edit=True,
-                search_default_not_invoiced=True,
-                search_default_invoice_qty=True,
-            ))
-            action_read.update(
-                context=context,
-                domain=[
-                    ('partner_id.commercial_partner_id', '=',
-                     self.partner_id.commercial_partner_id.id),
-                ],
-            )
+        context = literal_eval(action_read['context'])
+        context.update(dict(
+            force_line_edit=True,
+            search_default_not_invoiced=True,
+            search_default_invoice_qty=True,
+        ))
+        action_read.update(
+            context=context,
+            domain=[
+                ('partner_id.commercial_partner_id', '=',
+                    self.partner_id.commercial_partner_id.id),
+            ],
+        )
 
         return action_read
 

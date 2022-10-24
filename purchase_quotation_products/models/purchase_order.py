@@ -14,28 +14,25 @@ class PurchaseOrder(models.Model):
         search" module need to be installed
         """
         self.ensure_one()
-        action_read = False
-        actions = self.env.ref(
+        action_read = self.env["ir.actions.actions"]._for_xml_id(
             'product.product_normal_action_sell')
-        if actions:
-            action_read = actions.sudo().read()[0]
-            context = literal_eval(action_read['context'])
-            if 'search_default_filter_to_sell' in context:
-                context.pop('search_default_filter_to_sell')
-            context.update(dict(
-                search_default_filter_to_purchase=True,
-                search_default_seller_ids=self.partner_id.name,
-                purchase_quotation_products=True,
-                # we send company in context so it filters taxes
-                company_id=self.company_id.id,
-                # pricelist=self.pricelist_id.display_name,
-                partner_id=self.partner_id.id,
-            ))
-            action_read.update(dict(
-                context=context,
-                name=_('Quotation Products'),
-                display_name=_('Quotation Products'),
-            ))
+        context = literal_eval(action_read['context'])
+        if 'search_default_filter_to_sell' in context:
+            context.pop('search_default_filter_to_sell')
+        context.update(dict(
+            search_default_filter_to_purchase=True,
+            search_default_seller_ids=self.partner_id.name,
+            purchase_quotation_products=True,
+            # we send company in context so it filters taxes
+            company_id=self.company_id.id,
+            # pricelist=self.pricelist_id.display_name,
+            partner_id=self.partner_id.id,
+        ))
+        action_read.update(dict(
+            context=context,
+            name=_('Quotation Products'),
+            display_name=_('Quotation Products'),
+        ))
         return action_read
 
     def add_products(self, product, qty):
