@@ -80,13 +80,14 @@ class PurchaseOrder(models.Model):
         return super().create(vals_list)
 
     @api.model
-    def check_force_delivered_status(self, vals):
-        if vals.get('force_delivered_status') and not self.user_has_groups(
-                'base.group_system'):
-            group = self.env.ref('base.group_system').sudo()
-            raise UserError(_(
-                'Only users with "%s / %s" can Set Received manually') % (
-                group.category_id.name, group.name))
+    def check_force_delivered_status(self, vals_list):
+        if not self.user_has_groups('base.group_system'):
+            for vals in vals_list:
+                if vals.get('force_delivered_status'):
+                    group = self.env.ref('base.group_system').sudo()
+                    raise UserError(_(
+                        'Only users with "%s / %s" can Set Received manually') % (
+                        group.category_id.name, group.name))
 
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
