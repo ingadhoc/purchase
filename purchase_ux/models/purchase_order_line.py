@@ -74,15 +74,13 @@ class PurchaseOrderLine(models.Model):
                 line.qty_to_invoice = 0
 
     @api.model
-    def fields_view_get(self, view_id=None, view_type='form',
-                        toolbar=False, submenu=False):
+    def get_view(self, view_id=None, view_type='form', **options):
         """
         If we came from invoice, we send in context 'force_line_edit'
         and we change tree view to make editable and also field qty
         """
-        res = super().fields_view_get(
-            view_id=view_id, view_type=view_type,
-            toolbar=toolbar, submenu=submenu)
+        res = super().get_view(
+            view_id=view_id, view_type=view_type, **options)
         force_line_edit = self._context.get('force_line_edit')
         if force_line_edit and view_type == 'tree':
             doc = etree.XML(res['arch'])
@@ -109,8 +107,6 @@ class PurchaseOrderLine(models.Model):
                     # we force editable no matter user rights
                     'readonly': '0',
                 }))
-            res['fields'].update(self.fields_get(
-                ['invoice_qty', 'qty_to_invoice']))
 
             # add button to add all
             placeholder.addprevious(
@@ -207,37 +203,11 @@ class PurchaseOrderLine(models.Model):
                 data = rec._prepare_account_move_line(invoice)
                 data['quantity'] = sign * rec.invoice_qty
                 data['move_id'] = invoice_id
-                new_line = purchase_lines.new(data)
-                new_line.account_id = new_line._get_computed_account()
-                # we force cache update of company_id value on invoice lines
-                # this fix right tax choose
-                # prevent price and name being overwrited
-                if self.company_id != invoice.company_id:
-                    price_unit = new_line.price_unit
-                    name = new_line.name
-                    product_uom = new_line.product_uom_id
-                    new_line.company_id = invoice.company_id
-                    new_line._onchange_product_id()
-                    new_line.name = name
-                    new_line.price_unit = price_unit
-                    new_line.product_uom_id = product_uom
-                new_line._onchange_price_subtotal()
-                # recomputamos impuestos
-                new_line._onchange_mark_recompute_taxes()
-                new_line.exclude_from_invoice_tab = False
-                if new_line.currency_id == new_line.company_currency_id:
-                    new_line.currency_id = False
-                vals = new_line._convert_to_write(new_line._cache)
-                invoice_lines = purchase_lines.create(vals)
-                invoice_lines._onchange_balance()
+                invoice_lines = purchase_lines.create(data)
+                invoice_lines._compute_tax_ids()
                 invoice = invoice_lines.mapped('move_id')
-                invoice._recompute_dynamic_lines(recompute_all_taxes=True)
-                invoice._onchange_invoice_line_ids()
             if do_not_compute:
                 continue
-            # el depends de esta funcion no lo hace ejecutar desde aca pero si
-            # si se edita en la factura (no estoy seguro porque), lo forzamos
-            # aca
             rec._compute_qty_invoiced()
 
     @api.model
@@ -257,8 +227,8 @@ class PurchaseOrderLine(models.Model):
             rec.invoice_qty = (rec.qty_to_invoice + rec.invoice_qty)
 
     @api.onchange('product_qty', 'product_uom')
-    def _onchange_quantity(self):
-        res = super()._onchange_quantity()
+    def _compute_price_unit_and_date_planned_and_name(self):
+        res = super()._compute_price_unit_and_date_planned_and_name()
         if not self.product_id:
             return
 

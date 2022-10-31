@@ -1,9 +1,16 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!--Hide Requests for Quotation Menu -->
-    <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
+    <!--Hide Purchase Order Menu -->
+    <record model="ir.ui.menu" id="purchase.menu_purchase_form_action">
         <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
+        <field name="name">Purchase Orders</field>
+    </record>
+    <record model="ir.actions.act_window" id="purchase.purchase_rfq">
+        <field name="name">Purchase Orders</field>
     </record>
 
 </odoo>

@@ -304,7 +304,7 @@ msgstr "Lineas de Pedidos de Compra"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
 msgid "Purchase Order"
-msgstr "Pedido de compra"
+msgstr "Pedidos de compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line

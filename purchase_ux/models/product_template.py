@@ -12,6 +12,6 @@ class ProductTemplate(models.Model):
     # we create this field and make it stored so we can group by it
     main_seller_id = fields.Many2one(
         string="Main Seller",
-        related='seller_ids.name',
+        related='seller_ids.partner_id',
         store=True,
     )

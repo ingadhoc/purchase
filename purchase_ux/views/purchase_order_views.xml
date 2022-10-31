@@ -16,9 +16,6 @@
                 </div>
             </field>
             <field name="notes" position="after">
-                <div class="oe_clear">
-                    <label for="internal_notes"/>
-                </div>
                 <field name="internal_notes" class="oe_inline" placeholder="Internal Notes..."/>
             </field>
 
@@ -44,38 +41,48 @@
         </field>
     </record>
 
-    <record id="purchase_order_view_search" model="ir.ui.view">
+    <record id="view_purchase_order_filter" model="ir.ui.view">
         <field name="name">purchase.order.filter</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
         <field name="arch" type="xml">
-            <filter name="invoiced" position="after">
+            <filter name="to_approve" position="after">
                 <separator/>
             </filter>
             <group>
-                <filter name="invoice_status" string="Invoice Satus" domain="[]" context="{'group_by':'invoice_status'}"/>
+                <filter name="invoice_status" string="Invoice Status" domain="[]" context="{'group_by':'invoice_status'}"/>
             </group>
         </field>
     </record>
 
-    <record id="purchase_order_view_tree" model="ir.ui.view">
-        <field name="name">purchase.order.tree</field>
+    <record id="purchase_order_kpis_tree" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
-            <!-- como unificamos menus hacemos que sea mas visible cuales son las borrador -->
             <tree position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
             </tree>
-            <field name="state" position="attributes">
-                <attribute name="invisible">False</attribute>
+            <field name="date_approve" position="attributes">
+                <attribute name="invisible">0</attribute>
                 <attribute name="optional">show</attribute>
+            </field>
+            <field name="date_planned" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="optional">show</attribute>
+            </field>
+            <field name="invoice_status" position="attributes">
+                <attribute name="optional">show</attribute>
+                <attribute name="widget">badge</attribute>
+                <attribute name="decoration-success">invoice_status == 'invoiced'</attribute>
+                <attribute name="decoration-warning">invoice_status == 'to invoice'</attribute>
+                <attribute name="decoration-info">invoice_status == 'no'</attribute>
             </field>
         </field>
     </record>
 
     <!-- make purchase orders action show all sale.order records -->
-    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
         <field name="domain">[]</field>
     </record>
 
