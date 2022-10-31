@@ -59,10 +59,11 @@ class PurchaseOrder(models.Model):
         self.check_force_invoiced_status(vals)
         return super().write(vals)
 
-    @api.model
-    def create(self, vals):
-        self.check_force_invoiced_status(vals)
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.check_force_invoiced_status(vals)
+        return super().create(vals_list)
 
     @api.model
     def check_force_invoiced_status(self, vals):
@@ -92,7 +93,7 @@ class PurchaseOrder(models.Model):
                 seller = self.env['product.supplierinfo'].create({
                     'date_start': rec.order_id.date_order and
                     rec.order_id.date_order.date(),
-                    'name': rec.order_id.partner_id.id,
+                    'partner_id': rec.order_id.partner_id.id,
                     'currency_id': rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
                     'company_id': self.company_id.id,
@@ -113,7 +114,7 @@ class PurchaseOrder(models.Model):
 
     def update_prices(self):
         for line in self.order_line:
-            line._onchange_quantity()
+            line._compute_price_unit_and_date_planned_and_name()
 
     def _prepare_invoice(self):
         result = super()._prepare_invoice()

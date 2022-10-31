@@ -22,8 +22,7 @@ On purchase orders:
 #. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
 #. Add button to force invoice status, and it's only for admin with tec features.
 #. Add button to change the currency and update the prices of the order lines
-#. Add an action in purchase orders list view to cancel selected orders in quotation state. 
-#. Add link from invoices to the purchase orders that generate it.
+#. Add an action in purchase orders list view to cancel selected orders in quotation state.
 #. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
 #. Add internal notes pickings and send it to invoices
 #. Add a button "Update Prices" to update prices from provider to purchase order lines.

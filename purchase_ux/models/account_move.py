@@ -32,15 +32,6 @@ class AccountMove(models.Model):
         for rec in moves:
             rec.has_purchases = any(line for line in rec.invoice_line_ids.mapped('purchase_line_id'))
 
-    def action_view_purchase_orders(self):
-        self.ensure_one()
-        if len(self.purchase_order_ids) > 1:
-            action_read = self.env["ir.actions.actions"]._for_xml_id('purchase.purchase_form_action')
-            action_read['domain'] = "[('id', 'in', %s)]" % self.purchase_order_ids.ids
-            return action_read
-        else:
-            return self.purchase_order_ids.get_formview_action()
-
     def add_purchase_line_moves(self):
         self.ensure_one()
         action_read = self.env["ir.actions.actions"]._for_xml_id(
@@ -78,7 +69,7 @@ class AccountMove(models.Model):
             if not seller:
                 seller = self.env['product.supplierinfo'].sudo().create({
                     'date_start': rec.move_id.invoice_date,
-                    'name': rec.move_id.partner_id.id,
+                    'partner_id': rec.move_id.partner_id.id,
                     'currency_id': rec.move_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                     'product_tmpl_id': rec.product_id.product_tmpl_id.id,
                     'company_id': self.company_id.id,
