@@ -45,7 +45,6 @@ class ProductProduct(models.Model):
             if lines:
                 (lines - lines[0]).unlink()
                 lines[0].product_qty = qty
-                lines[0]._onchange_quantity()
             else:
                 self.env['purchase.order'].browse(
                     purchase_order_id).add_products(self, qty)
@@ -66,64 +65,67 @@ class ProductProduct(models.Model):
     # TODO we should make this module inherits from sale one, value on context
     # should be the same and then we should use same computed field
     @api.model
-    def fields_view_get(self, view_id=None, view_type='form',
-                        toolbar=False, submenu=False):
+    def _get_view_cache_key(self, view_id=None, view_type='form', **options):
+        key = super()._get_view_cache_key(view_id, view_type, **options)
+        if self._context.get('purchase_quotation_products', False):
+            key += ('purchase_quotation_products',)
+        return key
+
+
+    @api.model
+    def _get_view(self, view_id=None, view_type='form', **options):
         """
         If we came from sale order, we send in context 'force_product_edit'
         and we change tree view to make editable and also field qty
         """
-        res = super().fields_view_get(
-            view_id=view_id, view_type=view_type,
-            toolbar=toolbar, submenu=submenu)
+        arch, view = super()._get_view(view_id, view_type, **options)
         purchase_quotation_products = self._context.get(
             'purchase_quotation_products')
         if purchase_quotation_products and view_type == 'tree':
-            doc = etree.XML(res['arch'])
-
             # replace uom_id to uom_po_id field
-            node = doc.xpath("//field[@name='uom_id']")[0]
+            node = arch.xpath("//field[@name='uom_id']")[0]
             replacement_xml = """
                 <field name="uom_po_id"/>
                 """
             uom_po_id_node = etree.fromstring(replacement_xml)
             node.getparent().replace(node, uom_po_id_node)
-            res['fields'].update(self.fields_get(['uom_po_id']))
 
             # make all fields not editable
-            for node in doc.xpath("//field"):
+            for node in arch.xpath("//field[@name]"):
+                if not node.get("modifiers"):
+                    continue
                 node.set('readonly', '1')
                 modifiers = json.loads(node.get("modifiers") or "{}")
                 modifiers['readonly'] = True
                 node.set("modifiers", json.dumps(modifiers))
 
             # add qty field
-            placeholder = doc.xpath("//field[1]")[0]
+            placeholder = arch.xpath("//field[1]")[0]
             placeholder.addprevious(
                 etree.Element('field', {
                     'name': 'qty_purchase',
                     # we force editable no matter user rights
                     'readonly': '0',
+                    'title': _('Open Product Form View'),
                 }))
-            res['fields'].update(self.fields_get(['qty_purchase']))
 
             # add button tu open form
-            placeholder = doc.xpath("//tree")[0]
+            placeholder = arch.xpath("//tree")[0]
             placeholder.append(
                 etree.Element('button', {
                     'name': 'action_product_form',
                     'type': 'object',
                     'icon': 'fa-external-link',
-                    'string': _('Open Product Form View'),
+                    'title': _('Open Product Form View'),
                 }))
 
             # make tree view editable
-            for node in doc.xpath("/tree"):
+            for node in arch.xpath("/tree"):
                 node.set('edit', 'true')
                 node.set('create', 'false')
                 node.set('editable', 'top')
-            res['arch'] = etree.tostring(doc, encoding='unicode')
-        return res
-
+        return arch, view
+    
     def write(self, vals):
         """
         Si en vals solo viene qty y purchase_quotation_products entonces es un
