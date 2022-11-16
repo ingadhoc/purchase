@@ -42,13 +42,8 @@ class PurchaseOrder(models.Model):
         self.ensure_one()
         vals = {
             'order_id': self.id,
+            'product_qty': qty,
             'product_id': product.id or False,
             'partner_id': self.partner_id.id,
         }
-        purchase_line = self.env['purchase.order.line'].new(vals)
-        purchase_line.onchange_product_id()
-        # we set qty (if we set it on create odoo overwrite it to 1)
-        purchase_line.product_qty = qty
-        purchase_line._onchange_quantity()
-        vals = purchase_line._convert_to_write(purchase_line._cache)
         self.env['purchase.order.line'].create(vals)
