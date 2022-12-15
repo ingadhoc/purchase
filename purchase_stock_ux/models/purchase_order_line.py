@@ -81,7 +81,7 @@ class PurchaseOrderLine(models.Model):
                     'You should correct invoice or ask for a refund'))
             if bom_enable:
                 bom = self.env['mrp.bom']._bom_find(
-                    product=rec.product_id)
+                    products=rec.product_id)[rec.product_id]
                 if bom and bom.type == 'phantom':
                     raise UserError(_(
                         "Cancel remaining can't be called for Kit Products "
