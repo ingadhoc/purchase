@@ -70,14 +70,14 @@ class PurchaseOrder(models.Model):
             else:
                 order.delivery_status = 'no'
 
-    def write(self, vals):
-        self.check_force_delivered_status(vals)
-        return super().write(vals)
+    def write(self, values):
+        self.check_force_delivered_status(values)
+        return super().write(values)
 
-    @api.model
-    def create(self, vals):
-        self.check_force_delivered_status(vals)
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.check_force_delivered_status(vals_list)
+        return super().create(vals_list)
 
     @api.model
     def check_force_delivered_status(self, vals):

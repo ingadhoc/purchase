@@ -25,14 +25,14 @@
     <record id="view_purchase_order_filter" model="ir.ui.view">
         <field name="name">purchase.order.filter</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase_ux.purchase_order_view_search"/>
+        <field name="inherit_id" ref="purchase_ux.view_purchase_order_filter"/>
         <field name="arch" type="xml">
-            <filter name="invoiced" position="after">
+            <filter name="to_approve" position="after">
                 <separator/>
                 <filter name="with_returns" string="With Returns" domain="[('with_returns','=', True)]" help="Purchase orders with billable returns"/>
                 <separator/>
             </filter>
-            <filter name="not_invoiced" position="before">
+            <filter name="to_approve" position="before">
                 <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]" help="Purchase orders that include lines not received."/>
                 <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]" help="Purchase orders with all lines received."/>
                 <separator/>
