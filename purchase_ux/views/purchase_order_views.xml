@@ -31,7 +31,10 @@
                 <button name="update_prices" string="Update Prices" help="Actualiza los precios de las líneas con los precios del proveedor definidos en los productos" type="object" states="draft,sent"/>
                 <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the order. Are you sure you wish to continue?"/>
             </field>
-            <field name="currency_id" position="replace">
+            <field name="currency_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="currency_id" position="after">
                 <label for="currency_id" groups="base.group_multi_currency"/>
                 <div groups="base.group_multi_currency">
                     <field name="currency_id" class="oe_inline"/>

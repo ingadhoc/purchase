@@ -46,10 +46,14 @@
     <record id="purchase_order_view_tree" model="ir.ui.view">
         <field name="name">purchase.order.tree</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
             <tree>
-                <field name="delivery_status"/>
+                <field name="delivery_status"
+                       decoration-success="delivery_status == 'received'"
+                       decoration-warning="delivery_status == 'to receive'"
+                       decoration-info="delivery_status == 'no'"
+                       widget="badge" optional="show"/>
             </tree>
         </field>
     </record>
