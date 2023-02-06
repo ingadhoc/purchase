@@ -401,3 +401,9 @@ msgstr "o"
 #: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
 msgstr ""
+
+#. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase.purchase_rfq
+#: model:ir.ui.menu,name:purchase.menu_purchase_rfq
+msgid "Purchase Orders"
+msgstr "Pedidos de compra"
