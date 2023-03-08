@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_1" model="product.product">
+            <field name="name">Ergonomic Office Chair</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">100.0</field>
+            <field name="list_price">120.50</field>
+            <field name="detailed_type">consu</field>
+            <field name="weight">0.01</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="purchase_method">purchase</field>
+    </record>
+
+    <record id="purchase_order_1" model="purchase.order">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="state">done</field>
+        <field name="create_date" eval="DateTime.today() - relativedelta(days=20)"/>
+        <field name="date_order" eval="DateTime.today() - relativedelta(days=5)"/>
+        <field name="date_approve" eval="DateTime.today() - relativedelta(days=9)"/>
+        <field name="invoice_status">to invoice</field>
+        <field name="order_line" model="purchase.order.line" eval="[(5, 0, 0),
+            (0, 0, {
+                'product_id': ref('purchase_ux.product_1'),
+                'name': obj().env.ref('purchase_ux.product_1').partner_ref,
+                'price_unit': 130.80,
+                'product_qty': 10.0,
+                'product_uom': ref('uom.product_uom_unit'),
+                'date_planned': DateTime.today() + relativedelta(days=3)}),
+        ]"/>
+    </record>
+</odoo>
