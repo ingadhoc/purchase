@@ -45,6 +45,7 @@
         'views/product_supplierinfo_views.xml'
     ],
     'demo': [
+        'demo/purchase_order_demo.xml',
     ],
     'installable': True,
     'auto_install': False,
