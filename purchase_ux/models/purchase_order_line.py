@@ -162,6 +162,23 @@ class PurchaseOrderLine(models.Model):
             lines = AccountInvoiceLine.search([
                 ('move_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
+            for line in lines:
+                fp = line.move_id.fiscal_position_id
+                if fp:
+                    product = line.with_context(force_company=self.company_id.id).product_id
+                    account = line._get_computed_account()
+                    if self.move_id.type not in ("out_invoice", "out_refund"):
+                        taxes = product.supplier_taxes_id.filtered(
+                                lambda tax: tax.company_id == self.company_id
+                            )
+                        taxes = taxes or account.tax_ids.filtered(
+                            lambda tax: tax.company_id == self.company_id
+                        )
+                        taxes = fp.map_tax(taxes)
+                        line.tax_ids = [(6, 0, taxes.ids)]
+                        line._onchange_mark_recompute_taxes()
+                        line.account_id = account.id
+                        line.move_id.with_context(check_move_validity=False)._recompute_dynamic_lines()
             invoice_qty = -1.0 * sum(
                 lines.mapped('quantity')) if AccountInvoice.browse(
                 invoice_id).type == 'in_refund' else sum(
