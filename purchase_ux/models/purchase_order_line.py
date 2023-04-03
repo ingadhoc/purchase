@@ -229,25 +229,21 @@ class PurchaseOrderLine(models.Model):
     @api.onchange('product_qty', 'product_uom')
     def _compute_price_unit_and_date_planned_and_name(self):
         res = super()._compute_price_unit_and_date_planned_and_name()
-        if not self.product_id:
-            return
 
-        # if price was not computed (not seller or seller price = 0.0), then
-        # use standar price
-        if not self.price_unit:
-            price_unit = self.with_company(self.order_id.company_id.id).product_id.standard_price
-            if (
-                price_unit and
-                self.order_id.currency_id != self.order_id.company_id.
-                    currency_id):
-                price_unit = self.order_id.company_id.currency_id._convert(
-                    price_unit, self.order_id.currency_id,
-                    self.order_id.company_id,
-                    self.order_id.date_order or fields.Date.today())
-            if (
-                    price_unit and self.product_uom and
-                    self.product_id.uom_id != self.product_uom):
-                price_unit = self.product_id.uom_id._compute_price(
-                    price_unit, self.product_uom)
-            self.price_unit = price_unit
+        for line in self:
+            if not line.product_id:
+                continue
+
+            # if price was not computed (not seller or seller price = 0.0), then
+            # use standar price
+            if not line.price_unit:
+                price_unit = line.with_company(line.company_id.id).product_id.standard_price
+                if (price_unit and line.currency_id != line.company_id.currency_id):
+                    price_unit = line.company_id.currency_id._convert(
+                        price_unit, line.currency_id,
+                        line.company_id,
+                        line.date_order or fields.Date.today())
+                if (price_unit and line.product_uom and line.product_id.uom_id != line.product_uom):
+                    price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom)
+                line.price_unit = price_unit
         return res
