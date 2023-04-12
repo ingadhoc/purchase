@@ -92,8 +92,6 @@ class ProductProduct(models.Model):
 
             # make all fields not editable
             for node in arch.xpath("//field[@name]"):
-                if not node.get("modifiers"):
-                    continue
                 node.set('readonly', '1')
                 modifiers = json.loads(node.get("modifiers") or "{}")
                 modifiers['readonly'] = True
