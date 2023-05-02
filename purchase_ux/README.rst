@@ -38,7 +38,7 @@ On purchase invoices:
 
 On Products:
 
-#. Allows to group by main supplier on product and product variants.
+#. Allows to search by suppliers and to group by main supplier on product and product variants.
 
 
 
