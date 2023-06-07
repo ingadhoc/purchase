@@ -162,6 +162,8 @@ class PurchaseOrderLine(models.Model):
             lines = AccountInvoiceLine.search([
                 ('move_id', '=', invoice_id),
                 ('purchase_line_id', '=', rec.id)])
+            for line in lines:
+                line.move_id.fiscal_position_change()
             invoice_qty = -1.0 * sum(
                 lines.mapped('quantity')) if AccountInvoice.browse(
                 invoice_id).type == 'in_refund' else sum(
