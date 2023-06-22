@@ -11,3 +11,9 @@ class StockMove(models.Model):
     purchase_id = fields.Many2one(
         related='purchase_line_id.order_id',
     )
+
+    def _compute_origin_description(self):
+        super()._compute_origin_description()
+        for rec in self:
+            if rec.purchase_line_id:
+                rec.origin_description = rec.purchase_line_id.name
