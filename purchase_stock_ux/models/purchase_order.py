@@ -71,6 +71,7 @@ class PurchaseOrder(models.Model):
                 order.delivery_status = 'no'
 
     def write(self, values):
+        self = self.with_context(cancel_from_order=True)
         self.check_force_delivered_status(values)
         return super().write(values)
 
