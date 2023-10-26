@@ -47,7 +47,7 @@
     'demo': [
         'demo/purchase_order_demo.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
