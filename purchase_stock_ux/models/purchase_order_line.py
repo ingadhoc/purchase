@@ -86,7 +86,10 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(_(
                         "Cancel remaining can't be called for Kit Products "
                         "(products with a bom of type kit)."))
-            rec.product_qty = rec.qty_received
+            rec.with_context(cancel_from_order=True).product_qty = rec.qty_received
+            # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
+            # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
+            # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
             to_cancel_moves = rec.move_ids.filtered(
                 lambda x: x.state not in ['done', 'cancel'])
             to_cancel_moves._cancel_quantity()
