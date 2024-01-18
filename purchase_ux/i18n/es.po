@@ -3,26 +3,26 @@
 # 	* purchase_ux
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-24 16:44+0000\n"
-"PO-Revision-Date: 2022-04-19 14:00+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"POT-Creation-Date: 2024-01-11 15:03+0000\n"
+"PO-Revision-Date: 2023-05-04 13:24+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
+"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "(change)"
-msgstr ""
+msgstr "(cambiar)"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -37,6 +37,7 @@ msgid "Add Purchase Lines"
 msgstr "Añadir Lineas de Compra"
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
 #, python-format
 msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
@@ -58,6 +59,9 @@ msgid ""
 "By accepting they will update (or create prices) for this provider and all "
 "products loaded on the invoice. Are you sure you wish to continue?"
 msgstr ""
+"Al hacer click en \"Aceptar\" se estarán actualizando (o creando) las "
+"tarifas de este proveedor para todos los productos de la Orden de Compra. "
+"¿Está seguro de continuar?"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -65,6 +69,9 @@ msgid ""
 "By accepting they will update (or create prices) for this provider and all "
 "products loaded on the order. Are you sure you wish to continue?"
 msgstr ""
+"Al hacer click en \"Aceptar\" se estarán actualizando (o creando) las "
+"tarifas de este proveedor para todos los productos de la Orden de Compra. "
+"¿Está seguro de continuar? "
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -96,7 +103,7 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__currency_id
 msgid "Change to"
-msgstr ""
+msgstr "Cambiar a:"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -137,6 +144,11 @@ msgid "En Factura actual"
 msgstr ""
 
 #. module: purchase_ux
+#: model:product.template,name:purchase_ux.product_1_product_template
+msgid "Ergonomic Office Chair"
+msgstr "Silla de oficina ergonómica"
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
 msgid ""
 "Filtra las lineas que estan cargadas en el picking de contexto (si es que "
@@ -153,13 +165,13 @@ msgstr "Forzar estado facturado"
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__has_purchases
 #: model:ir.model.fields,field_description:purchase_ux.field_account_payment__has_purchases
 msgid "Has Purchases?"
-msgstr ""
+msgstr "Tiene compras?"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__id
 msgid "ID"
-msgstr "ID"
+msgstr "ID (identificación)"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__internal_notes
@@ -184,17 +196,13 @@ msgstr "Moneda de la Factura"
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__invoice_qty
 msgid "Invoice Quantity"
-msgstr ""
-
-#. module: purchase_ux
-#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_view_search
-msgid "Invoice Satus"
-msgstr ""
+msgstr "Cantidad facturada"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__invoice_status
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
 msgid "Invoice Status"
-msgstr ""
+msgstr "Estado de la factura"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -232,6 +240,7 @@ msgid "Main Seller"
 msgstr ""
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/models/purchase_order.py:0
 #, python-format
 msgid "Manually setted as invoiced"
@@ -244,6 +253,7 @@ msgid "No Bill to Receive"
 msgstr ""
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
 #, python-format
 msgid "No Purchase Order on context as \"active_id\""
@@ -261,12 +271,14 @@ msgid "Nothing to Bill"
 msgstr ""
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
 #, python-format
 msgid "Old Currency And New Currency can not be the same"
-msgstr ""
+msgstr "La moneda anterior y la nueva no pueden ser iguales"
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/models/purchase_order.py:0
 #: code:addons/purchase_ux/models/purchase_order.py:0
 #, python-format
@@ -274,6 +286,7 @@ msgid "Only users with \"%s / %s\" can Set Invoiced manually"
 msgstr "Solo usuarios con \"%s / %s\" pueden establecer Facturado manualmente"
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
 #, python-format
 msgid "Open Purchase Line Form View"
@@ -286,14 +299,15 @@ msgstr "Empresa"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_product_template
-msgid "Product Template"
-msgstr "Plantilla de producto"
+msgid "Product"
+msgstr "Producto"
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
 #, python-format
 msgid "Purchase Line"
-msgstr ""
+msgstr "Línea de Pedido de Compra"
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree
@@ -304,7 +318,7 @@ msgstr "Lineas de Pedidos de Compra"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
 msgid "Purchase Order"
-msgstr "Pedidos de compra"
+msgstr "Pedido de compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line
@@ -316,9 +330,8 @@ msgstr "Línea de pedido de compra"
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__purchase_order_ids
 #: model:ir.model.fields,field_description:purchase_ux.field_account_payment__purchase_order_ids
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
-#: model_terms:ir.ui.view,arch_db:purchase_ux.view_move_form_inherit_purchase
 msgid "Purchase Orders"
-msgstr ""
+msgstr "Órdenes de Compra"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -336,6 +349,7 @@ msgid "Select a currency to apply on the purchase order"
 msgstr ""
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:0
 #, python-format
 msgid "Selected lines must be from the same partner"
@@ -354,6 +368,7 @@ msgid ""
 msgstr ""
 
 #. module: purchase_ux
+#. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:0
 #, python-format
 msgid "This wizard must be called from purchase lines"
@@ -362,7 +377,7 @@ msgstr ""
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
 msgid "This wizard will change the currency of the purchase order"
-msgstr ""
+msgstr "ESTE ASISTENTE MODIFICARÁ LA MONEDA DE LA ORDEN DE COMPRA"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -374,12 +389,6 @@ msgstr "Actualizar Precios"
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_move_form_inherit_purchase
 msgid "Update Supplier Prices"
 msgstr "Actualizar Precios de Proveedores"
-
-#. module: purchase_ux
-#: model:ir.model.fields,help:purchase_ux.field_product_product__main_seller_id
-#: model:ir.model.fields,help:purchase_ux.field_product_template__main_seller_id
-msgid "Vendor of this product"
-msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
@@ -401,9 +410,3 @@ msgstr "o"
 #: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
 msgstr ""
-
-#. module: purchase_ux
-#: model:ir.actions.act_window,name:purchase.purchase_rfq
-#: model:ir.ui.menu,name:purchase.menu_purchase_rfq
-msgid "Purchase Orders"
-msgstr "Pedidos de compra"
