@@ -247,9 +247,4 @@ class PurchaseOrderLine(models.Model):
                 price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom)
             line.price_unit = price_unit
         return res
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        lines = super(PurchaseOrderLine, self).create(vals_list)
-        lines._compute_price_unit_and_date_planned_and_name()
-        return lines
+    
