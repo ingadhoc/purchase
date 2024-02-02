@@ -14,7 +14,9 @@
 Purchase Quotation Products
 ===========================
 
-This module adds a button in purchase_order to search products, change de quantity and add its to purchase_order_line
+This module adds a button in purchase_order to search products, change de quantity and add its to purchase_order_line.
+
+If you have also stock_ux installed, when using this new button, the stock location of the warehouse of the picking type is used as a default filter so that the stock info shown on the products tree view uses that location.
 
 
 Installation
