@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase Global Discount',
-    'version': "16.0.1.0.0",
+    'version': "17.0.1.0.0",
     'category': 'Purchase Management',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -27,7 +27,7 @@
     'license': 'AGPL-3',
     'summary': '',
     'depends': [
-        'purchase_discount',
+        'purchase',
     ],
     'external_dependencies': {
     },
@@ -36,7 +36,7 @@
         'wizard/purchase_global_discount_wizard_view.xml',
         'views/purchase_order_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
