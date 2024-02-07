@@ -6,6 +6,7 @@ from odoo import models, fields, api
 from ast import literal_eval
 
 
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
