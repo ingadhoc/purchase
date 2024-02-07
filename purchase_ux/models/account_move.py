@@ -4,6 +4,8 @@
 ##############################################################################
 from odoo import models, fields, api
 from ast import literal_eval
+import ast
+
 
 
 class AccountMove(models.Model):
@@ -37,19 +39,19 @@ class AccountMove(models.Model):
         action_read = self.env["ir.actions.actions"]._for_xml_id(
             'purchase_ux.action_purchase_line_tree')
         context = literal_eval(action_read['context'])
-        context.update(dict(
-            force_line_edit=True,
-            search_default_not_invoiced=True,
-            search_default_invoice_qty=True,
-        ))
+        context = ast.literal_eval(action_read['context'])
+        context.update({
+            'force_line_edit':True,
+            'search_default_not_invoiced':True,
+            'search_default_invoice_qty':True,
+        })
         action_read.update(
-            context=context,
             domain=[
                 ('partner_id.commercial_partner_id', '=',
                     self.partner_id.commercial_partner_id.id),
             ],
         )
-
+        action_read['context'] = context
         return action_read
 
     def update_prices_with_supplier_cost(self):
