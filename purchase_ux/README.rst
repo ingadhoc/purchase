@@ -18,27 +18,21 @@ Several Improvements to purchases
 
 On purchase orders:
 
-#. Hide purchase quotations menu.
-#. Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-#. Add button to force invoice status, and it's only for admin with tec features.
-#. Add button to change the currency and update the prices of the order lines
-#. Add an action in purchase orders list view to cancel selected orders in quotation state.
-#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
-#. Add internal notes pickings and send it to invoices
-#. Add a button "Update Prices" to update prices from provider to purchase order lines.
-
-On purchase lines:
-
-#. If not seller is defined or seller price is 0, then sugget accounting cost
-
+Hide purchase quotations menu.
+Make purchase orders menu show all purchase records (quotations, and confirmed ones)
+Add button to force invoice status, and it's only for admin with tec features.
+Add button to change the currency and update the prices of the order lines
+Add an action in purchase orders list view to cancel selected orders in quotation state.
+Add a button "Update Prices" to update prices from provider to purchase order lines.
+Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
+Add internal notes.
 On purchase invoices:
 
-#. Add a button "Add purchase lines" to access to a list of purchase lines from the vendor and select the lines to be included in the invoice.
-#. Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
-
+Add a button "Add purchase lines" to access to a list of purchase lines from the vendor and select the lines to be included in the invoice.
+Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 On Products:
 
-#. Allows to search by suppliers and to group by main supplier on product and product variants.
+Allows to search by suppliers and to group by main supplier on product and product variants.
 
 
 

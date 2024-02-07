@@ -20,7 +20,7 @@
             </field>
 
             <button name="button_done" position="after">
-                <button name="button_set_invoiced" type="object" string="Set Invoiced" attrs="{'invisible': ['|', ('state', '!=', 'done'), ('invoice_status', '!=', 'to invoice')]}" confirm="This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?" groups="base.group_no_one"/>
+                <button name="button_set_invoiced" type="object" string="Set Invoiced" invisible="state != 'done' or invoice_status != 'to invoice'" confirm="This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?" groups="base.group_no_one"/>
             </button>
 
             <field name="invoice_status" position="before">
@@ -28,8 +28,8 @@
             </field>
             <!-- agregamos boton de actualizar precios a las lineas -->
             <field name="order_line" position="before">
-                <button name="update_prices" string="Update Prices" help="Actualiza los precios de las líneas con los precios del proveedor definidos en los productos" type="object" states="draft,sent"/>
-                <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the order. Are you sure you wish to continue?"/>
+                <button name="update_prices" class="oe_highlight" string="Update Prices" help="Actualiza los precios de las líneas con los precios del proveedor definidos en los productos" type="object" invisible="state not in ('draft', 'sent')"/>
+                <button name="update_prices_with_supplier_cost" class="oe_highlight" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the order. Are you sure you wish to continue?"/>
             </field>
             <field name="currency_id" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -38,7 +38,7 @@
                 <label for="currency_id" groups="base.group_multi_currency"/>
                 <div groups="base.group_multi_currency">
                     <field name="currency_id" class="oe_inline"/>
-                    <button name="%(action_purchase_change_currency)d" type="action" class="oe_inline oe_link" string="(change)" attrs="{'invisible':[('state','not in',['draft','sent'])]}"/>
+                    <button name="%(action_purchase_change_currency)d" type="action" class="oe_inline oe_link" string="(change)" invisible="state not in ['draft', 'sent']"/>
                 </div>
             </field>
         </field>
@@ -66,6 +66,10 @@
             <tree position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
             </tree>
+            <!-- Cambiamos el attribute de js class para que desaparezca el tablero que resume las facturas -->
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class"/>
+            </xpath>
             <field name="date_approve" position="attributes">
                 <attribute name="invisible">0</attribute>
                 <attribute name="optional">show</attribute>
