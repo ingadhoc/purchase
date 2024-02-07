@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase UX',
-    'version': "16.0.1.3.0",
+    'version': "17.0.1.0.0",
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -47,7 +47,7 @@
     'demo': [
         'demo/purchase_order_demo.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
