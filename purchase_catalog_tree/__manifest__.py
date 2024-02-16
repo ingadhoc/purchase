@@ -18,7 +18,7 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Quotation Products',
+    'name': 'Purchase Catalog Tree',
     'version': "17.0.1.0.0",
     'category': 'Purchase Management',
     'sequence': 14,
@@ -32,7 +32,14 @@
     ],
     'data': [
         'views/purchase_order_views.xml',
+        'views/product_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'purchase_catalog_tree/static/src/product_catalog/*.js',
+            'purchase_catalog_tree/static/src/product_catalog/*.xml',
+        ],
+    },
     'installable': True,
     'auto_install': False,
     'application': False,
