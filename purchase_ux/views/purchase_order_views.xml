@@ -23,6 +23,10 @@
                 <button name="button_set_invoiced" type="object" string="Set Invoiced" attrs="{'invisible': ['|', ('state', '!=', 'done'), ('invoice_status', '!=', 'to invoice')]}" confirm="This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?" groups="base.group_no_one"/>
             </button>
 
+            <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
+                <attribute name="states">purchase,done</attribute>
+            </xpath>
+
             <field name="invoice_status" position="before">
                 <field name="force_invoiced_status" groups="base.group_no_one"/>
             </field>
