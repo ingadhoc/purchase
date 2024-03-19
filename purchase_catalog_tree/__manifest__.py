@@ -18,7 +18,7 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Quotation Products',
+    'name': 'Purchase Catalog Tree',
     'version': "17.0.1.0.0",
     'category': 'Purchase Management',
     'sequence': 14,
