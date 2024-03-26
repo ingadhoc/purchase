@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * purchase_request_ux
+msgid ""
+msgstr ""
+"Project-Id-Version: purchase-workflow (10.0)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-17 03:38+0000\n"
+"PO-Revision-Date: 2023-09-07 16:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
+"Language-Team: Spanish (http://www.transifex.com/oca/OCA-purchase-"
+"workflow-10-0/language/es/)\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
+
+#. module: purchase_request_ux
+#: model:res.groups,name:purchase_request_ux.group_purchase_request_user_extended
+msgid "Purchase Request User Extended"
+msgstr "Usuario con Permiso Extendido"
+
+#. module: purchase_request_ux
+#: model_terms:ir.ui.view,arch_db:purchase_request_ux.view_purchase_request_form
+msgid "Request Approval"
+msgstr "Solicitar aprobación"

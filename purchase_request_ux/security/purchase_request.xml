@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018-2019 ForgeFlow, S.L.
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
+<odoo>
+    <record id="group_purchase_request_user_extended" model="res.groups">
+        <field name="name">Purchase Request User Extended</field>
+        <field name="implied_ids" eval="[(4, ref('purchase_request.group_purchase_request_user'))]" />
+        <field name="category_id" ref="purchase_request.module_category_purchase_request" />
+    </record>
+    <record id="purchase_request.group_purchase_request_manager" model="res.groups">
+        <field name="name">Purchase Request Manager</field>
+        <field name="implied_ids" eval="[(4, ref('group_purchase_request_user_extended'))]"/>
+        <field name="category_id" ref="purchase_request.module_category_purchase_request" />
+    </record>
+    <record id="purchase_request_followers_rule_extended" model="ir.rule">
+        <field name="name">Follow Purchase Request Extended</field>
+        <field name="model_id" ref="purchase_request.model_purchase_request" />
+        <field name="groups" eval="[(6,0, [ref('purchase_request_ux.group_purchase_request_user_extended')])]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+    <record id="purchase_request_rule_extended" model="ir.rule">
+        <field name="name">Purchase Request User Extended</field>
+        <field name="model_id" ref="purchase_request.model_purchase_request" />
+        <field name="groups" eval="[(6,0, [ref('purchase_request_ux.group_purchase_request_user_extended')])]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
+        <field name="domain_force">[('requested_by','=',user.id)]</field>
+    </record>
+    <record id="purchase_request_line_followers_rule_extended" model="ir.rule">
+        <field name="name">Follow Purchase Request Line Extended</field>
+        <field name="model_id" ref="purchase_request.model_purchase_request_line" />
+        <field name="groups" eval="[(6,0, [ref('purchase_request_ux.group_purchase_request_user_extended')])]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+    <record id="purchase_request_line_rule_extended" model="ir.rule">
+        <field name="name">Purchase Request Line User Extended</field>
+        <field name="model_id" ref="purchase_request.model_purchase_request_line" />
+        <field name="groups" eval="[(6,0, [ref('purchase_request_ux.group_purchase_request_user_extended')])]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
+        <field name="domain_force">[('request_id.requested_by','=',user.id)]</field>
+    </record>
+</odoo>
