@@ -31,11 +31,13 @@ On incoming pickings:
 
 #. Add moving internal notes of the PO to the picking.
 
-
 On Stock Moves:
 
 #. Add button to access to purchase order related.
 
+On Stock Warehouse Orderpoints:
+
+#. Set main seller as default supplier in replenishment rules.
 
 
 Installation
