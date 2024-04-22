@@ -36,7 +36,7 @@
         <field name="model_id" ref="purchase_request.model_purchase_request_line" />
         <field name="groups" eval="[(6,0, [ref('purchase_request_ux.group_purchase_request_user_extended')])]" />
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
+        <field name="perm_write" eval="True" />
         <field name="perm_create" eval="False" />
         <field name="perm_unlink" eval="False" />
     </record>
