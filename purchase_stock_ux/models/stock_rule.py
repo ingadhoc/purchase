@@ -55,3 +55,19 @@ class StockRule(models.Model):
                 price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom)
             res['price_unit'] = price_unit
         return res
+    
+    def _make_po_get_domain(self, company_id, values, partner):
+        domain = super()._make_po_get_domain(company_id, values, partner)
+        current_user_id = self.env.user.id
+        new_domain = []
+        for condition in domain:
+            field, operator, value = condition
+            if field == 'user_id' and value == False:
+                new_domain.extend([
+                    '|',
+                    ('user_id', '=', False),
+                    ('user_id', '=', current_user_id),
+                ])
+            else:
+                new_domain.append(condition)
+        return tuple(new_domain)
