@@ -13,7 +13,7 @@
                         type="object"
                         groups="purchase.group_purchase_user"
                         context="{'res_id': purchase_id, 'action': 'purchase.purchase_form_action', 'form_view': 'purchase.purchase_order_form'}"
-                        attrs="{'invisible': [('purchase_id', '=', False)]}"
+                        invisible="not purchase_id"
                         >
                 </button>
             </xpath>

@@ -90,9 +90,6 @@ class PurchaseOrderLine(models.Model):
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
-            to_cancel_moves = rec.move_ids.filtered(
-                lambda x: x.state not in ['done', 'cancel'])
-            to_cancel_moves._cancel_quantity()
             rec.order_id.message_post(
                 body=_(
                     'Cancel remaining call for line "%s" (id %s), line '
