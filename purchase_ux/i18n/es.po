@@ -44,6 +44,17 @@ msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
 msgstr ""
 
 #. module: purchase_ux
+#: model:ir.actions.act_window,name:purchase.action_rfq_form
+#: model:ir.actions.act_window,name:purchase.purchase_rfq
+#: model:ir.ui.menu,name:purchase.menu_purchase_rfq
+#: model_terms:ir.ui.view,arch_db:purchase.portal_my_home_menu_purchase
+#: model_terms:ir.ui.view,arch_db:purchase.portal_my_home_purchase
+#: model_terms:ir.ui.view,arch_db:purchase.view_purchase_order_search
+msgid "Requests for Quotation"
+msgstr "Pedidos de compra"
+
+
+#. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
 msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
 msgstr "Agregar todo en \"Para Facturar\" en la factura actual"
