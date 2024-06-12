@@ -26,13 +26,19 @@ Add an action in purchase orders list view to cancel selected orders in quotatio
 Add a button "Update Prices" to update prices from provider to purchase order lines.
 Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
 Add internal notes.
+On purchase order lines:
+
+When the quantity is changed, we avoid the re-compute of the price in the purchase order line
+If price was not computed within the product (not seller or seller price = 0.0), then the PO will bring the standard price
+
+
 On purchase invoices:
 
 Add a button "Add purchase lines" to access to a list of purchase lines from the vendor and select the lines to be included in the invoice.
 Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 On Products:
 
-Allows to search by suppliers and to group by main supplier on product and product variants.
+Allows to search by suppliers and to group by main supplier on product and product variants
 
 
 
