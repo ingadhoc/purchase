@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="purchase.view_move_form_inherit_purchase"/>
         <field name="arch" type="xml">
             <field name="invoice_line_ids" position="before">
-                <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" class="oe_highlight" invisible="state != 'draft' or move_type not in ['in_invoice', 'in_refund']"/>
+                <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" invisible="state != 'draft' or move_type not in ['in_invoice', 'in_refund']"/>
                 <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the invoice. Are you sure you wish to continue?" invisible="move_type not in ['in_invoice', 'in_refund']"/>
             </field>
 

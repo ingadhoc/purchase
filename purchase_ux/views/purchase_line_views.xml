@@ -61,4 +61,12 @@
             </filter>
         </field>
     </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_line_tree_add">
+        <field name="name"> Add Purchase Oder Lines</field>
+        <field name="context">{'search_default_not_invoiced': True, 'search_default_invoice_qty': True}</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_id" ref="purchase_ux.purchase_order_line_tree"/>
+    </record>
+
 </odoo>
