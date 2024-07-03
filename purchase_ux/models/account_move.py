@@ -36,15 +36,8 @@ class AccountMove(models.Model):
     def add_purchase_line_moves(self):
         self.ensure_one()
         action_read = self.env["ir.actions.actions"]._for_xml_id(
-            'purchase_ux.action_purchase_line_tree')
-        context = literal_eval(action_read['context'])
-        context.update(dict(
-            force_line_edit=True,
-            search_default_not_invoiced=True,
-            search_default_invoice_qty=True,
-        ))
+            'purchase_ux.action_purchase_line_tree_add')
         action_read.update(
-            context=context,
             domain=[
                 ('partner_id.commercial_partner_id', '=',
                     self.partner_id.commercial_partner_id.id),

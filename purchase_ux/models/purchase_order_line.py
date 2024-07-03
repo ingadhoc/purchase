@@ -81,8 +81,10 @@ class PurchaseOrderLine(models.Model):
         """
         res = super().get_view(
             view_id=view_id, view_type=view_type, **options)
-        force_line_edit = self._context.get('force_line_edit')
-        if force_line_edit and view_type == 'tree':
+
+        action_add_po_lines = self.env.ref('purchase_ux.action_purchase_line_tree_add')
+        action_id = options.get('action_id')
+        if action_id and action_id == action_add_po_lines.id and view_type == 'tree':
             doc = etree.XML(res['arch'])
             # add to invoice qty field (before setupmodifis because if not
             # it remains editable)
