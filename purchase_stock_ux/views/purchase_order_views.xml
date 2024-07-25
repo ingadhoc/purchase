@@ -16,8 +16,8 @@
             <!-- agregamos boton de cancelar linea -->
             <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="after">
                 <field name="delivery_status" invisible="1"/>
-                <button name="button_cancel_remaining" type="object" title="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" attrs="{'invisible': [('delivery_status', '!=', 'to receive')]}" groups="purchase.group_purchase_manager"/>
-                <field name="qty_returned" string="Returned Quantity" attrs="{'column_invisible': [('parent.state', 'not in', ['purchase', 'done'])]}" optional="show"/>
+                <button name="button_cancel_remaining" type="object" title="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" invisible="delivery_status != 'to receive'" groups="purchase.group_purchase_manager"/>
+                <field name="qty_returned" string="Returned Quantity" column_invisible="parent.state not in ('purchase', 'done')" optional="show"/>
             </xpath>
         </field>
     </record>
