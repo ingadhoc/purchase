@@ -11,11 +11,10 @@
             </field>
             <tree>
                 <field name="vouchers"/>
-                <field name="state" invisible="1"/>
+                <field name="state" optional="hidden"/>
             </tree>
         </field>
     </record>
-
 
     <record id="purchase_order_line_search" model="ir.ui.view">
         <field name="name">purchase.order.line.search</field>
