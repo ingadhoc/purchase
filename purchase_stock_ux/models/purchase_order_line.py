@@ -193,6 +193,7 @@ class PurchaseOrderLine(models.Model):
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
         res = super()._prepare_purchase_order_line(
             product_id, product_qty, product_uom, company_id, supplier, po)
-        #copiamos user_id desde el reabastecimiento a la orden de compra
-        po.user_id = self.env.user
+        # copy user_id from replenishment to purchase order
+        if not po.user_id:
+            po.user_id = self.env.user
         return res
