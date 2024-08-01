@@ -194,5 +194,6 @@ class PurchaseOrderLine(models.Model):
         res = super()._prepare_purchase_order_line(
             product_id, product_qty, product_uom, company_id, supplier, po)
         #copiamos user_id desde el reabastecimiento a la orden de compra
-        po.user_id = self.env.user
+        if not po.user_id:
+            po.user_id = self.env.user
         return res
