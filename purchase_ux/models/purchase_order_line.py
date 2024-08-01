@@ -33,7 +33,7 @@ class PurchaseOrderLine(models.Model):
     )
 
     qty_to_invoice = fields.Float(
-        compute='_compute_qty_to_invoice',
+        compute='_compute_qty_invoiced',
         string='Cantidad en factura actual',
         store=True,
         readonly=True,
@@ -63,7 +63,8 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends(
         'qty_invoiced', 'qty_received', 'order_id.state')
-    def _compute_qty_to_invoice(self):
+    def _compute_qty_invoiced(self):
+        super()._compute_qty_invoiced()
         for line in self:
             if line.order_id.state in ['purchase', 'done']:
                 if line.product_id.purchase_method == 'purchase':
