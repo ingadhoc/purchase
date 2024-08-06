@@ -3,24 +3,25 @@
 # 	* purchase_stock_ux
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020
-# Juan Rivero <jr@adhoc.com.ar>, 2021
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
+# ced_adhoc, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-06 10:13+0000\n"
-"PO-Revision-Date: 2020-05-06 19:51+0000\n"
-"Last-Translator: Juan Rivero <jr@adhoc.com.ar>, 2021\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"POT-Creation-Date: 2024-07-29 19:14+0000\n"
+"PO-Revision-Date: 2024-06-27 19:04+0000\n"
+"Last-Translator: ced_adhoc, 2024\n"
+"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: purchase_stock_ux
+#. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 #, python-format
 msgid ""
@@ -29,12 +30,15 @@ msgid ""
 msgstr ""
 
 #. module: purchase_stock_ux
+#. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 #, python-format
 msgid ""
 "Cancel remaining can't be called for Kit Products (products with a bom of "
 "type kit)."
 msgstr ""
+"La cancelación de remanentes no puede ser utilizada para Productos que "
+"tengan una lista de materiales asociada de tipo \"kit\"."
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
@@ -42,6 +46,9 @@ msgid ""
 "Cancel remaining quanitity to be received. This will set line quantity equal"
 " to received qty and will cancel remaining moves"
 msgstr ""
+"Cancelar cantidades pendientes de recibir. Al hacer click en el botón se "
+"ejecutará una acción que disminuirá la cantidad a comprar igualándola con la"
+" cantidad recibida y cancelará los movimientos restantes."
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
@@ -57,7 +64,12 @@ msgstr "Estado de la recepción"
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
 msgid "Force Delivered Status"
-msgstr ""
+msgstr "Forzar estado de entrega"
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Regla de inventario mínimo"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__delivery_status__no
@@ -72,6 +84,7 @@ msgid "On Voucher"
 msgstr ""
 
 #. module: purchase_stock_ux
+#. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order.py:0
 #, python-format
 msgid "Only users with \"%s / %s\" can Set Received manually"
@@ -83,26 +96,27 @@ msgid "Order Reference"
 msgstr ""
 
 #. module: purchase_stock_ux
+#. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 #, python-format
 msgid "Ordered quantity decreased!"
-msgstr ""
+msgstr "Alerta sobre disminunción de cantidades"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_purchase_order
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_move_form
 msgid "Purchase Order"
-msgstr "Orden de Compra"
+msgstr "Pedido de compra"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de orden de compra"
+msgstr "Línea de pedido de compra"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Purchase orders that include lines not received."
-msgstr ""
+msgstr "Pedidos de compra que incluyen líneas no recibidas"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
@@ -136,12 +150,12 @@ msgstr "Cantidad Devuelta"
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Movimiento de stock"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Regla de inventario"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
@@ -149,6 +163,9 @@ msgid ""
 "This will set line quantity equal to received qty and will cancel remaining "
 "moves. This can not be undone. Are you sure you want to continue?"
 msgstr ""
+"Esta acción disminuirá la cantidad a comprar igualándola con la cantidad "
+"recibida y cancelará los movimientos restantes. Esta acción no se podrá "
+"deshacer. ¿Estás seguro de continuar?"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__delivery_status__to_receive
@@ -168,12 +185,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__with_returns
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "With Returns"
-msgstr ""
+msgstr "Con devoluciones"
 
 #. module: purchase_stock_ux
+#. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 #, python-format
 msgid ""
 "You can not cancel remianing qty to receive because there are more product "
 "invoiced than the received. You should correct invoice or ask for a refund"
 msgstr ""
+"No se puede cancelar la cantidad remanente a recibir ya que la cantidad "
+"facturada es mayor que la recibida. Primero se debe corregir la factura o "
+"solicitar un reembolso."
