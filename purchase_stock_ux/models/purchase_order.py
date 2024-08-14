@@ -3,7 +3,7 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api, _
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_round
 from odoo.exceptions import UserError
 
 
@@ -97,3 +97,22 @@ class PurchaseOrder(models.Model):
         res = super(PurchaseOrder, self)._prepare_picking()
         res['note'] = self.internal_notes
         return res
+
+    def _get_stock_move_price_unit(self):
+        self.ensure_one()
+        order = self.order_id
+        price_unit = super(PurchaseOrder, self)._get_stock_move_price_unit()
+        price_unit = self.price_unit
+        price_unit_prec = self.env['decimal.precision'].precision_get('Product Price')
+        if self.taxes_id:
+            qty = self.product_qty or 1
+            price_unit = self.taxes_id.with_context(round=False, round_base=False).compute_all(
+                price_unit, currency=self.order_id.currency_id, quantity=qty, product=self.product_id, partner=self.order_id.partner_id
+            )['total_void']
+            price_unit = price_unit / qty
+        if self.product_uom.id != self.product_id.uom_id.id:
+            price_unit *= self.product_uom.factor / self.product_id.uom_id.factor
+        if order.currency_id != order.company_id.currency_id:
+            price_unit = order.currency_id._convert(
+                price_unit, order.company_id.currency_id, self.company_id, self.date_order or fields.Date.today(), round=False)
+        return float_round(price_unit, precision_digits=price_unit_prec)
