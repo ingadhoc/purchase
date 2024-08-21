@@ -15,7 +15,7 @@
     <record id="purchase_order_1" model="purchase.order">
         <field name="partner_id" ref="base.res_partner_1"/>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="state">done</field>
+        <field name="state">draft</field>
         <field name="create_date" eval="DateTime.today() - relativedelta(days=20)"/>
         <field name="date_order" eval="DateTime.today() - relativedelta(days=5)"/>
         <field name="date_approve" eval="DateTime.today() - relativedelta(days=9)"/>
