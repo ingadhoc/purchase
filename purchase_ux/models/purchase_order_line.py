@@ -67,9 +67,9 @@ class PurchaseOrderLine(models.Model):
         for line in self:
             if line.order_id.state in ['purchase', 'done']:
                 if line.product_id.purchase_method == 'purchase':
-                    line.qty_to_invoice = line.product_qty - line.qty_invoiced
+                    line.qty_to_invoice = line.product_qty - line.qty_invoiced - line.qty_returned
                 else:
-                    line.qty_to_invoice = line.qty_received - line.qty_invoiced
+                    line.qty_to_invoice = line.qty_received - line.qty_invoiced - line.qty_returned
             else:
                 line.qty_to_invoice = 0
 
