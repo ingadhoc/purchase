@@ -4,7 +4,7 @@
 ##############################################################################
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.tools import float_compare
+from odoo.tools import float_compare, float_is_zero
 import json
 from lxml import etree
 import logging
@@ -86,7 +86,7 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(_(
                         "Cancel remaining can't be called for Kit Products "
                         "(products with a bom of type kit)."))
-            rec.with_context(cancel_from_order=True).product_qty = rec.qty_received
+            rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
@@ -197,3 +197,33 @@ class PurchaseOrderLine(models.Model):
         if not po.user_id:
             po.user_id = self.env.user
         return res
+
+    @api.depends(
+        'qty_invoiced', 'qty_received', 'order_id.state', 'qty_returned')
+    def _compute_qty_invoiced(self):
+        super()._compute_qty_invoiced()
+        for line in self:
+            if line.order_id.state in ['purchase', 'done']:
+                if line.product_id.purchase_method == 'purchase':
+                    line.qty_to_invoice = line.product_qty - line.qty_invoiced - line.qty_returned
+                else:
+                    line.qty_to_invoice = line.qty_received - line.qty_invoiced
+            else:
+                line.qty_to_invoice = 0
+
+    @api.depends(
+        'order_id.state', 'qty_invoiced', 'product_qty', 'qty_to_invoice',
+        'order_id.force_invoiced_status')
+    def _compute_invoice_status(self):
+        precision = self.env['decimal.precision'].precision_get(
+            'Product Unit of Measure')
+        super()._compute_invoice_status()
+        for line in self:
+            if not float_is_zero(
+                    line.qty_to_invoice, precision_digits=precision):
+                line.invoice_status = 'to invoice'
+            elif float_compare(line.qty_invoiced, (line.product_qty - line.qty_returned),
+                               precision_digits=precision) >= 0:
+                line.invoice_status = 'invoiced'
+            else:
+                line.invoice_status = 'no'
