@@ -42,7 +42,7 @@ class PurchaseOrder(models.Model):
                 order.invoice_status = 'no'
 
     def button_set_invoiced(self):
-        if not self.user_has_groups('base.group_system'):
+        if not self.env.user.has_group('base.group_system'):
             group = self.env.ref('base.group_system').sudo()
             raise UserError(_(
                 'Only users with "%s / %s" can Set Invoiced manually') % (
@@ -67,8 +67,7 @@ class PurchaseOrder(models.Model):
 
     @api.model
     def check_force_invoiced_status(self, vals):
-        if vals.get('force_invoiced_status') and not self.user_has_groups(
-                'base.group_system'):
+        if vals.get('force_invoiced_status') and not self.env.user.has_group('base.group_system'):
             group = self.env.ref('base.group_system').sudo()
             raise UserError(_(
                 'Only users with "%s / %s" can Set Invoiced manually') % (
