@@ -57,15 +57,15 @@
     </record>
 
     <record id="purchase_order_kpis_tree" model="ir.ui.view">
-        <field name="name">purchase.order.tree.inherit</field>
+        <field name="name">purchase.order.list.inherit</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
-            <tree position="attributes">
+            <list position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
-            </tree>
+            </list>
             <!-- Cambiamos el attribute de js class para que desaparezca el tablero que resume las facturas -->
-            <xpath expr="//tree" position="attributes">
+            <xpath expr="//list" position="attributes">
                 <attribute name="js_class"/>
             </xpath>
             <field name="date_approve" position="attributes">
