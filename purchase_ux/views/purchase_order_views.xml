@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
 
             <field name="notes" position="after">
-                <field name="internal_notes"  colspan="2" placeholder="Internal Notes..." nolabel="1" />
+                <field name="internal_notes" colspan="2" placeholder="Internal Notes..." nolabel="1" />
             </field>
 
             <button name="button_done" position="after">
@@ -56,16 +56,33 @@
         </field>
     </record>
 
+   <!-- Esto es para arreglar que purchase matching solo se puede usar cuando tiene un producto seteado -->
+    <record id="view_inherit_purchase_matching" model="ir.ui.view">
+        <field name="name">purchase.matching</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="purchase.view_move_form_inherit_purchase"/>
+        <field name="priority" eval="99"/>
+        <field name="arch" type="xml">
+            <button name="action_purchase_matching" position="replace">
+                <button class="oe_stat_button" name="action_purchase_matching" type="object" groups="purchase.group_purchase_user" icon="fa-bullseye" invisible="not partner_id or move_type not in ('in_invoice', 'in_refund') or state not in ('draft','cancel')">
+                    <div class="o_field_statinfo">
+                        <span class="o_stat_text">Purchase Matching</span>
+                    </div>
+                </button>
+            </button>
+        </field>
+    </record>
+
     <record id="purchase_order_kpis_tree" model="ir.ui.view">
-        <field name="name">purchase.order.tree.inherit</field>
+        <field name="name">purchase.order.list.inherit</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
-            <tree position="attributes">
+            <list position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
-            </tree>
+            </list>
             <!-- Cambiamos el attribute de js class para que desaparezca el tablero que resume las facturas -->
-            <xpath expr="//tree" position="attributes">
+            <xpath expr="//list" position="attributes">
                 <attribute name="js_class"/>
             </xpath>
             <field name="date_approve" position="attributes">
