@@ -86,10 +86,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#. module: purchase_ux
-#: model:ir.actions.server,name:purchase_ux.action_cancel_order_massive
-msgid "Cancel Order"
-msgstr "Cancelar orden"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__qty_to_invoice

@@ -77,7 +77,7 @@ class PurchaseOrderLine(models.Model):
     def get_view(self, view_id=None, view_type='form', **options):
         """
         If we came from invoice, we send in context 'force_line_edit'
-        and we change tree view to make editable and also field qty
+        and we change list view to make editable and also field qty
         """
         res = super().get_view(
             view_id=view_id, view_type=view_type, **options)
@@ -129,7 +129,7 @@ class PurchaseOrderLine(models.Model):
                     'help': _('Open Purchase Line Form View'),
                 }))
 
-            # make tree view editable
+            # make list view editable
             for node in doc.xpath("/tree"):
                 node.set('edit', 'true')
                 node.set('create', 'false')
