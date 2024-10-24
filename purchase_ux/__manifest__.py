@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Purchase UX',
-    'version': "17.0.1.2.0",
+    'version': "18.0.1.0.0",
     'category': 'Purchases',
     'sequence': 14,
     'summary': '',
@@ -33,7 +33,6 @@
         'account_ux',
     ],
     'data': [
-        'data/ir_actions_server_data.xml',
         'security/ir.model.access.csv',
         'wizards/purchase_change_currency_views.xml',
         'wizards/purchase_order_line_add_to_invoice_views.xml',
@@ -47,7 +46,7 @@
     'demo': [
         'demo/purchase_order_demo.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
