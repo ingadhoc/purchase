@@ -5,7 +5,7 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="purchase.view_move_form_inherit_purchase"/>
         <field name="arch" type="xml">
-            <field name="invoice_line_ids" position="before">
+            <field name="invoice_line_ids" position="after">
                 <button name="add_purchase_line_moves" type="object" string="Add Purchase Lines" attrs="{'invisible': ['|',('state', '!=', 'draft'),('move_type', 'not in', ['in_invoice','in_refund'])]}"/>
                 <button name="update_prices_with_supplier_cost" string="Update Supplier Prices" type="object" confirm="By accepting they will update (or create prices) for this provider and all products loaded on the invoice. Are you sure you wish to continue?" attrs="{'invisible': [('move_type',  'not in', ['in_invoice','in_refund'])]}"/>
             </field>
