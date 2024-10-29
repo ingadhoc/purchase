@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-11 15:03+0000\n"
+"POT-Creation-Date: 2024-10-22 15:27+0000\n"
 "PO-Revision-Date: 2023-05-04 13:24+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -71,7 +71,7 @@ msgid ""
 msgstr ""
 "Al hacer click en \"Aceptar\" se estarán actualizando (o creando) las "
 "tarifas de este proveedor para todos los productos de la Orden de Compra. "
-"¿Está seguro de continuar? "
+"¿Está seguro de continuar?"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -87,7 +87,7 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__qty_to_invoice
 msgid "Cantidad en factura actual"
-msgstr ""
+msgstr "Cantidad a facturar"
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_change_currency
