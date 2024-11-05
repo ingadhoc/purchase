@@ -21,10 +21,6 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#. module: purchase_ux
-#: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree_add
-msgid " Add Purchase Oder Lines"
-msgstr "Agregar Líneas de Pedido de Compra"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -38,10 +34,6 @@ msgid ""
 "en los productos"
 msgstr ""
 
-#. module: purchase_ux
-#: model_terms:ir.ui.view,arch_db:purchase_ux.view_move_form_inherit_purchase
-msgid "Add Purchase Lines"
-msgstr "Añadir Lineas de Compra"
 
 #. module: purchase_ux
 #. odoo-python

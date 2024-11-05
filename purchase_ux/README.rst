@@ -34,7 +34,6 @@ If price was not computed within the product (not seller or seller price = 0.0),
 
 On purchase invoices:
 
-Add a button "Add purchase lines" to access to a list of purchase lines from the vendor and select the lines to be included in the invoice.
 Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
 
 On Products:
