@@ -33,18 +33,6 @@ class AccountMove(models.Model):
         for rec in moves:
             rec.has_purchases = any(line for line in rec.invoice_line_ids.mapped('purchase_line_id'))
 
-    def add_purchase_line_moves(self):
-        self.ensure_one()
-        action_read = self.env["ir.actions.actions"]._for_xml_id(
-            'purchase_ux.action_purchase_line_tree_add')
-        action_read.update(
-            domain=[
-                ('partner_id.commercial_partner_id', '=',
-                    self.partner_id.commercial_partner_id.id),
-            ],
-        )
-
-        return action_read
 
     def update_prices_with_supplier_cost(self):
         net_price_installed = 'net_price' in self.env[
