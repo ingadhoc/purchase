@@ -200,3 +200,22 @@ msgstr ""
 "No se puede cancelar la cantidad remanente a recibir ya que la cantidad "
 "facturada es mayor que la recibida. Primero se debe corregir la factura o "
 "solicitar un reembolso."
+
+#. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__propagate_uom
+msgid "Propagate unit of measure"
+msgstr "Propagar unidad de medida"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.res_config_settings_view_form
+msgid ""
+"Use the same unit of measure in picking as the one selected in the purchase order"
+"(instead of the default unit of measure of the product).
+msgstr ""
+"Usar en picking misma unidad de medida que la seleccionada en el pedido de "
+"compra (en vez de la unidad de medida por defecto del producto)."

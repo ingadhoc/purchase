@@ -2,17 +2,17 @@
 <odoo>
 
     <record id="purchase_order_line_tree" model="ir.ui.view">
-        <field name="name">purchase.order.line.tree</field>
+        <field name="name">purchase.order.line.list</field>
         <field name="model">purchase.order.line</field>
         <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
         <field name="arch" type="xml">
             <field name="product_qty" position="after">
                 <field name="qty_received"/>
             </field>
-            <tree>
+            <list>
                 <field name="vouchers"/>
                 <field name="state" optional="hidden"/>
-            </tree>
+            </list>
         </field>
     </record>
 

@@ -98,8 +98,15 @@ class PurchaseOrderLine(models.Model):
 
     def _compute_vouchers(self):
         for rec in self:
-            rec.vouchers = ', '.join(rec.mapped(
-                'move_ids.picking_id.voucher_ids.display_name'))
+            if hasattr(rec, 'voucher_ids'): #?? ver si está bien
+                rec.vouchers = ', '.join(rec.mapped('voucher_ids.display_name')) #?? ver si está bien
+            else:
+                rec.vouchers = ''
+
+            # rec.vouchers = ', '.join(
+            #     rec.mapped('move_ids.picking_id.voucher_ids.display_name')
+            #     if 'voucher_ids' in rec.move_ids.picking_id._fields else []
+            # )
 
     @api.depends(
         'order_id.state', 'qty_received', 'qty_returned', 'product_qty',
@@ -165,7 +172,7 @@ class PurchaseOrderLine(models.Model):
                         toolbar=False, submenu=False):
         """
         If we came from invoice, we send in context 'force_line_edit'
-        and we change tree view to make editable and also field qty
+        and we change list view to make editable and also field qty
         """
         res = super().fields_view_get(
             view_id=view_id, view_type=view_type,

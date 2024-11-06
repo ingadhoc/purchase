@@ -7,7 +7,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
         cls.partner = cls.env['res.partner'].create({
             'name': 'Test Partner',
         })
