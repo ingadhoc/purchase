@@ -23,6 +23,7 @@ class TestStockOrderpoint(TestStockCommon):
             'product_id': cls.product.id,
             'location_id' : cls.location_stock.id,
             'product_min_qty' : 10,
+            'product_max_qty' : 20,
         })
 
 

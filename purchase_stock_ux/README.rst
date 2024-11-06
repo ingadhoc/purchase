@@ -23,7 +23,7 @@ On purchase orders:
 
 On purchase lines:
 
-#. Add delivery status and invoice status on purchase lines
+#. Add delivery status on purchase lines
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
 #. Add return quantity when you return products with "To Refund" option.
 
