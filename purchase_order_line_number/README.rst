@@ -14,7 +14,7 @@
 Purchase Order Line Number
 ==========================
 
-This module adds a sequential number for each line in the purchase order.
+Add a column for item numbering for purchase order lines
 
 Installation
 ============
