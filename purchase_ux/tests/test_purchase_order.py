@@ -1,7 +1,7 @@
-from odoo.addons.product.tests import common
+from odoo.tests.common import TransactionCase
 
 
-class TestPurchaseOrder(common.TestProductCommon):
+class TestPurchaseOrder(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
@@ -10,11 +10,17 @@ class TestPurchaseOrder(common.TestProductCommon):
             'name': 'Test Partner',
         })
 
-        cls.product = cls.env['product.product'].create({
+        cls.product_template = cls.env['product.template'].create({
             'name': 'Test Product',
+            'categ_id': cls.env.ref('product.product_category_all').id,
             'standard_price': 50.0,
             'list_price': 100.0,
+            'type': 'consu',
+            'uom_id': cls.env.ref('uom.product_uom_unit').id,
+            'uom_po_id': cls.env.ref('uom.product_uom_unit').id
         })
+
+        cls.product = cls.env['product.product'].search([('product_tmpl_id', '=', cls.product_template.id)])
 
         cls.supplier_info = cls.env['product.supplierinfo'].create({
             'partner_id': cls.partner.id,
@@ -28,6 +34,7 @@ class TestPurchaseOrder(common.TestProductCommon):
             'partner_id': cls.partner.id,
             'internal_notes': '<p>Test internal notes</p>',
         })
+
         cls.purchase_order_line = cls.env['purchase.order.line'].create({
             'order_id': cls.purchase_order.id,
             'product_id': cls.product.id,
@@ -49,7 +56,7 @@ class TestPurchaseOrder(common.TestProductCommon):
             ('partner_id', '=', self.partner.id),
             ('product_tmpl_id', '=', self.product.product_tmpl_id.id),
         ])
-        self.assertTrue(supplier_info, "Supplier info should exit")
+        self.assertTrue(supplier_info, "Supplier info should exist")
         self.assertEqual(supplier_info.price, 100.0, "Supplier price should be updated to 100.0")
 
     def test_internal_notes_in_invoice(self):
