@@ -71,3 +71,4 @@ class StockRule(models.Model):
             else:
                 new_domain.append(condition)
         return tuple(new_domain)
+

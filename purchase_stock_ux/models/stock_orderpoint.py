@@ -15,4 +15,3 @@ class StockWarehouseOrderpoint(models.Model):
         if product.seller_ids:
             values['supplier_id'] = product.seller_ids[0].id
         return values
-
