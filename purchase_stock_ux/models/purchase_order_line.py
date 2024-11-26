@@ -189,15 +189,6 @@ class PurchaseOrderLine(models.Model):
 
         return res
 
-    @api.model
-    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
-        res = super()._prepare_purchase_order_line(
-            product_id, product_qty, product_uom, company_id, supplier, po)
-        #copiamos user_id desde el reabastecimiento a la orden de compra
-        if not po.user_id:
-            po.user_id = self.env.user
-        return res
-
     @api.depends(
         'qty_invoiced', 'qty_received', 'order_id.state', 'qty_returned')
     def _compute_qty_invoiced(self):
