@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-24 15:38+0000\n"
+"POT-Creation-Date: 2024-10-29 06:52+0000\n"
 "PO-Revision-Date: 2024-03-20 15:56+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -27,7 +27,7 @@ msgstr ""
 #. module: purchase_request_ux
 #: model:ir.model,name:purchase_request_ux.model_purchase_request
 msgid "Purchase Request"
-msgstr "solicitud de compra"
+msgstr "Solicitud de compra"
 
 #. module: purchase_request_ux
 #: model:res.groups,name:purchase_request_ux.group_purchase_request_user_extended
