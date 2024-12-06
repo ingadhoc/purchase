@@ -4,16 +4,14 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
-# ced_adhoc, 2024
-# Matias Velazquez, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-11 16:05+0000\n"
-"PO-Revision-Date: 2024-04-08 13:38+0000\n"
-"Last-Translator: Matias Velazquez, 2024\n"
+"POT-Creation-Date: 2024-12-04 18:36+0000\n"
+"PO-Revision-Date: 2024-11-13 19:35+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,25 +19,21 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "(change)"
 msgstr "(cambiar)"
 
 #. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_inherit_purchase_matching
+msgid "<span class=\"o_stat_text\">Purchase Matching</span>"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid ""
 "Actualiza los precios de las líneas con los precios del proveedor definidos "
 "en los productos"
-msgstr ""
-
-
-#. module: purchase_ux
-#. odoo-python
-#: code:addons/purchase_ux/models/purchase_order_line.py:0
-#, python-format
-msgid "Agregar las cantidades en \"Para Facturar\" a la factura actual"
 msgstr ""
 
 #. module: purchase_ux
@@ -78,11 +72,10 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__qty_to_invoice
 msgid "Cantidad en factura actual"
-msgstr ""
+msgstr "Cantidad a facturar"
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_change_currency
@@ -158,7 +151,6 @@ msgstr "Forzar estado facturado"
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_bank_statement_line__has_purchases
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__has_purchases
-#: model:ir.model.fields,field_description:purchase_ux.field_account_payment__has_purchases
 msgid "Has Purchases?"
 msgstr "Tiene Compras?"
 
@@ -166,7 +158,7 @@ msgstr "Tiene Compras?"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__internal_notes
@@ -231,7 +223,6 @@ msgstr "Vendedor Principal"
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/purchase_order.py:0
-#, python-format
 msgid "Manually setted as invoiced"
 msgstr "Seteado Manualmente como Facturado"
 
@@ -244,7 +235,6 @@ msgstr "Totalmente Facturado"
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
-#, python-format
 msgid "No Purchase Order on context as \"active_id\""
 msgstr "No hay Orden de Compra en contexto como \"id activo\""
 
@@ -262,7 +252,6 @@ msgstr "Nada para facturar"
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
-#, python-format
 msgid "Old Currency And New Currency can not be the same"
 msgstr ""
 "La nueva moneda seleccionada no puede ser igual a la moneda actual de la "
@@ -271,17 +260,8 @@ msgstr ""
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/purchase_order.py:0
-#: code:addons/purchase_ux/models/purchase_order.py:0
-#, python-format
 msgid "Only users with \"%s / %s\" can Set Invoiced manually"
 msgstr "Solo usuarios con \"%s / %s\" pueden establecer Facturado manualmente"
-
-#. module: purchase_ux
-#. odoo-python
-#: code:addons/purchase_ux/models/purchase_order_line.py:0
-#, python-format
-msgid "Open Purchase Line Form View"
-msgstr "Abrir vista formulario de la línea de compra"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__partner_id
@@ -296,7 +276,6 @@ msgstr "Producto"
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
-#, python-format
 msgid "Purchase Line"
 msgstr "Línea de Compra"
 
@@ -309,7 +288,7 @@ msgstr "Lineas de Compra"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
 msgid "Purchase Order"
-msgstr "Pedido de Compra"
+msgstr "Pedido de compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line
@@ -319,7 +298,6 @@ msgstr "Línea de pedido de compra"
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_bank_statement_line__purchase_order_ids
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__purchase_order_ids
-#: model:ir.model.fields,field_description:purchase_ux.field_account_payment__purchase_order_ids
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
 msgid "Purchase Orders"
 msgstr "Órdenes de Compra"
@@ -342,7 +320,6 @@ msgstr "Seleeciona una moneda para aplicar en la orden de compra"
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:0
-#, python-format
 msgid "Selected lines must be from the same partner"
 msgstr "Las líneas seleccionadas deben pertenecer a un mismo vendedor"
 
@@ -363,7 +340,6 @@ msgstr ""
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:0
-#, python-format
 msgid "This wizard must be called from purchase lines"
 msgstr "El asistente debe ser llamado desde las líneas de compra"
 
