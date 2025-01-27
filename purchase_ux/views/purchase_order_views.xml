@@ -101,6 +101,7 @@
 
     <!-- make purchase orders action show all sale.order records -->
     <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="name">Purchase Orders</field>
         <field name="domain">[]</field>
     </record>
 
