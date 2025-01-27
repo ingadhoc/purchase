@@ -9,9 +9,6 @@ class IrModelAccess(models.Model):
     def check(self, model, mode='read', raise_exception=True):
         if isinstance(model, models.BaseModel):
             assert model._name == 'ir.model', 'Invalid model object'
-            model_name = model.model
-        else:
-            model_name = model
         # we need to use this flag to know when the operation is from this modules
         if self._context.get('sale_quotation_products') or self._context.get('purchase_catalog_tree') or self.env.is_superuser():
             return True
