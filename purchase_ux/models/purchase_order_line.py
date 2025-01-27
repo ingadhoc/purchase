@@ -16,7 +16,6 @@ class PurchaseOrderLine(models.Model):
         ('to invoice', 'Waiting Invoices'),
         ('invoiced', 'No Bill to Receive'),
     ],
-        string='Invoice Status',
         compute='_compute_invoice_status',
         store=True,
         readonly=True,

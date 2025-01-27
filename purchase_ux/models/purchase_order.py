@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    internal_notes = fields.Html('Internal Notes')
+    internal_notes = fields.Html()
 
     force_invoiced_status = fields.Selection([
         ('no', 'Nothing to Bill'),

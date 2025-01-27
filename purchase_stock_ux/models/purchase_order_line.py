@@ -19,7 +19,6 @@ class PurchaseOrderLine(models.Model):
         ('to receive', 'To Receive'),
         ('received', 'Received'),
     ],
-        string='Delivery Status',
         compute='_compute_delivery_status',
         store=True,
         readonly=True,
