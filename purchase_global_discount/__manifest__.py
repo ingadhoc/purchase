@@ -18,25 +18,24 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Global Discount',
-    'version': "18.0.1.0.0",
-    'category': 'Purchase Management',
-    'sequence': 14,
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'summary': '',
-    'depends': [
-        'purchase',
+    "name": "Purchase Global Discount",
+    "version": "18.0.1.0.0",
+    "category": "Purchase Management",
+    "sequence": 14,
+    "author": "ADHOC SA",
+    "website": "www.adhoc.com.ar",
+    "license": "AGPL-3",
+    "summary": "",
+    "depends": [
+        "purchase",
     ],
-    'external_dependencies': {
-    },
-    'data': [
-        'security/ir.model.access.csv',
-        'wizard/purchase_global_discount_wizard_view.xml',
-        'views/purchase_order_views.xml',
+    "external_dependencies": {},
+    "data": [
+        "security/ir.model.access.csv",
+        "wizard/purchase_global_discount_wizard_view.xml",
+        "views/purchase_order_views.xml",
     ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }
