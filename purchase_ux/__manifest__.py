@@ -18,35 +18,34 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase UX',
-    'version': "18.0.1.1.0",
-    'category': 'Purchases',
-    'sequence': 14,
-    'summary': '',
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'images': [
+    "name": "Purchase UX",
+    "version": "18.0.1.1.0",
+    "category": "Purchases",
+    "sequence": 14,
+    "summary": "",
+    "author": "ADHOC SA",
+    "website": "www.adhoc.com.ar",
+    "license": "AGPL-3",
+    "images": [],
+    "depends": [
+        "purchase",
+        "account_ux",
     ],
-    'depends': [
-        'purchase',
-        'account_ux',
+    "data": [
+        "security/ir.model.access.csv",
+        "wizards/purchase_change_currency_views.xml",
+        "wizards/purchase_order_line_add_to_invoice_views.xml",
+        "views/account_move_views.xml",
+        "views/ir_ui_menu.xml",
+        "views/purchase_order_views.xml",
+        "views/purchase_line_views.xml",
+        "views/product_template_views.xml",
+        "views/product_supplierinfo_views.xml",
     ],
-    'data': [
-        'security/ir.model.access.csv',
-        'wizards/purchase_change_currency_views.xml',
-        'wizards/purchase_order_line_add_to_invoice_views.xml',
-        'views/account_move_views.xml',
-        'views/ir_ui_menu.xml',
-        'views/purchase_order_views.xml',
-        'views/purchase_line_views.xml',
-        'views/product_template_views.xml',
-        'views/product_supplierinfo_views.xml'
+    "demo": [
+        "demo/purchase_order_demo.xml",
     ],
-    'demo': [
-        'demo/purchase_order_demo.xml',
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

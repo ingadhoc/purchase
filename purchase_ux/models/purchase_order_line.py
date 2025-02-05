@@ -2,71 +2,65 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api, _
+
+from odoo import _, api, fields, models
 from odoo.tools import float_compare, float_is_zero
-from lxml import etree
-import json
 
 
 class PurchaseOrderLine(models.Model):
-    _inherit = 'purchase.order.line'
+    _inherit = "purchase.order.line"
 
-    invoice_status = fields.Selection([
-        ('no', 'Nothing to Bill'),
-        ('to invoice', 'Waiting Invoices'),
-        ('invoiced', 'No Bill to Receive'),
-    ],
-        compute='_compute_invoice_status',
+    invoice_status = fields.Selection(
+        [
+            ("no", "Nothing to Bill"),
+            ("to invoice", "Waiting Invoices"),
+            ("invoiced", "No Bill to Receive"),
+        ],
+        compute="_compute_invoice_status",
         store=True,
         readonly=True,
         copy=False,
-        default='no'
+        default="no",
     )
 
     invoice_qty = fields.Float(
-        string='Invoice Quantity',
-        compute='_compute_invoice_qty',
-        inverse='_inverse_invoice_qty',
-        search='_search_invoice_qty',
-        digits='Product Unit of Measure',
+        string="Invoice Quantity",
+        compute="_compute_invoice_qty",
+        inverse="_inverse_invoice_qty",
+        search="_search_invoice_qty",
+        digits="Product Unit of Measure",
     )
 
     qty_to_invoice = fields.Float(
-        compute='_compute_qty_invoiced',
-        string='Cantidad en factura actual',
+        compute="_compute_qty_invoiced",
+        string="Cantidad en factura actual",
         store=True,
         readonly=True,
-        digits='Product Unit of Measure',
-        default=0.0
+        digits="Product Unit of Measure",
+        default=0.0,
     )
 
-    @api.depends(
-        'order_id.state', 'qty_invoiced', 'product_qty', 'qty_to_invoice',
-        'order_id.force_invoiced_status')
+    @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
-        precision = self.env['decimal.precision'].precision_get(
-            'Product Unit of Measure')
+        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         for line in self:
-            if line.state not in ('purchase', 'done'):
-                line.invoice_status = 'no'
+            if line.state not in ("purchase", "done"):
+                line.invoice_status = "no"
             elif line.order_id.force_invoiced_status:
                 line.invoice_status = line.order_id.force_invoiced_status
-            elif not float_is_zero(
-                    line.qty_to_invoice, precision_digits=precision):
-                line.invoice_status = 'to invoice'
-            elif float_compare(line.qty_invoiced, line.product_qty,
-                               precision_digits=precision) >= 0:
-                line.invoice_status = 'invoiced'
+            elif not float_is_zero(line.qty_to_invoice, precision_digits=precision):
+                line.invoice_status = "to invoice"
+            elif float_compare(line.qty_invoiced, line.product_qty, precision_digits=precision) >= 0:
+                line.invoice_status = "invoiced"
             else:
-                line.invoice_status = 'no'
+                line.invoice_status = "no"
 
-    @api.depends(
-        'qty_invoiced', 'qty_received', 'order_id.state')
+    @api.depends("qty_invoiced", "qty_received", "order_id.state")
     def _compute_qty_invoiced(self):
         super()._compute_qty_invoiced()
         for line in self:
-            if line.order_id.state in ['purchase', 'done']:
-                if line.product_id.purchase_method == 'purchase':
+            if line.order_id.state in ["purchase", "done"]:
+                if line.product_id.purchase_method == "purchase":
                     line.qty_to_invoice = line.product_qty - line.qty_invoiced
                 else:
                     line.qty_to_invoice = line.qty_received - line.qty_invoiced
@@ -76,45 +70,41 @@ class PurchaseOrderLine(models.Model):
     def action_line_form(self):
         self.ensure_one()
         return {
-            'name': _('Purchase Line'),
-            'view_type': 'form',
-            "view_mode": 'form',
-            'res_model': 'purchase.order.line',
-            'type': 'ir.actions.act_window',
-            'res_id': self.id,
+            "name": _("Purchase Line"),
+            "view_type": "form",
+            "view_mode": "form",
+            "res_model": "purchase.order.line",
+            "type": "ir.actions.act_window",
+            "res_id": self.id,
         }
 
-    @api.depends_context('active_id')
+    @api.depends_context("active_id")
     def _compute_invoice_qty(self):
-        invoice_id = self._context.get('active_id', False)
+        invoice_id = self._context.get("active_id", False)
         if not invoice_id:
             return True
-        AccountInvoice = self.env['account.move']
-        AccountInvoiceLine = self.env['account.move.line']
+        AccountInvoice = self.env["account.move"]
+        AccountInvoiceLine = self.env["account.move.line"]
         for rec in self:
-            lines = AccountInvoiceLine.search([
-                ('move_id', '=', invoice_id),
-                ('purchase_line_id', '=', rec.id)])
-            invoice_qty = -1.0 * sum(
-                lines.mapped('quantity')) if AccountInvoice.browse(
-                invoice_id).move_type == 'in_refund' else sum(
-                    lines.mapped('quantity'))
+            lines = AccountInvoiceLine.search([("move_id", "=", invoice_id), ("purchase_line_id", "=", rec.id)])
+            invoice_qty = (
+                -1.0 * sum(lines.mapped("quantity"))
+                if AccountInvoice.browse(invoice_id).move_type == "in_refund"
+                else sum(lines.mapped("quantity"))
+            )
             rec.invoice_qty = invoice_qty
 
     def _inverse_invoice_qty(self):
-        invoice_id = self._context.get('active_id', False)
-        active_model = self._context.get('active_model', False)
-        if not invoice_id or active_model != 'account.move':
+        invoice_id = self._context.get("active_id", False)
+        active_model = self._context.get("active_model", False)
+        if not invoice_id or active_model != "account.move":
             return True
-        invoice = self.env['account.move'].browse(invoice_id)
-        sign = invoice.move_type == 'in_refund' and -1.0 or 1.0
-        purchase_lines = self.env['account.move.line'].with_context(
-            check_move_validity=False)
-        do_not_compute = self._context.get('do_not_compute')
+        invoice = self.env["account.move"].browse(invoice_id)
+        sign = invoice.move_type == "in_refund" and -1.0 or 1.0
+        purchase_lines = self.env["account.move.line"].with_context(check_move_validity=False)
+        do_not_compute = self._context.get("do_not_compute")
         for rec in self:
-            lines = purchase_lines.search([
-                ('move_id', '=', invoice_id),
-                ('purchase_line_id', '=', rec.id)])
+            lines = purchase_lines.search([("move_id", "=", invoice_id), ("purchase_line_id", "=", rec.id)])
             # TODO ver como agregamos esta validacion de otra manera
             # no funciona bien si, por ej, agregamos una cantidad y luego
             # la aumentamos, en realidad tal vez no hace falta esta validacion
@@ -139,11 +129,11 @@ class PurchaseOrderLine(models.Model):
                 if not rec.invoice_qty:
                     continue
                 data = rec._prepare_account_move_line(invoice)
-                data['quantity'] = sign * rec.invoice_qty
-                data['move_id'] = invoice_id
+                data["quantity"] = sign * rec.invoice_qty
+                data["move_id"] = invoice_id
                 invoice_lines = purchase_lines.create(data)
                 invoice_lines._compute_tax_ids()
-                invoice = invoice_lines.mapped('move_id')
+                invoice = invoice_lines.mapped("move_id")
             if do_not_compute:
                 continue
             rec._compute_qty_invoiced()
@@ -154,35 +144,33 @@ class PurchaseOrderLine(models.Model):
         we just implemented the case "('invoice_qty', '! =', False)" which
         is the one we use in the view and only one that interests us for now
         """
-        invoice_id = self._context.get('active_id', False)
-        active_model = self._context.get('active_model', False)
-        if active_model != 'account.move':
+        invoice_id = self._context.get("active_id", False)
+        active_model = self._context.get("active_model", False)
+        if active_model != "account.move":
             return []
-        return [('invoice_lines.move_id', 'in', [invoice_id])]
+        return [("invoice_lines.move_id", "in", [invoice_id])]
 
     def action_add_all_to_invoice(self):
         for rec in self:
-            rec.invoice_qty = (rec.qty_to_invoice + rec.invoice_qty)
+            rec.invoice_qty = rec.qty_to_invoice + rec.invoice_qty
 
     def _compute_price_unit_and_date_planned_and_name(self):
-        """ Basicamente modificamos dos cosas:
+        """Basicamente modificamos dos cosas:
         a) si la compra esta confirmada y cambiamos cantidades u otro dato, que no se actualice ni precio,
         ni descripcion ni nada. Esto, además de ser más lindo a nivel usabilidad resuelve problema de cancelar
         remanente si el precio estaba modificado
-        b) if price was not computed (not seller or seller price = 0.0), then use standar price 
+        b) if price was not computed (not seller or seller price = 0.0), then use standar price
         """
-        price_update_lines = self.filtered(lambda x: x.state not in ['purchase', 'done'])
+        price_update_lines = self.filtered(lambda x: x.state not in ["purchase", "done"])
         res = super(PurchaseOrderLine, price_update_lines)._compute_price_unit_and_date_planned_and_name()
 
         for line in price_update_lines.filtered(lambda x: x.product_id and not x.price_unit):
             price_unit = line.with_company(line.company_id.id).product_id.standard_price
-            if (price_unit and line.currency_id != line.company_id.currency_id):
+            if price_unit and line.currency_id != line.company_id.currency_id:
                 price_unit = line.company_id.currency_id._convert(
-                    price_unit, line.currency_id,
-                    line.company_id,
-                    line.date_order or fields.Date.today())
-            if (price_unit and line.product_uom and line.product_id.uom_id != line.product_uom):
+                    price_unit, line.currency_id, line.company_id, line.date_order or fields.Date.today()
+                )
+            if price_unit and line.product_uom and line.product_id.uom_id != line.product_uom:
                 price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom)
             line.price_unit = price_unit
         return res
-    

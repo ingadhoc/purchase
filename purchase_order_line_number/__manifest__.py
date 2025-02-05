@@ -18,23 +18,22 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Order Line Number',
-    'version': "18.0.1.0.0",
-    'category': 'Purchase',
-    'sequence': 14,
-    'summary': 'Add line numbers to purchase orders for better control and communication',
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'images': [
+    "name": "Purchase Order Line Number",
+    "version": "18.0.1.0.0",
+    "category": "Purchase",
+    "sequence": 14,
+    "summary": "Add line numbers to purchase orders for better control and communication",
+    "author": "ADHOC SA",
+    "website": "www.adhoc.com.ar",
+    "license": "AGPL-3",
+    "images": [],
+    "depends": [
+        "purchase",
     ],
-    'depends': [
-        'purchase',
+    "data": [
+        "views/purchase_order_views.xml",
     ],
-    'data': [
-        'views/purchase_order_views.xml',
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

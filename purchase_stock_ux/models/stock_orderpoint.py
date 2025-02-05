@@ -11,8 +11,7 @@ class StockWarehouseOrderpoint(models.Model):
     @api.model
     def _get_orderpoint_values(self, product, location):
         values = super()._get_orderpoint_values(product, location)
-        product = self.env['product.product'].browse(product)
+        product = self.env["product.product"].browse(product)
         if product.seller_ids:
-            values['supplier_id'] = product.seller_ids[0].id
+            values["supplier_id"] = product.seller_ids[0].id
         return values
-

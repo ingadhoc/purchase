@@ -18,31 +18,28 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Stock UX',
-    'version': "18.0.1.0.0",
-    'category': 'Purchases',
-    'sequence': 14,
-    'summary': '',
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'images': [
+    "name": "Purchase Stock UX",
+    "version": "18.0.1.0.0",
+    "category": "Purchases",
+    "sequence": 14,
+    "summary": "",
+    "author": "ADHOC SA",
+    "website": "www.adhoc.com.ar",
+    "license": "AGPL-3",
+    "images": [],
+    "depends": [
+        "purchase_ux",
+        "purchase_stock",
+        "stock_ux",
     ],
-    'depends': [
-        'purchase_ux',
-        'purchase_stock',
-        'stock_ux',
-
+    "data": [
+        "views/purchase_order_views.xml",
+        "views/purchase_line_views.xml",
+        "views/stock_move_views.xml",
+        "wizards/res_config_settings_views.xml",
     ],
-    'data': [
-        'views/purchase_order_views.xml',
-        'views/purchase_line_views.xml',
-        'views/stock_move_views.xml',
-        'wizards/res_config_settings_views.xml',
-    ],
-    'demo': [
-    ],
-    'installable': True,
-    'auto_install': True,
-    'application': False,
+    "demo": [],
+    "installable": True,
+    "auto_install": True,
+    "application": False,
 }

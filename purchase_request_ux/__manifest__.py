@@ -18,26 +18,24 @@
 #
 ##############################################################################
 {
-    'name': 'Purchase Request UX',
-    'version': "18.0.1.0.0",
-    'category': 'Purchases',
-    'sequence': 14,
-    'summary': '',
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'images': [
+    "name": "Purchase Request UX",
+    "version": "18.0.1.0.0",
+    "category": "Purchases",
+    "sequence": 14,
+    "summary": "",
+    "author": "ADHOC SA",
+    "website": "www.adhoc.com.ar",
+    "license": "AGPL-3",
+    "images": [],
+    "depends": [
+        "purchase_request",
     ],
-    'depends': [
-        'purchase_request',
-    ],
-    'data': [
+    "data": [
         "security/purchase_request.xml",
-        'views/purchase_request_views.xml',
+        "views/purchase_request_views.xml",
     ],
-    'demo': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "demo": [],
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

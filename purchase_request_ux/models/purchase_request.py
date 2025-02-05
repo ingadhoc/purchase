@@ -1,11 +1,10 @@
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo import fields, models
+
 
 class PurchaseRequest(models.Model):
+    _inherit = "purchase.request"
 
-    _inherit = 'purchase.request'
-
-    is_user_id = fields.Boolean(compute='_compute_current_user_id')
+    is_user_id = fields.Boolean(compute="_compute_current_user_id")
 
     def _compute_current_user_id(self):
         for rec in self:
