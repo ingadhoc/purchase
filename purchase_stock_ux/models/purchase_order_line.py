@@ -63,6 +63,13 @@ class PurchaseOrderLine(models.Model):
         # la cancelación de kits no está bien resuelta ya que odoo
         # solo computa la cantidad entregada cuando todo el kit se entregó.
         # Cuestión que, por ahora, desactivamos la cancelación de kits.
+        if self.order_id.state == "done":
+            raise UserError(
+                _(
+                    "Cancel remaining quantities can't be called for blocked purchase orders. "
+                    "First unblock the purchase order"
+                )
+            )
         bom_enable = "bom_ids" in self.env["product.template"]._fields
         for rec in self:
             old_product_qty = rec.product_qty
