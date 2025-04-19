@@ -3,16 +3,16 @@
 # 	* purchase_request_ux
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
 # Franco Leyes, 2024
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-06 06:33+0000\n"
+"POT-Creation-Date: 2025-04-18 08:43+0000\n"
 "PO-Revision-Date: 2024-04-04 16:18+0000\n"
-"Last-Translator: Franco Leyes, 2024\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,7 @@ msgstr "Es Usuario"
 #. module: purchase_request_ux
 #: model:ir.model,name:purchase_request_ux.model_purchase_request
 msgid "Purchase Request"
-msgstr "solicitud de compra"
+msgstr "Solicitud de compra"
 
 #. module: purchase_request_ux
 #: model:res.groups,name:purchase_request_ux.group_purchase_request_user_extended
