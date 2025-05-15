@@ -47,10 +47,16 @@ class PurchaseOrder(models.Model):
         it's added to purchase order
         """
         self.ensure_one()
+        supplier_info = self.env['product.supplierinfo'].search([
+            ('product_tmpl_id', '=', product.product_tmpl_id.id),
+            ('partner_id', '=', self.partner_id.id),
+        ], limit=1)
+        discount = supplier_info.discount if supplier_info else 0.0
         vals = {
             'order_id': self.id,
             'product_qty': qty,
             'product_id': product.id or False,
             'partner_id': self.partner_id.id,
+            'discount': discount,
         }
         self.env['purchase.order.line'].create(vals)
