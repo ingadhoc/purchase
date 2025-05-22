@@ -78,10 +78,7 @@ class PurchaseOrder(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            self.check_force_delivered_status(vals)        
-        if self.env.context.get('from_orderpoint', False):
-            for vals in vals_list:
-                vals['user_id'] = self.env.user.id        
+            self.check_force_delivered_status(vals)
         return super().create(vals_list)
 
 
