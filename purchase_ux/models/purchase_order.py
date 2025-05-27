@@ -75,15 +75,22 @@ class PurchaseOrder(models.Model):
     def update_prices_with_supplier_cost(self):
         net_price_installed = "net_price" in self.env["product.supplierinfo"]._fields
         for rec in self.order_line.with_company(self.company_id.id).filtered("price_unit"):
-            seller = rec.product_id._select_seller(
-                partner_id=rec.order_id.partner_id,
-                # usamos minimo de cantidad 0 porque si no seria complicado
-                # y generariamos registros para cada cantidad que se esta
-                # comprando
-                quantity=0.0,
-                date=rec.order_id.date_order and rec.order_id.date_order.date(),
-                # idem quantity, no lo necesitamos
-                uom_id=False,
+            seller = (
+                self.env["product.supplierinfo"]
+                .sudo()
+                .search(
+                    [
+                        ("partner_id", "=", rec.order_id.partner_id.id),
+                        (
+                            "currency_id",
+                            "=",
+                            rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
+                        ),
+                        ("product_tmpl_id", "=", rec.product_id.product_tmpl_id.id),
+                        ("company_id", "=", self.company_id.id),
+                    ],
+                    limit=1,
+                )
             )
             if not seller:
                 seller = self.env["product.supplierinfo"].create(
@@ -98,7 +105,6 @@ class PurchaseOrder(models.Model):
             price_unit = rec.price_unit
             if rec.product_uom and seller.product_uom != rec.product_uom:
                 price_unit = rec.product_uom._compute_price(price_unit, seller.product_uom)
-
             if net_price_installed:
                 seller.net_price = rec.order_id.currency_id._convert(
                     price_unit,
