@@ -78,17 +78,12 @@ class PurchaseOrder(models.Model):
         net_price_installed = 'net_price' in self.env[
             'product.supplierinfo']._fields
         for rec in self.order_line.with_company(self.company_id.id).filtered('price_unit'):
-            seller = rec.product_id._select_seller(
-                partner_id=rec.order_id.partner_id,
-                # usamos minimo de cantidad 0 porque si no seria complicado
-                # y generariamos registros para cada cantidad que se esta
-                # comprando
-                quantity=0.0,
-                date=rec.order_id.date_order and
-                rec.order_id.date_order.date(),
-                # idem quantity, no lo necesitamos
-                uom_id=False,
-            )
+            seller = self.env['product.supplierinfo'].sudo().search([
+                ('partner_id', '=', rec.order_id.partner_id.id),
+                ('currency_id', '=', rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id),
+                ('product_tmpl_id', '=', rec.product_id.product_tmpl_id.id),
+                ('company_id', '=', self.company_id.id),
+            ], limit=1)
             if not seller:
                 seller = self.env['product.supplierinfo'].create({
                     'date_start': rec.order_id.date_order and
