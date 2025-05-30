@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 21:09+0000\n"
+"POT-Creation-Date: 2025-05-29 19:04+0000\n"
 "PO-Revision-Date: 2024-11-20 17:23+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -49,6 +49,14 @@ msgstr ""
 "Cancelar cantidades pendientes de recibir. Al hacer click en el botón se "
 "ejecutará una acción que disminuirá la cantidad a comprar igualándola con la"
 " cantidad recibida y cancelará los movimientos restantes."
+
+#. module: purchase_stock_ux
+#. odoo-python
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
+msgid ""
+"Cancel remaining quantities can't be called for blocked purchase orders. "
+"First unblock the purchase order"
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_res_config_settings
