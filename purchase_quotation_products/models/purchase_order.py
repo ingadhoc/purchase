@@ -51,12 +51,20 @@ class PurchaseOrder(models.Model):
             ('product_tmpl_id', '=', product.product_tmpl_id.id),
             ('partner_id', '=', self.partner_id.id),
         ], limit=1)
-        discount = supplier_info.discount if supplier_info else 0.0
-        vals = {
-            'order_id': self.id,
-            'product_qty': qty,
-            'product_id': product.id or False,
-            'partner_id': self.partner_id.id,
-            'discount': discount,
-        }
+        discount = getattr(supplier_info, 'discount', 0.0)
+        if discount:
+            vals = {
+                'order_id': self.id,
+                'product_qty': qty,
+                'product_id': product.id or False,
+                'partner_id': self.partner_id.id,
+                'discount': discount,
+            }
+        else:
+            vals = {
+                'order_id': self.id,
+                'product_qty': qty,
+                'product_id': product.id or False,
+                'partner_id': self.partner_id.id,
+            }
         self.env['purchase.order.line'].create(vals)
