@@ -101,16 +101,14 @@ class PurchaseOrderLine(models.Model):
             )
 
     def _compute_vouchers(self):
+        # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
         for rec in self:
-            if hasattr(rec, "voucher_ids"):  # ?? ver si está bien
-                rec.vouchers = ", ".join(rec.mapped("voucher_ids.display_name"))  # ?? ver si está bien
-            else:
-                rec.vouchers = ""
-
-            # rec.vouchers = ', '.join(
-            #     rec.mapped('move_ids.picking_id.voucher_ids.display_name')
-            #     if 'voucher_ids' in rec.move_ids.picking_id._fields else []
-            # )
+            vouchers = []
+            for move in rec.move_ids:
+                picking = move.picking_id
+                if "voucher_ids" in picking._fields:
+                    vouchers += picking.voucher_ids.mapped("display_name")
+            rec.vouchers = ", ".join(vouchers)
 
     @api.depends("order_id.state", "qty_received", "qty_returned", "product_qty", "order_id.force_delivered_status")
     def _compute_delivery_status(self):
