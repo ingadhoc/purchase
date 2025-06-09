@@ -67,3 +67,15 @@ class StockRule(models.Model):
             else:
                 new_domain.append(condition)
         return tuple(new_domain)
+
+    def _prepare_purchase_order(self, company_id, origins, values):
+        order_vals = super()._prepare_purchase_order(company_id, origins, values)
+        config = self.env["res.config.settings"].sudo().get_values()
+        if config.get("use_supplier_currency", False):
+            values = values[0]
+            partner = values["supplier"].partner_id
+            if partner.property_purchase_currency_id:
+                order_vals["currency_id"] = partner.with_company(company_id).property_purchase_currency_id.id
+            else:
+                order_vals["currency_id"] = company_id.currency_id.id
+        return order_vals
