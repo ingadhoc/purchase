@@ -2,12 +2,15 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api, _
+import json
+import logging
+
+from lxml import etree
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
-import json
-from lxml import etree
-import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -101,9 +104,14 @@ class PurchaseOrderLine(models.Model):
                         rec.name, rec.id, old_product_qty, rec.product_qty))
 
     def _compute_vouchers(self):
+        # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
         for rec in self:
-            rec.vouchers = ', '.join(rec.mapped(
-                'move_ids.picking_id.voucher_ids.display_name'))
+            vouchers = []
+            for move in rec.move_ids:
+                picking = move.picking_id
+                if "voucher_ids" in picking._fields:
+                    vouchers += picking.voucher_ids.mapped("display_name")
+            rec.vouchers = ", ".join(vouchers)
 
     @api.depends(
         'order_id.state', 'qty_received', 'qty_returned', 'product_qty',
