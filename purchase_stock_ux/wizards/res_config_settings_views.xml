@@ -17,6 +17,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="o_setting_box" id="use_supplier_currency_setting">
+                    <div class="o_setting_left_pane">
+                        <field name="use_supplier_currency"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="use_supplier_currency"/>
+                        <div class="text-muted">
+                            Create the purchase order in the supplier's currency instead of the product currency.
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
