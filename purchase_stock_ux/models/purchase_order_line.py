@@ -89,28 +89,26 @@ class PurchaseOrderLine(models.Model):
                 bom = self.env["mrp.bom"]._bom_find(products=rec.product_id)[rec.product_id]
                 if bom and bom.type == "phantom":
                     raise UserError(
-                        _("Cancel remaining can't be called for Kit Products " "(products with a bom of type kit).")
+                        _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
             rec.order_id.message_post(
-                body=_('Cancel remaining call for line "%s" (id %s), line ' "qty updated from %s to %s")
+                body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
                 % (rec.name, rec.id, old_product_qty, rec.product_qty)
             )
 
     def _compute_vouchers(self):
+        # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
         for rec in self:
-            if hasattr(rec, "voucher_ids"):  # ?? ver si está bien
-                rec.vouchers = ", ".join(rec.mapped("voucher_ids.display_name"))  # ?? ver si está bien
-            else:
-                rec.vouchers = ""
-
-            # rec.vouchers = ', '.join(
-            #     rec.mapped('move_ids.picking_id.voucher_ids.display_name')
-            #     if 'voucher_ids' in rec.move_ids.picking_id._fields else []
-            # )
+            vouchers = []
+            for move in rec.move_ids:
+                picking = move.picking_id
+                if "voucher_ids" in picking._fields:
+                    vouchers += picking.voucher_ids.mapped("display_name")
+            rec.vouchers = ", ".join(vouchers)
 
     @api.depends("order_id.state", "qty_received", "qty_returned", "product_qty", "order_id.force_delivered_status")
     def _compute_delivery_status(self):
