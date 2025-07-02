@@ -54,6 +54,7 @@ class StockRule(models.Model):
         domain = super()._make_po_get_domain(company_id, values, partner)
         current_user_id = self.env.user.id
         new_domain = []
+        config = self.env["res.config.settings"].sudo().get_values()
         for condition in domain:
             field, operator, value = condition
             if field == "user_id" and value == False:
@@ -64,18 +65,14 @@ class StockRule(models.Model):
                         ("user_id", "=", current_user_id),
                     ]
                 )
+            elif (
+                field == "currency_id"
+                and config.get("use_supplier_currency", False)
+                and partner.property_purchase_currency_id
+                and partner.property_purchase_currency_id.id != value
+            ):
+                value = partner.property_purchase_currency_id.id
+                new_domain.append((field, operator, value))
             else:
                 new_domain.append(condition)
         return tuple(new_domain)
-
-    def _prepare_purchase_order(self, company_id, origins, values):
-        order_vals = super()._prepare_purchase_order(company_id, origins, values)
-        config = self.env["res.config.settings"].sudo().get_values()
-        if config.get("use_supplier_currency", False):
-            values = values[0]
-            partner = values["supplier"].partner_id
-            if partner.property_purchase_currency_id:
-                order_vals["currency_id"] = partner.with_company(company_id).property_purchase_currency_id.id
-            else:
-                order_vals["currency_id"] = company_id.currency_id.id
-        return order_vals
