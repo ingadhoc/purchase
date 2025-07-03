@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-10 18:35+0000\n"
+"POT-Creation-Date: 2025-07-03 04:48+0000\n"
 "PO-Revision-Date: 2024-11-20 17:23+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -62,6 +62,18 @@ msgstr ""
 #: model:ir.model,name:purchase_stock_ux.model_res_config_settings
 msgid "Config Settings"
 msgstr "Ajustes de configuración"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__use_supplier_currency
+msgid "Create purchase order in supplier's currency"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.res_config_settings_view_form
+msgid ""
+"Create the purchase order in the supplier's currency instead of the product "
+"currency."
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
