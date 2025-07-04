@@ -226,9 +226,11 @@ class PurchaseOrderLine(models.Model):
 
     @api.model
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
-        res = super()._prepare_purchase_order_line(
-            product_id, product_qty, product_uom, company_id, supplier, po)
-        #copiamos user_id desde el reabastecimiento a la orden de compra
-        if not po.user_id:
+        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
+        # copy user_id from replenishment to purchase order
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context)
+        if "origins" not in self._context and not po.user_id:
             po.user_id = self.env.user
+        else:
+            po.user_id = self.env.ref("base.user_root")
         return res
