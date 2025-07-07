@@ -89,14 +89,14 @@ class PurchaseOrderLine(models.Model):
                 bom = self.env["mrp.bom"]._bom_find(products=rec.product_id)[rec.product_id]
                 if bom and bom.type == "phantom":
                     raise UserError(
-                        _("Cancel remaining can't be called for Kit Products " "(products with a bom of type kit).")
+                        _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
             rec.order_id.message_post(
-                body=_('Cancel remaining call for line "%s" (id %s), line ' "qty updated from %s to %s")
+                body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
                 % (rec.name, rec.id, old_product_qty, rec.product_qty)
             )
 
@@ -202,9 +202,29 @@ class PurchaseOrderLine(models.Model):
     @api.model
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
         res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
-        # copy user_id from replenishment to purchase order
-        if not po.user_id:
+        # Asignar user_id según el contexto:
+        # - Si NO viene de una venta (no hay 'origins' en context) y po.user_id vacío, asignar usuario actual.
+        # - Si viene de acción 'sales' en el contexto, o no se cumple lo anterior, asignar OdooBot.
+        context = self._context
+        action_is_sales = False
+
+        # Buscar 'action': 'sales' en el contexto o en params/actionStack
+        if context.get("action") == "sales":
+            action_is_sales = True
+        elif "params" in context:
+            params = context["params"]
+            if params.get("action") == "sales":
+                action_is_sales = True
+            elif "actionStack" in params:
+                for stack in params["actionStack"]:
+                    if isinstance(stack, dict) and stack.get("action") == "sales":
+                        action_is_sales = True
+                        break
+
+        if "origins" not in context and not po.user_id and not action_is_sales:
             po.user_id = self.env.user
+        else:
+            po.user_id = self.env.ref("base.user_root")
         return res
 
     @api.depends("qty_invoiced", "qty_received", "order_id.state", "qty_returned")
