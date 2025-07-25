@@ -231,6 +231,4 @@ class PurchaseOrderLine(models.Model):
         # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context)
         if "origins" not in self._context and not po.user_id:
             po.user_id = self.env.user
-        else:
-            po.user_id = self.env.ref("base.user_root")
         return res
