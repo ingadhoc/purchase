@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_purchase_order_type_tree_ux" model="ir.ui.view">
+        <field name="model">purchase.order.type</field>
+        <field name="inherit_id" ref="purchase_order_type.view_purchase_order_type_tree" />
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="before">
+                <field name="journal_id" />
+            </field>
+        </field>
+    </record>
+    <record id="view_purchase_order_type_form" model="ir.ui.view">
+        <field name="name">purchase.order.type.form</field>
+        <field name="model">purchase.order.type</field>
+        <field name="inherit_id" ref="purchase_order_type.view_purchase_order_type_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group/group/field[@name='sequence_id']" position="after">
+                <field name="report_partner_id"/>
+                <field name="partner_id" widget="many2many_tags"/>
+                <field name="picking_type_id"/>
+            </xpath>
+            <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
+                <field name="project_id" />
+                <field name="journal_id" />
+                <field name="purchase_method" />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_purchase_order_type_search_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.type.search.inherit</field>
+        <field name="model">purchase.order.type</field>
+        <field name="inherit_id" ref="purchase_order_type.view_purchase_order_type_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="project_id"/>
+                <field name="report_partner_id"/>
+                <field name="partner_id"/>
+                <field name="picking_type_id"/>
+                <field name="journal_id"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter
+                    string="Project"
+                    name="project"
+                    domain="[]"
+                    context="{'group_by':'project_id'}"
+                />
+                <filter
+                    string="Journal"
+                    name="journal"
+                    domain="[]"
+                    context="{'group_by':'journal_id'}"
+                />
+                <filter
+                    string="Purchase Method"
+                    name="purchase_method"
+                    domain="[]"
+                    context="{'group_by':'purchase_method'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
