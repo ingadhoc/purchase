@@ -228,7 +228,7 @@ class PurchaseOrderLine(models.Model):
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
         res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
         # copy user_id from replenishment to purchase order
-        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context)
-        if "origins" not in self._context and not po.user_id:
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context) y NO es odoobot (uid=1)
+        if "origins" not in self._context and not po.user_id and not self.env.is_superuser():
             po.user_id = self.env.user
         return res
