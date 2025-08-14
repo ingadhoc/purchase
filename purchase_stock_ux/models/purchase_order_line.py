@@ -239,3 +239,27 @@ class PurchaseOrderLine(models.Model):
                 line.invoice_status = 'invoiced'
             else:
                 line.invoice_status = 'no'
+<<<<<<< 1993b173fff6880e12e9258ce4e3c0354f34e223
+||||||| aead661088eb84dd03b8bb96f234bbe8e3246bbe
+
+
+    @api.model
+    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
+        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
+        # copy user_id from replenishment to purchase order
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context)
+        if "origins" not in self._context and not po.user_id:
+            po.user_id = self.env.user
+        return res
+=======
+
+
+    @api.model
+    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
+        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
+        # copy user_id from replenishment to purchase order
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context) y NO es odoobot (uid=1)
+        if "origins" not in self._context and not po.user_id and not self.env.is_superuser():
+            po.user_id = self.env.user
+        return res
+>>>>>>> 89d0502eba50ba46e7376137bbfedc4b8a401698
