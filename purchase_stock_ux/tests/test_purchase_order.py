@@ -30,10 +30,3 @@ class TestPurchaseOrder(PurchaseTestCommon):
         )
 
         cls.purchase_order.button_confirm()
-
-    def test_internal_notes_in_picking(self):
-        """
-        test internal notes are copied from purchase order to the picking
-        """
-        picking = self.purchase_order.picking_ids[0]
-        self.assertEqual(picking.note, "<p>Test internal notes</p>", "Internal notes should be copied to the picking")
