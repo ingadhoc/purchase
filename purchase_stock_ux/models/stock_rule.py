@@ -17,6 +17,9 @@ class StockRule(models.Model):
             po=po)
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
+        # Solo asignar user_id si NO es odoobot (uid=1) y la PO no tiene usuario asignado
+        if not po.user_id and not self.env.is_superuser():
+            po.user_id = self.env.user
         if not res['price_unit']:
             price_unit = product_id.with_context(
                 force_company=company_id.id).standard_price
@@ -55,7 +58,7 @@ class StockRule(models.Model):
                 price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom)
             res['price_unit'] = price_unit
         return res
-    
+
     def _make_po_get_domain(self, company_id, values, partner):
         domain = super()._make_po_get_domain(company_id, values, partner)
         current_user_id = self.env.user.id
@@ -63,11 +66,14 @@ class StockRule(models.Model):
         for condition in domain:
             field, operator, value = condition
             if field == 'user_id' and value == False:
-                new_domain.extend([
-                    '|',
-                    ('user_id', '=', False),
-                    ('user_id', '=', current_user_id),
-                ])
+                # Si viene de una venta (origins en context) o es odoobot, solo buscar POs sin usuario
+                if 'origins' in self._context or self.env.is_superuser():
+                    new_domain.append(('user_id', '=', False))
+                else:
+                    # Para otros usuarios, buscar POs sin usuario o del mismo usuario
+                    new_domain.extend([
+                        ('user_id', '=', current_user_id),
+                    ])
             else:
                 new_domain.append(condition)
         return tuple(new_domain)
