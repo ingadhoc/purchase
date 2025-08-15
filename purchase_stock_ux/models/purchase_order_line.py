@@ -199,6 +199,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.model
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
+<<<<<<< 3064cbc58fefddca3ef1a0c54af6043e1f6791e7
         res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
         # Asignar user_id según el contexto:
         # - Si NO viene de una venta (no hay 'origins' en context) y po.user_id vacío, asignar usuario actual.
@@ -220,6 +221,17 @@ class PurchaseOrderLine(models.Model):
                         break
 
         if "origins" not in context and not po.user_id and not action_is_sales:
+||||||| 1993b173fff6880e12e9258ce4e3c0354f34e223
+        res = super()._prepare_purchase_order_line(
+            product_id, product_qty, product_uom, company_id, supplier, po)
+        # copy user_id from replenishment to purchase order
+        if not po.user_id:
+=======
+        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
+        # copy user_id from replenishment to purchase order
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context) y NO es odoobot (uid=1)
+        if "origins" not in self._context and not po.user_id and not self.env.is_superuser():
+>>>>>>> ec4caf837bbf5610f56ac5fa17d7e0049506ee7d
             po.user_id = self.env.user
         else:
             po.user_id = self.env.ref("base.user_root")

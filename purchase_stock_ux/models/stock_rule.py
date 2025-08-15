@@ -20,8 +20,21 @@ class StockRule(models.Model):
         )
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
+<<<<<<< 3064cbc58fefddca3ef1a0c54af6043e1f6791e7
         if not res["price_unit"]:
             price_unit = product_id.with_context(force_company=company_id.id).standard_price
+||||||| 1993b173fff6880e12e9258ce4e3c0354f34e223
+        if not res['price_unit']:
+            price_unit = product_id.with_context(
+                force_company=company_id.id).standard_price
+=======
+        # Solo asignar user_id si NO es odoobot (uid=1) y la PO no tiene usuario asignado
+        if not po.user_id and not self.env.is_superuser():
+            po.user_id = self.env.user
+        if not res['price_unit']:
+            price_unit = product_id.with_context(
+                force_company=company_id.id).standard_price
+>>>>>>> ec4caf837bbf5610f56ac5fa17d7e0049506ee7d
             company_currency = company_id.currency_id
             if price_unit and po.currency_id != company_currency:
                 price_unit = company_currency._convert(
@@ -57,6 +70,7 @@ class StockRule(models.Model):
         config = self.env["res.config.settings"].sudo().get_values()
         for condition in domain:
             field, operator, value = condition
+<<<<<<< 3064cbc58fefddca3ef1a0c54af6043e1f6791e7
             if field == "user_id" and value == False:
                 new_domain.extend(
                     [
@@ -73,6 +87,24 @@ class StockRule(models.Model):
             ):
                 value = partner.property_purchase_currency_id.id
                 new_domain.append((field, operator, value))
+||||||| 1993b173fff6880e12e9258ce4e3c0354f34e223
+            if field == 'user_id' and value == False:
+                new_domain.extend([
+                    '|',
+                    ('user_id', '=', False),
+                    ('user_id', '=', current_user_id),
+                ])
+=======
+            if field == 'user_id' and value == False:
+                # Si viene de una venta (origins en context) o es odoobot, solo buscar POs sin usuario
+                if 'origins' in self._context or self.env.is_superuser():
+                    new_domain.append(('user_id', '=', False))
+                else:
+                    # Para otros usuarios, buscar POs sin usuario o del mismo usuario
+                    new_domain.extend([
+                        ('user_id', '=', current_user_id),
+                    ])
+>>>>>>> ec4caf837bbf5610f56ac5fa17d7e0049506ee7d
             else:
                 new_domain.append(condition)
         return tuple(new_domain)
