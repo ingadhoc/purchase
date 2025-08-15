@@ -18,6 +18,9 @@ class StockRule(models.Model):
             values=values,
             po=po,
         )
+        # Solo asignar user_id si NO es odoobot (uid=1) y la PO no tiene usuario asignado
+        if not po.user_id and not self.env.is_superuser():
+            po.user_id = self.env.user
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res["price_unit"]:
@@ -58,13 +61,16 @@ class StockRule(models.Model):
         for condition in domain:
             field, operator, value = condition
             if field == "user_id" and value == False:
-                new_domain.extend(
-                    [
-                        "|",
-                        ("user_id", "=", False),
-                        ("user_id", "=", current_user_id),
-                    ]
-                )
+                # Si viene de una venta (origins en context) o es odoobot, solo buscar POs sin usuario
+                if "origins" in self._context or self.env.is_superuser():
+                    new_domain.append(("user_id", "=", False))
+                else:
+                    # Para otros usuarios, buscar POs sin usuario o del mismo usuario
+                    new_domain.extend(
+                        [
+                            ("user_id", "=", current_user_id),
+                        ]
+                    )
             elif (
                 field == "currency_id"
                 and config.get("use_supplier_currency", False)

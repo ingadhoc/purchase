@@ -200,29 +200,10 @@ class PurchaseOrderLine(models.Model):
     @api.model
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
         res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
-        # Asignar user_id según el contexto:
-        # - Si NO viene de una venta (no hay 'origins' en context) y po.user_id vacío, asignar usuario actual.
-        # - Si viene de acción 'sales' en el contexto, o no se cumple lo anterior, asignar OdooBot.
-        context = self._context
-        action_is_sales = False
-
-        # Buscar 'action': 'sales' en el contexto o en params/actionStack
-        if context.get("action") == "sales":
-            action_is_sales = True
-        elif "params" in context:
-            params = context["params"]
-            if params.get("action") == "sales":
-                action_is_sales = True
-            elif "actionStack" in params:
-                for stack in params["actionStack"]:
-                    if isinstance(stack, dict) and stack.get("action") == "sales":
-                        action_is_sales = True
-                        break
-
-        if "origins" not in context and not po.user_id and not action_is_sales:
+        # copy user_id from replenishment to purchase order
+        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context) y NO es odoobot (uid=1)
+        if "origins" not in self._context and not po.user_id and not self.env.is_superuser():
             po.user_id = self.env.user
-        else:
-            po.user_id = self.env.ref("base.user_root")
         return res
 
     @api.depends("qty_invoiced", "qty_received", "order_id.state", "qty_returned")
