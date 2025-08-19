@@ -91,6 +91,10 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(
                         _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
+            # Resetear printed=False en pickings asociados para evitar contra-entregas
+            printed_pickings = rec.move_ids.mapped("picking_id").filtered("printed")
+            if printed_pickings:
+                printed_pickings.write({"printed": False})
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
