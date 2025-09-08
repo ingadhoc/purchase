@@ -39,6 +39,10 @@ On Stock Warehouse Orderpoints:
 
 #. Set main seller as default supplier in replenishment rules.
 
+On purchase settings:
+
+#. Add option to enable supplier currency selection when creating a PO.
+
 
 Installation
 ============
