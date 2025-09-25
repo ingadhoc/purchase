@@ -39,6 +39,6 @@
         "views/account_move_views.xml",
         "report/purchase_quotation_templates.xml",
     ],
-    "installable": True,
+    'installable': False,
     "auto_install": False,
 }
