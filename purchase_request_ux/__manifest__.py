@@ -35,7 +35,7 @@
         "views/purchase_request_views.xml",
     ],
     "demo": [],
-    'installable': False,
+    "installable": False,
     "auto_install": False,
     "application": False,
 }

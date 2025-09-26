@@ -35,7 +35,7 @@
         "wizard/purchase_global_discount_wizard_view.xml",
         "views/purchase_order_views.xml",
     ],
-    'installable': False,
+    "installable": False,
     "auto_install": False,
     "application": False,
 }
