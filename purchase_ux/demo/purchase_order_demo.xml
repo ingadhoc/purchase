@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="product_category_demo" model="product.category">
+        <field name="name">Demo Category</field>
+    </record>
+
     <record id="product_1" model="product.product">
             <field name="name">Ergonomic Office Chair</field>
-            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="categ_id" ref="purchase_ux.product_category_demo"/>
             <field name="standard_price">100.0</field>
             <field name="list_price">120.50</field>
             <field name="type">consu</field>
             <field name="weight">0.01</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
-            <field name="uom_po_id" ref="uom.product_uom_unit"/>
             <field name="purchase_method">purchase</field>
     </record>
 
@@ -26,7 +29,7 @@
                 'name': obj().env.ref('purchase_ux.product_1').partner_ref,
                 'price_unit': 130.80,
                 'product_qty': 10.0,
-                'product_uom': ref('uom.product_uom_unit'),
+                'product_uom_id': ref('uom.product_uom_unit'),
                 'date_planned': DateTime.today() + relativedelta(days=3)}),
         ]"/>
     </record>

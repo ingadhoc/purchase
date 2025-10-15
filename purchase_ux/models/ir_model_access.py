@@ -14,8 +14,8 @@ class IrModelAccess(models.Model):
             assert model._name == "ir.model", "Invalid model object"
         # we need to use this flag to know when the operation is from this modules
         if (
-            self._context.get("sale_quotation_products")
-            or self._context.get("purchase_quotation_products")
+            self.env.context.get("sale_quotation_products")
+            or self.env.context.get("purchase_quotation_products")
             or self.env.is_superuser()
         ):
             return True

@@ -62,8 +62,8 @@ class AccountMove(models.Model):
                     )
                 )
             price_unit = rec.price_unit
-            if rec.product_uom_id and seller.product_uom != rec.product_uom_id:
-                price_unit = rec.product_uom_id._compute_price(price_unit, seller.product_uom)
+            if rec.product_uom_id and seller.product_uom_id != rec.product_uom_id:
+                price_unit = rec.product_uom_id._compute_price(price_unit, seller.product_uom_id)
 
             if net_price_installed:
                 seller.net_price = rec.move_id.currency_id._convert(

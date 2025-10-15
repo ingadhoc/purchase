@@ -1,7 +1,7 @@
 from odoo.addons.product.tests import common
 
 
-class TestPurchaseOrder(common.TestProductCommon):
+class TestPurchaseOrder(common.ProductCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -48,7 +48,11 @@ class TestPurchaseOrder(common.TestProductCommon):
 
         self.purchase_order.update_prices()
         for line in self.purchase_order.order_line:
-            self.assertEqual(line.price_unit, self.supplier_info.price, "The price should be updated.")
+            self.assertEqual(
+                line.price_unit,
+                self.supplier_info.price,
+                "The price should be updated.",
+            )
 
     def test_update_supplier_price(self):
         """Test if supplier price is updated after purchase order."""

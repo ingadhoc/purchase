@@ -23,7 +23,7 @@ class PurchaseChangeCurrency(models.TransientModel):
 
     def get_purchase(self):
         self.ensure_one()
-        purchase_order = self.env["purchase.order"].browse(self._context.get("active_id", False))
+        purchase_order = self.env["purchase.order"].browse(self.env.context.get("active_id", False))
         if not purchase_order:
             raise UserError(_('No Purchase Order on context as "active_id"'))
         return purchase_order
