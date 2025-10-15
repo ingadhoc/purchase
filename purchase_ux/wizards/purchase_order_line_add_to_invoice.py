@@ -43,8 +43,8 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
 
     @api.model
     def get_purchase_lines(self):
-        active_ids = self._context.get("active_ids", [])
-        active_model = self._context.get("active_model", False)
+        active_ids = self.env.context.get("active_ids", [])
+        active_model = self.env.context.get("active_model", False)
         if active_model != "purchase.order.line":
             raise UserError(_("This wizard must be called from purchase lines"))
         return self.env[active_model].browse(active_ids)

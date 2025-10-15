@@ -14,55 +14,54 @@
 Purchase UX
 ===========
 
-Several Improvements to purchases
+This module provides several improvements and enhancements to the standard Odoo purchase workflow, making it more user-friendly and feature-rich.
 
-On purchase orders:
+Features
+========
 
-Hide purchase quotations menu.
-Make purchase orders menu show all purchase records (quotations, and confirmed ones)
-Add button to force invoice status, and it's only for admin with tec features.
-Add button to change the currency and update the prices of the order lines
-Add a button "Update Prices" to update prices from provider to purchase order lines.
-Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the order.
-Add internal notes.
+Purchase Orders
+---------------
 
-On purchase order lines:
+* Hide purchase quotations menu for cleaner navigation
+* Show all purchase records (quotations and confirmed orders) in unified menu
+* Add "Force Invoice Status" button (admin only with technical features)
+* Add "Change Currency" button to update order line prices
+* Add "Update Prices" button to refresh prices from supplier
+* Add "Update Supplier Prices" button to update/create supplier pricelists
+* Include internal notes field for better documentation
 
-When the quantity is changed, we avoid the re-compute of the price in the purchase order line
-If price was not computed within the product (not seller or seller price = 0.0), then the PO will bring the standard price
+Purchase Order Lines
+--------------------
 
-
-On purchase invoices:
-
-Add a button "Update Supplier Prices" to update (or create prices) for this provider and all products loaded on the invoice.
-
-On Products:
-
-Allows to search by suppliers and to group by main supplier on product and product variants
-
+* Prevent automatic price recalculation when quantity changes
+* Use product standard price when supplier price is not available (seller price = 0.0)
+* Enhanced invoice quantity management and controls
 
 
 Installation
 ============
 
-To install this module, you need to:
-
-#. Just install this module.
-
+1. Install this module through Odoo Apps or manually
+2. No additional dependencies required beyond standard Odoo
 
 Configuration
 =============
 
-To configure this module, you need to:
-
-#. No configuration nedeed.
+No special configuration is required. All features are available immediately after installation.
 
 Usage
 =====
 
-To use this module, you need to:
+Purchase Invoices
+-----------------
 
-#. Go to ...
+* Use **Update Supplier Prices** button to update supplier pricelists from invoice data
+
+Products
+--------
+
+* Search products by supplier using the enhanced search filters
+* Group products by main supplier in list views
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot

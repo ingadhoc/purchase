@@ -80,7 +80,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends_context("active_id")
     def _compute_invoice_qty(self):
-        invoice_id = self._context.get("active_id", False)
+        invoice_id = self.env.context.get("active_id", False)
         if not invoice_id:
             return True
         AccountInvoice = self.env["account.move"]
@@ -95,14 +95,14 @@ class PurchaseOrderLine(models.Model):
             rec.invoice_qty = invoice_qty
 
     def _inverse_invoice_qty(self):
-        invoice_id = self._context.get("active_id", False)
-        active_model = self._context.get("active_model", False)
+        invoice_id = self.env.context.get("active_id", False)
+        active_model = self.env.context.get("active_model", False)
         if not invoice_id or active_model != "account.move":
             return True
         invoice = self.env["account.move"].browse(invoice_id)
         sign = invoice.move_type == "in_refund" and -1.0 or 1.0
         purchase_lines = self.env["account.move.line"].with_context(check_move_validity=False)
-        do_not_compute = self._context.get("do_not_compute")
+        do_not_compute = self.env.context.get("do_not_compute")
         for rec in self:
             lines = purchase_lines.search([("move_id", "=", invoice_id), ("purchase_line_id", "=", rec.id)])
             # TODO ver como agregamos esta validacion de otra manera
@@ -144,8 +144,8 @@ class PurchaseOrderLine(models.Model):
         we just implemented the case "('invoice_qty', '! =', False)" which
         is the one we use in the view and only one that interests us for now
         """
-        invoice_id = self._context.get("active_id", False)
-        active_model = self._context.get("active_model", False)
+        invoice_id = self.env.context.get("active_id", False)
+        active_model = self.env.context.get("active_model", False)
         if active_model != "account.move":
             return []
         return [("invoice_lines.move_id", "in", [invoice_id])]
