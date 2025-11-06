@@ -5,12 +5,12 @@
     <record id="group_purchase_request_user_extended" model="res.groups">
         <field name="name">Purchase Request User Extended</field>
         <field name="implied_ids" eval="[(4, ref('purchase_request.group_purchase_request_user'))]" />
-        <field name="category_id" ref="purchase_request.module_category_purchase_request" />
+        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request" />
     </record>
     <record id="purchase_request.group_purchase_request_manager" model="res.groups">
         <field name="name">Purchase Request Manager</field>
         <field name="implied_ids" eval="[(4, ref('group_purchase_request_user_extended'))]"/>
-        <field name="category_id" ref="purchase_request.module_category_purchase_request" />
+        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request" />
     </record>
     <record id="purchase_request_followers_rule_extended" model="ir.rule">
         <field name="name">Follow Purchase Request Extended</field>
