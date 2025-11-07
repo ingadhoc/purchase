@@ -129,3 +129,12 @@ class PurchaseOrder(models.Model):
         if self.internal_notes:
             result["internal_notes"] = self.internal_notes
         return result
+
+    def button_cancel(self):
+        # Check if any of the selected purchase orders are in 'done' state
+        done_orders = self.filtered(lambda po: po.state == "done")
+        if done_orders:
+            raise UserError(
+                _("Cannot cancel purchase order(s) that are already done: %s") % ", ".join(done_orders.mapped("name"))
+            )
+        return super().button_cancel()
