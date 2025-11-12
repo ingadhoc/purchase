@@ -21,9 +21,9 @@ class PurchaseOrderType(models.Model):
     )
     journal_id = fields.Many2one(
         "account.journal",
-        domain="[('type', '=', 'purchase'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        domain="[('type', '=', 'purchase')]",
         string="Billing Journal",
-        check_company=True,
+        check_company=False,
     )
     purchase_method = fields.Selection(
         [
