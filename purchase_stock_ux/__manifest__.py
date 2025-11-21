@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase Stock UX",
-    "version": "18.0.1.1.0",
+    "version": "19.0.1.0.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "",
@@ -39,7 +39,7 @@
         "wizards/res_config_settings_views.xml",
     ],
     "demo": [],
-    "installable": False,
+    "installable": True,
     "auto_install": True,
     "application": False,
 }

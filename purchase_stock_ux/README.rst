@@ -14,7 +14,7 @@
 Purchase Stock UX
 =================
 
-Several Improvements to purchases
+Several Improvements to purchases.
 
 On purchase orders:
 
