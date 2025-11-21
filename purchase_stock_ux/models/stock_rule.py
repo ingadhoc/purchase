@@ -62,7 +62,7 @@ class StockRule(models.Model):
             field, operator, value = condition
             if field == "user_id" and value == False:
                 # Si viene de una venta (origins en context) o es odoobot, solo buscar POs sin usuario
-                if "origins" in self._context or self.env.is_superuser():
+                if "origins" in self.env.context or self.env.is_superuser():
                     new_domain.append(("user_id", "=", False))
                 else:
                     # Para otros usuarios, buscar POs sin usuario o del mismo usuario

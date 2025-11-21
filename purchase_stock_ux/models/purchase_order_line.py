@@ -44,7 +44,7 @@ class PurchaseOrderLine(models.Model):
     def _compute_qty_on_voucher(self):
         # al calcular por voucher no tenemos en cuenta el metodo de facturacion
         # es decir, que calculamos como si fuese metodo segun lo recibido
-        voucher = self._context.get("voucher", False)
+        voucher = self.env.context.get("voucher", False)
         if not voucher:
             self.update({"qty_on_voucher": 0.0})
             return
@@ -174,7 +174,7 @@ class PurchaseOrderLine(models.Model):
         and we change list view to make editable and also field qty
         """
         res = super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-        if self._context.get("force_line_edit") and view_type == "tree":
+        if self.env.context.get("force_line_edit") and view_type == "tree":
             doc = etree.XML(res["arch"])
             placeholder = doc.xpath("//field[1]")[0]
             placeholder.addprevious(
@@ -202,7 +202,7 @@ class PurchaseOrderLine(models.Model):
         res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
         # copy user_id from replenishment to purchase order
         # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context) y NO es odoobot (uid=1)
-        if "origins" not in self._context and not po.user_id and not self.env.is_superuser():
+        if "origins" not in self.env.context and not po.user_id and not self.env.is_superuser():
             po.user_id = self.env.user
         return res
 
