@@ -39,6 +39,13 @@ class PurchaseOrderType(models.Model):
         domain="['|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]",
         help="This will determine operation type of incoming shipment",
     )
+    fiscal_position_id = fields.Many2one(
+        "account.fiscal.position",
+        string="Fiscal Position",
+        check_company=True,
+        help="If you choose a fiscal position then this fiscal positioon would be used as default instead of the "
+        "automatically detected or setted on the partner",
+    )
 
     @api.constrains("partner_id")
     def _compute_partner_purchase_order_type(self):
