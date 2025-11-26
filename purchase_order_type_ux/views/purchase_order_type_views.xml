@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <field name="payment_term_id" position="before">
                 <field name="journal_id" />
+                <field name="fiscal_position_id" />
             </field>
         </field>
     </record>
@@ -23,6 +24,7 @@
                 <field name="project_id" />
                 <field name="journal_id" />
                 <field name="purchase_method" />
+                <field name="fiscal_position_id" string="Fiscal Position" />
             </xpath>
         </field>
     </record>
@@ -37,6 +39,7 @@
                 <field name="partner_id"/>
                 <field name="picking_type_id"/>
                 <field name="journal_id"/>
+                <field name="fiscal_position_id"/>
             </xpath>
             <xpath expr="//group" position="inside">
                 <filter
