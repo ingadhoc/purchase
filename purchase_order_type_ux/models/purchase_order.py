@@ -7,6 +7,13 @@ from odoo import api, models
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
+    @api.model_create_multi
+    def create(self, vals):
+        res = super().create(vals)
+        if res.order_type and res.order_type.fiscal_position_id:
+            res.fiscal_position_id = res.order_type.fiscal_position_id
+        return res
+
     @api.onchange("order_type")
     def onchange_order_type(self):
         super().onchange_order_type()
@@ -15,15 +22,16 @@ class PurchaseOrder(models.Model):
                 order.project_id = order.order_type.project_id
             if order.order_type.picking_type_id:
                 order.picking_type_id = order.order_type.picking_type_id
+            if order.order_type.fiscal_position_id:
+                order.fiscal_position_id = order.order_type.fiscal_position_id
 
     def _prepare_invoice(self):
         if not self.order_type.journal_id:
             return super()._prepare_invoice()
         res = super()._prepare_invoice()
         company = self.order_type.journal_id.company_id
-        self = self.with_company(company.id)
+        journal = self.env["account.journal"].browse(res.get("journal_id")) if res.get("journal_id") else False
         if company != self.company_id:
-            res["company_id"] = company.id
             # En purchase, partner_bank_id es del proveedor, no de la compañía
             partner_bank_id = self.partner_id.commercial_partner_id.bank_ids.filtered_domain(
                 ["|", ("company_id", "=", False), ("company_id", "=", company.id)]
@@ -32,15 +40,9 @@ class PurchaseOrder(models.Model):
             # agregamos para que recompute term y cond si la nueva compañia los tiene por defecto
             if "narration" in res and not res["narration"]:
                 del res["narration"]
-            po_fiscal_position = self.env["account.fiscal.position"].browse(res["fiscal_position_id"])
-            if not po_fiscal_position or (po_fiscal_position.company_id and po_fiscal_position.company_id != company):
-                partner_invoice = self.env["res.partner"].browse(self.partner_id.address_get(["invoice"])["invoice"])
-                res["fiscal_position_id"] = (
-                    self.env["account.fiscal.position"]
-                    .with_company(company.id)
-                    ._get_fiscal_position(partner_invoice)
-                    .id
-                )
+            if journal and journal.company_id.id != self.company_id.id:
+                res.pop("journal_id")
+
         if self.order_type:
             res["purchase_type_id"] = self.order_type.id
         return res
@@ -53,8 +55,17 @@ class PurchaseOrder(models.Model):
         """
         action = super().action_create_invoice()
         invoices = self.invoice_ids.filtered(lambda m: m.state == "draft")
-        for line in invoices.invoice_line_ids:
-            purchase_line = line.purchase_line_id
-            if purchase_line and line.move_id.company_id != purchase_line.order_id.company_id:
-                line.tax_ids = line._get_computed_taxes()
+        for invoice in invoices.filtered("purchase_type_id.journal_id"):
+            company = invoice.purchase_type_id.journal_id.company_id
+            if invoice.company_id != company:
+                acc = self.env["account.change.company"].create(
+                    {
+                        "move_id": invoice.id,
+                        "company_ids": [invoice.company_id.id, company.id],
+                        "company_id": company.id,
+                        "journal_id": invoice.purchase_type_id.journal_id.id,
+                    }
+                )
+                acc.change_company()
+                invoice.partner_bank_id = company.partner_id.bank_ids[:1].id
         return action

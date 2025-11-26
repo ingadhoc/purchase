@@ -64,9 +64,10 @@ class AccountMove(models.Model):
     def _compute_journal_id(self):
         res = super()._compute_journal_id()
         for move in self.filtered("purchase_type_id.journal_id"):
-            move.journal_id = move.purchase_type_id.journal_id
-            if move.purchase_type_id.journal_id:
-                move._onchange_journal()
+            if move.purchase_type_id.journal_id.company_id.id == move.company_id.id:
+                move.journal_id = move.purchase_type_id.journal_id
+                if move.purchase_type_id.journal_id:
+                    move._onchange_journal()
         return res
 
     @api.onchange("journal_id")
