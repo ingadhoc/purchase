@@ -24,19 +24,17 @@ class PurchaseOrderLine(models.Model):
         """
         Forzamos compania de diario de purchase type
         """
-        if not self.order_id.order_type.journal_id:
-            return super()._prepare_account_move_line(move=move)
-        company = self.order_id.order_type.journal_id.company_id
-        self = self.with_company(company.id)
         res = super()._prepare_account_move_line(move=move)
-
-        if company != self.company_id:
-            # Because we not have the access to the invoice, we obtain the fiscal position who
-            # has the invoice really
-            partner_invoice = self.env["res.partner"].browse(self.partner_id.address_get(["invoice"])["invoice"])
-            fpos = self.env["account.fiscal.position"].with_company(company.id)._get_fiscal_position(partner_invoice)
-            taxes = self.product_id.supplier_taxes_id.filtered(lambda r: company == r.company_id)
-            taxes = fpos.map_tax(taxes) if fpos else taxes
-
-            res["tax_ids"] = [(6, 0, taxes.ids)]
+        downpayment_lines = self.invoice_lines.filtered("is_downpayment")
+        account_id = self.env["account.account"].browse(res["account_id"]) if res.get("account_id") else None
+        if (
+            self.is_downpayment
+            and downpayment_lines
+            and account_id
+            and self.company_id.id not in account_id.company_ids.ids
+        ):
+            account_id = self.env["account.change.company"]._get_change_downpayment_account(
+                self.company_id, self.invoice_lines, self.order_id.fiscal_position_id
+            )
+            res["account_id"] = account_id.id
         return res
