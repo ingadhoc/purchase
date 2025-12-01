@@ -1,0 +1,46 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* purchase_request_ux
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-01 18:22+0000\n"
+"PO-Revision-Date: 2025-12-01 18:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_request_ux
+#: model:ir.model.fields,field_description:purchase_request_ux.field_purchase_request__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: purchase_request_ux
+#: model:ir.model.fields,field_description:purchase_request_ux.field_purchase_request__id
+msgid "ID"
+msgstr ""
+
+#. module: purchase_request_ux
+#: model:ir.model.fields,field_description:purchase_request_ux.field_purchase_request__is_user_id
+msgid "Is User"
+msgstr ""
+
+#. module: purchase_request_ux
+#: model:ir.model,name:purchase_request_ux.model_purchase_request
+msgid "Purchase Request"
+msgstr ""
+
+#. module: purchase_request_ux
+#: model:res.groups,name:purchase_request_ux.group_purchase_request_user_extended
+msgid "Purchase Request User Extended"
+msgstr ""
+
+#. module: purchase_request_ux
+#: model_terms:ir.ui.view,arch_db:purchase_request_ux.view_purchase_request_form
+msgid "Request approval"
+msgstr ""
