@@ -18,8 +18,6 @@ class PurchaseOrder(models.Model):
     def onchange_order_type(self):
         super().onchange_order_type()
         for order in self:
-            if order.order_type.project_id:
-                order.project_id = order.order_type.project_id
             if order.order_type.picking_type_id:
                 order.picking_type_id = order.order_type.picking_type_id
             if order.order_type.fiscal_position_id:
@@ -43,8 +41,6 @@ class PurchaseOrder(models.Model):
             if journal and journal.company_id.id != self.company_id.id:
                 res.pop("journal_id")
 
-        if self.order_type:
-            res["purchase_type_id"] = self.order_type.id
         return res
 
     def action_create_invoice(self):
@@ -53,17 +49,20 @@ class PurchaseOrder(models.Model):
         for the company of the invoice. In cases where the company has a localization
         (e.g., l10n_ar), this ensures that the taxes from `l10n_ar_tax_ids` are applied.
         """
+        if len(self.mapped("order_type")) > 1:
+            raise ValueError("This method only works for purchase orders of the same type")
         action = super().action_create_invoice()
-        invoices = self.invoice_ids.filtered(lambda m: m.state == "draft")
-        for invoice in invoices.filtered("purchase_type_id.journal_id"):
-            company = invoice.purchase_type_id.journal_id.company_id
-            if invoice.company_id != company:
+        order_type = self[:1].order_type
+        if order_type.journal_id and order_type.journal_id.company_id != self.company_id:
+            invoices = self.mapped("invoice_ids").filtered(lambda m: m.state == "draft")
+            company = order_type.journal_id.company_id
+            for invoice in invoices:
                 acc = self.env["account.change.company"].create(
                     {
                         "move_id": invoice.id,
                         "company_ids": [invoice.company_id.id, company.id],
                         "company_id": company.id,
-                        "journal_id": invoice.purchase_type_id.journal_id.id,
+                        "journal_id": order_type.journal_id.id,
                     }
                 )
                 acc.change_company()
