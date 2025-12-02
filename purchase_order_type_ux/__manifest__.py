@@ -28,11 +28,9 @@
     "website": "www.adhoc.com.ar",
     "license": "AGPL-3",
     "images": [],
-    "depends": ["project", "purchase_stock_ux", "l10n_ar_purchase", "purchase_order_type", "account_multicompany_ux"],
+    "depends": ["purchase_stock_ux", "purchase_order_type"],
     "data": [
         "views/purchase_order_type_views.xml",
-        "views/account_move_views.xml",
-        "report/purchase_quotation_templates.xml",
     ],
     "installable": True,
     "auto_install": False,
