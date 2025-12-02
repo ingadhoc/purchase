@@ -18,54 +18,15 @@ class PurchaseOrder(models.Model):
     def onchange_order_type(self):
         super().onchange_order_type()
         for order in self:
-            if order.order_type.project_id:
-                order.project_id = order.order_type.project_id
             if order.order_type.picking_type_id:
                 order.picking_type_id = order.order_type.picking_type_id
             if order.order_type.fiscal_position_id:
                 order.fiscal_position_id = order.order_type.fiscal_position_id
 
     def _prepare_invoice(self):
-        if not self.order_type.journal_id:
-            return super()._prepare_invoice()
         res = super()._prepare_invoice()
-        company = self.order_type.journal_id.company_id
-        journal = self.env["account.journal"].browse(res.get("journal_id")) if res.get("journal_id") else False
-        if company != self.company_id:
-            # En purchase, partner_bank_id es del proveedor, no de la compañía
-            partner_bank_id = self.partner_id.commercial_partner_id.bank_ids.filtered_domain(
-                ["|", ("company_id", "=", False), ("company_id", "=", company.id)]
-            )[:1]
-            res["partner_bank_id"] = partner_bank_id.id
-            # agregamos para que recompute term y cond si la nueva compañia los tiene por defecto
-            if "narration" in res and not res["narration"]:
-                del res["narration"]
-            if journal and journal.company_id.id != self.company_id.id:
-                res.pop("journal_id")
-
-        if self.order_type:
-            res["purchase_type_id"] = self.order_type.id
+        if self.order_type.journal_id:
+            res["journal_id"] = self.order_type.journal_id.id
+        if self.order_type.invoice_company_id and self.order_type.invoice_company_id != self.company_id:
+            res["company_id"] = self.order_type.invoice_company_id.id
         return res
-
-    def action_create_invoice(self):
-        """
-        Overrides the `action_create_invoice` method to ensure that taxes are correctly computed
-        for the company of the invoice. In cases where the company has a localization
-        (e.g., l10n_ar), this ensures that the taxes from `l10n_ar_tax_ids` are applied.
-        """
-        action = super().action_create_invoice()
-        invoices = self.invoice_ids.filtered(lambda m: m.state == "draft")
-        for invoice in invoices.filtered("purchase_type_id.journal_id"):
-            company = invoice.purchase_type_id.journal_id.company_id
-            if invoice.company_id != company:
-                acc = self.env["account.change.company"].create(
-                    {
-                        "move_id": invoice.id,
-                        "company_ids": [invoice.company_id.id, company.id],
-                        "company_id": company.id,
-                        "journal_id": invoice.purchase_type_id.journal_id.id,
-                    }
-                )
-                acc.change_company()
-                invoice.partner_bank_id = company.partner_id.bank_ids[:1].id
-        return action
