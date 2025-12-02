@@ -1,7 +1,7 @@
 # Copyright (C) 2015 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class PurchaseOrderType(models.Model):
@@ -11,13 +11,10 @@ class PurchaseOrderType(models.Model):
         "res.partner",
         help="For the Sale Report, The information of the partner will be used to fill the report header.",
     )
+    # los comentamos en vista, los dejamos por ahora en python, los deprecamos en 19
     partner_id = fields.Many2many(
         "res.partner",
         "Supplier",
-    )
-    project_id = fields.Many2one(
-        "project.project",
-        help="Select to define the analytics account",
     )
     journal_id = fields.Many2one(
         "account.journal",
@@ -46,9 +43,3 @@ class PurchaseOrderType(models.Model):
         help="If you choose a fiscal position then this fiscal positioon would be used as default instead of the "
         "automatically detected or setted on the partner",
     )
-
-    @api.constrains("partner_id")
-    def _compute_partner_purchase_order_type(self):
-        for rec in self:
-            if rec.partner_id:
-                rec.partner_id.purchase_type = rec.id

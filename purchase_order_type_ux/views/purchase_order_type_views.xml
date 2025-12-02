@@ -17,11 +17,10 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/group/group/field[@name='sequence_id']" position="after">
                 <field name="report_partner_id"/>
-                <field name="partner_id" widget="many2many_tags"/>
+                <!-- <field name="partner_id" widget="many2many_tags"/> -->
                 <field name="picking_type_id"/>
             </xpath>
             <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
-                <field name="project_id" />
                 <field name="journal_id" />
                 <field name="purchase_method" />
                 <field name="fiscal_position_id" string="Fiscal Position" />
@@ -34,20 +33,13 @@
         <field name="inherit_id" ref="purchase_order_type.view_purchase_order_type_search"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <field name="project_id"/>
                 <field name="report_partner_id"/>
-                <field name="partner_id"/>
+                <!-- <field name="partner_id"/> -->
                 <field name="picking_type_id"/>
                 <field name="journal_id"/>
                 <field name="fiscal_position_id"/>
             </xpath>
             <xpath expr="//group" position="inside">
-                <filter
-                    string="Project"
-                    name="project"
-                    domain="[]"
-                    context="{'group_by':'project_id'}"
-                />
                 <filter
                     string="Journal"
                     name="journal"
