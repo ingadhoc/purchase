@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="purchase.DocumentFileUploader" t-inherit="purchase.DocumentFileUploader" t-inherit-mode="extension">
+        <xpath expr="//button[@type='button']" position="replace">
+            <button type="button" class="btn btn-secondary" data-hotkey="shift+i">
+                Crear Factura
+            </button>
+        </xpath>
+    </t>
+</templates>
