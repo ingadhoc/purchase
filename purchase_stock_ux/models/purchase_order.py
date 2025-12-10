@@ -92,9 +92,12 @@ class PurchaseOrder(models.Model):
     def check_force_delivered_status(self, vals):
         if vals.get("force_delivered_status") and not self.env.user.has_group("base.group_system"):
             group = self.env.ref("base.group_system").sudo()
-            raise UserError(
-                _('Only users with "%s / %s" can Set Received manually') % (group.category_id.name, group.name)
-            )
+            if group.privilege_id:
+                raise UserError(
+                    _('Only users with "%s / %s" can Set Received manually') % (group.privilege_id.name, group.name)
+                )
+            else:
+                raise UserError(_('Only users with "%s" can Set Received manually') % (group.name))
 
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
