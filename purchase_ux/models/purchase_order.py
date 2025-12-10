@@ -43,9 +43,12 @@ class PurchaseOrder(models.Model):
     def button_set_invoiced(self):
         if not self.env.user.has_group("base.group_system"):
             group = self.env.ref("base.group_system").sudo()
-            raise UserError(
-                _('Only users with "%s / %s" can Set Invoiced manually') % (group.category_id.name, group.name)
-            )
+            if group.privilege_id:
+                raise UserError(
+                    _('Only users with "%s / %s" can Set Invoiced manually') % (group.privilege_id.name, group.name)
+                )
+            else:
+                raise UserError(_('Only users with "%s" can Set Invoiced manually') % (group.name))
         # In purchases the invoice status is not calculated from the lines,
         # so we step on it in the PO. Do not step on the qty_invoiced because
         # it seems more neat to restore what happened
@@ -68,9 +71,12 @@ class PurchaseOrder(models.Model):
     def check_force_invoiced_status(self, vals):
         if vals.get("force_invoiced_status") and not self.env.user.has_group("base.group_system"):
             group = self.env.ref("base.group_system").sudo()
-            raise UserError(
-                _('Only users with "%s / %s" can Set Invoiced manually') % (group.category_id.name, group.name)
-            )
+            if group.privilege_id:
+                raise UserError(
+                    _('Only users with "%s / %s" can Set Invoiced manually') % (group.privilege_id.name, group.name)
+                )
+            else:
+                raise UserError(_('Only users with "%s" can Set Invoiced manually') % (group.name))
 
     def update_prices_with_supplier_cost(self):
         net_price_installed = "net_price" in self.env["product.supplierinfo"]._fields
