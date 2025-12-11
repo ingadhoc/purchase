@@ -170,7 +170,7 @@ class PurchaseOrderLine(models.Model):
                 price_unit = line.company_id.currency_id._convert(
                     price_unit, line.currency_id, line.company_id, line.date_order or fields.Date.today()
                 )
-            if price_unit and line.product_uom and line.product_id.uom_id != line.product_uom:
-                price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom)
+            if price_unit and line.product_uom_id and line.product_id.uom_id != line.product_uom_id:
+                price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom_id)
             line.price_unit = price_unit
         return res
