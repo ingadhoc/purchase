@@ -35,6 +35,13 @@
                     <button name="%(action_purchase_change_currency)d" type="action" class="oe_inline oe_link" string="(change)" invisible="state not in ['draft', 'sent']"/>
                 </div>
             </field>
+            <xpath expr="//button[@name='action_bill_matching']" position="attributes">
+                <attribute name="invisible">
+                    not partner_id
+                    or state not in ('purchase', 'done')
+                    or invoice_status == 'invoiced'
+                </attribute>
+            </xpath>
         </field>
     </record>
 
