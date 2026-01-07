@@ -27,3 +27,13 @@ class StockMove(models.Model):
         if self.env.context.get("cancel_from_order") and "price_unit" in distinct_fields:
             distinct_fields.remove("price_unit")
         return distinct_fields
+
+    def _is_exchange_move_helper(self):
+        # Como is_exchange_move se crea en sale_stock_ux, chequeamos si el campo existe antes de usarlo
+        # sino existe el valor deberia ser False
+        # en 19 vamos mover el campo a stock ux asi no tenemos que hacer este
+        # feo hack
+        self.ensure_one()
+        if self.fields_get().get("is_exchange_move"):
+            return self.is_exchange_move
+        return False

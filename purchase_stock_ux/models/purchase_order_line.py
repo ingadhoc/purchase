@@ -152,12 +152,28 @@ class PurchaseOrderLine(models.Model):
             return {"warning": warning_mess}
         return {}
 
+    @api.depends("qty_received_method", "qty_received_manual")
+    def _compute_qty_received(self):
+        super()._compute_qty_received()
+        for line in self.filtered(lambda l: l.qty_received_method in ["manual", "stock_moves"]):
+            exchange_move_ids = line.move_ids.filtered(
+                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m._is_exchange_move_helper()
+            )
+            if exchange_move_ids:
+                line.qty_received -= sum(
+                    line.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                    for move in exchange_move_ids
+                )
+
     @api.depends("order_id.state", "move_ids.state")
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
             for move in line.move_ids.filtered(
-                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m.to_refund
+                lambda m: m.state == "done"
+                and m.location_id.usage != "supplier"
+                and m.to_refund
+                and not m._is_exchange_move_helper()
             ):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
             line.qty_returned = qty
