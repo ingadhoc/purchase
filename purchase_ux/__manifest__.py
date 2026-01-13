@@ -41,17 +41,11 @@
         "views/purchase_line_views.xml",
         "views/product_template_views.xml",
         "views/product_supplierinfo_views.xml",
-        "views/res_config_settings_views.xml",
+        "views/res_company_views.xml",
     ],
     "demo": [
         "demo/purchase_order_demo.xml",
     ],
-    "assets": {
-        "web.assets_backend": [
-            "purchase_ux/static/src/components/purchase_file_uploader_patch.js",
-            "purchase_ux/static/src/components/purchase_file_uploader_patch.xml",
-        ],
-    },
     "installable": True,
     "auto_install": False,
     "application": False,

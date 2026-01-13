@@ -5,11 +5,10 @@
 from odoo import fields, models
 
 
-class ResConfigSettings(models.TransientModel):
-    _inherit = "res.config.settings"
+class ResCompany(models.Model):
+    _inherit = "res.company"
 
-    purchase_skip_bill_file_upload = fields.Boolean(
+    skip_upload = fields.Boolean(
         string="Skip Bill File Upload",
-        config_parameter="purchase_ux.skip_bill_file_upload",
-        help="When enabled, bills will be created directly without requiring file upload.",
+        help="When enabled, bills will be created directly without requiring file upload in purchase orders.",
     )

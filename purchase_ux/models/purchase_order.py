@@ -10,6 +10,7 @@ class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
     internal_notes = fields.Html()
+    skip_upload = fields.Boolean(related="company_id.skip_upload", string="Skip File Upload", readonly=True)
 
     force_invoiced_status = fields.Selection(
         [
@@ -135,16 +136,3 @@ class PurchaseOrder(models.Model):
         if self.internal_notes:
             result["internal_notes"] = self.internal_notes
         return result
-
-    def action_create_invoice(self, attachment_ids=False):
-        """Override to skip file upload if configured in settings"""
-        skip_upload = (
-            self.env["ir.config_parameter"].sudo().get_param("purchase_ux.skip_bill_file_upload", default="False")
-        )
-
-        # Convertir string a booleano correctamente
-        # get_param siempre devuelve string: "True" o "False"
-        if skip_upload == "True":
-            attachment_ids = False
-
-        return super().action_create_invoice(attachment_ids=attachment_ids)
