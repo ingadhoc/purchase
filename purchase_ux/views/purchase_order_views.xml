@@ -13,6 +13,11 @@
                 <field name="internal_notes" colspan="2" placeholder="Internal Notes..." nolabel="1" />
             </field>
 
+            <!-- Add skip_upload field for visibility conditions -->
+            <field name="internal_notes" position="before">
+                <field name="skip_upload" invisible="1"/>
+            </field>
+
             <button name="button_confirm" position="after">
                 <button name="button_set_invoiced" type="object" string="Set Invoiced" invisible="state != 'done' or invoice_status != 'to invoice'" confirm="This order will be setted as invoiced. This operation can't be undone. Are you sure do you want to continue?" groups="base.group_no_one"/>
             </button>
@@ -35,6 +40,15 @@
                     <button name="%(action_purchase_change_currency)d" type="action" class="oe_inline oe_link" string="(change)" invisible="state not in ['draft', 'sent']"/>
                 </div>
             </field>
+
+            <!-- Hide file uploader widget when skip_upload is enabled -->
+            <widget name="purchase_file_uploader" position="replace">
+                <widget name="purchase_file_uploader" invisible="state != 'purchase' or skip_upload"/>
+                <button name="action_create_invoice" type="object" string="Create Bill"
+                    invisible="state != 'purchase' or not skip_upload"
+                    class="oe_highlight"
+                    data-hotkey="i"/>
+            </widget>
         </field>
     </record>
 
