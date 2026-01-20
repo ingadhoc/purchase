@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 12:30+0000\n"
+"POT-Creation-Date: 2026-01-20 15:40+0000\n"
 "PO-Revision-Date: 2024-11-13 19:35+0000\n"
 "Last-Translator: ced_adhoc, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -96,6 +96,11 @@ msgid "Change to"
 msgstr "Cambiar a"
 
 #. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
 msgid "Confirm"
 msgstr "Confirmar"
@@ -104,6 +109,11 @@ msgstr "Confirmar"
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
 msgid "Confirm Draft Invoices"
 msgstr "Confirmar facturas en borrador"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Create Bill"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__create_uid
@@ -129,6 +139,7 @@ msgstr "Tasa de cambio"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__display_name
+#: model:ir.model.fields,field_description:purchase_ux.field_res_company__display_name
 msgid "Display Name"
 msgstr "Nombre a Mostrar"
 
@@ -167,6 +178,7 @@ msgstr "Tiene Compras?"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__id
+#: model:ir.model.fields,field_description:purchase_ux.field_res_company__id
 msgid "ID"
 msgstr "ID"
 
@@ -292,6 +304,11 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_company_form
+msgid "Purchase"
+msgstr ""
+
+#. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
 msgid "Purchase Line"
@@ -347,6 +364,16 @@ msgid "Set Invoiced"
 msgstr "Establecer como facturado"
 
 #. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_res_company__skip_upload
+msgid "Skip Bill File Upload"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__skip_upload
+msgid "Skip File Upload"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid ""
 "This order will be setted as invoiced. This operation can't be undone. Are "
@@ -386,6 +413,14 @@ msgstr "Remito"
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order_line__invoice_status__to_invoice
 msgid "Waiting Invoices"
 msgstr "Esperando facturas"
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order__skip_upload
+#: model:ir.model.fields,help:purchase_ux.field_res_company__skip_upload
+msgid ""
+"When enabled, bills will be created directly without requiring file upload "
+"in purchase orders."
+msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
