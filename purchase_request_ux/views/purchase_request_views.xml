@@ -10,6 +10,9 @@
             <xpath expr="//field[@name='assigned_to']" position="after">
                 <field name="is_user_id" invisible="1"/>
             </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">False</attribute>
+            </xpath>
            <xpath expr="//button[@name='button_to_approve']" position="replace">
                 <button name="button_to_approve"
                         string="Request approval"
