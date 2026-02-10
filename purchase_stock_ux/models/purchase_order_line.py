@@ -63,13 +63,14 @@ class PurchaseOrderLine(models.Model):
         # la cancelación de kits no está bien resuelta ya que odoo
         # solo computa la cantidad entregada cuando todo el kit se entregó.
         # Cuestión que, por ahora, desactivamos la cancelación de kits.
-        if self.order_id.state == "done":
-            raise UserError(
-                _(
-                    "Cancel remaining quantities can't be called for blocked purchase orders. "
-                    "First unblock the purchase order"
-                )
-            )
+
+        # Manejar órdenes bloqueadas (done): desbloquear temporalmente sin tracking
+        orders_to_relock = self.env["purchase.order"]
+        for order in self.mapped("order_id").filtered(lambda o: o.state == "done"):
+            orders_to_relock |= order
+            # Desbloquear sin generar mensaje en el chatter
+            order.with_context(tracking_disable=True).write({"state": "purchase"})
+
         bom_enable = "bom_ids" in self.env["product.template"]._fields
         for rec in self:
             old_product_qty = rec.product_qty
@@ -105,6 +106,10 @@ class PurchaseOrderLine(models.Model):
                 body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
                 % (rec.name, rec.id, old_product_qty, rec.product_qty)
             )
+
+        # Volver a bloquear las órdenes que estaban bloqueadas sin generar mensaje
+        if orders_to_relock:
+            orders_to_relock.with_context(tracking_disable=True).write({"state": "done"})
 
     def _compute_vouchers(self):
         # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
