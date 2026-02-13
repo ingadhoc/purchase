@@ -434,3 +434,8 @@ msgstr "o"
 #: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
 msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_bill_line_match
+msgid "Received"
+msgstr "Recibido"

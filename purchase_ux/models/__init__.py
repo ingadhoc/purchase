@@ -7,3 +7,4 @@ from . import purchase_order
 from . import purchase_order_line
 from . import product_template
 from . import res_company
+from . import purchase_bill_line_match
