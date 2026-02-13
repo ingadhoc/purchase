@@ -129,3 +129,15 @@ class PurchaseOrder(models.Model):
         if self.internal_notes:
             result["internal_notes"] = self.internal_notes
         return result
+
+    def action_bill_matching(self):
+        result = super().action_bill_matching()
+        result["context"] = result.get("context", {})
+        result["context"].update(
+            {
+                "search_default_pol_id": 1,
+                "search_default_not_invoiced": 1,
+                "search_default_current_invoice": 1,
+            }
+        )
+        return result

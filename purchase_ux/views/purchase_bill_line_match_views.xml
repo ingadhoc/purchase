@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_bill_line_match_tree_ux" model="ir.ui.view">
+        <field name="name">purchase.bill.line.match.list</field>
+        <field name="model">purchase.bill.line.match</field>
+        <field name="inherit_id" ref="purchase.purchase_bill_line_match_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="replace">
+                <field name="reference_description" string="Description" decoration-it="not product_id"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="qty_received" string="Qty Received" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_bill_line_match_search" model="ir.ui.view">
+        <field name="name">purchase.bill.line.match.search</field>
+        <field name="model">purchase.bill.line.match</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Órdenes de Compra" name="pol_id" domain="[('pol_id', '!=', False)]"/>
+                <separator/>
+                <filter string="No Facturado" name="not_invoiced" domain="[('account_move_id', '=', False)]"/>
+                <filter string="En Factura Actual" name="current_invoice" domain="[('account_move_id', '!=', False), ('state', '=', 'draft')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
