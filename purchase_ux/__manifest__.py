@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase UX",
-    "version": "18.0.1.1.0",
+    "version": "18.0.1.2.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "",
@@ -41,6 +41,7 @@
         "views/purchase_line_views.xml",
         "views/product_template_views.xml",
         "views/product_supplierinfo_views.xml",
+        "views/purchase_bill_line_match_views.xml",
     ],
     "demo": [
         "demo/purchase_order_demo.xml",

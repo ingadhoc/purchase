@@ -82,3 +82,15 @@ class AccountMove(models.Model):
 
     def get_product_lines_to_update(self):
         return self.with_company(self.company_id.id).invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit)
+
+    def action_purchase_matching(self):
+        result = super().action_purchase_matching()
+        result["context"] = result.get("context", {})
+        result["context"].update(
+            {
+                "search_default_pol_id": 1,
+                "search_default_not_invoiced": 1,
+                "search_default_current_invoice": 1,
+            }
+        )
+        return result
