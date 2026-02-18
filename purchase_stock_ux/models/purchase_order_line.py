@@ -159,7 +159,7 @@ class PurchaseOrderLine(models.Model):
             for move in line.move_ids.filtered(
                 lambda m: m.state == "done" and m.location_id.usage != "supplier" and m.to_refund
             ):
-                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
             line.qty_returned = qty
 
     # Overwrite the origin method to introduce the qty_on_voucher
