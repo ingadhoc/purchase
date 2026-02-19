@@ -11,4 +11,5 @@ class ResCompany(models.Model):
     skip_upload = fields.Boolean(
         string="Skip Bill File Upload",
         help="When enabled, bills will be created directly without requiring file upload in purchase orders.",
+        default=True,
     )
