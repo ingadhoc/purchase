@@ -33,7 +33,6 @@ Purchase Orders
 Purchase Order Lines
 --------------------
 
-* Prevent automatic price recalculation when quantity changes
 * Use product standard price when supplier price is not available (seller price = 0.0)
 * Enhanced invoice quantity management and controls
 

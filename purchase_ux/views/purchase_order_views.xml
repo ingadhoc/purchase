@@ -91,10 +91,6 @@
             <list position="attributes">
                 <attribute name="decoration-info">state in ['draft', 'sent', 'to approve']</attribute>
             </list>
-            <!-- Cambiamos el attribute de js class para que desaparezca el tablero que resume las facturas -->
-            <xpath expr="//list" position="attributes">
-                <attribute name="js_class"/>
-            </xpath>
             <field name="date_approve" position="attributes">
                 <attribute name="invisible">0</attribute>
                 <attribute name="optional">show</attribute>
