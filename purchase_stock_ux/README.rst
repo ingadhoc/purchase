@@ -18,12 +18,11 @@ Several Improvements to purchases.
 
 On purchase orders:
 
-#. Add delivery status on purchases
 #. Add a to filter by PO with billable returns.
 
 On purchase lines:
 
-#. Add delivery status on purchase lines
+#. Add receipt status on purchase lines
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
 #. Add return quantity when you return products with "To Refund" option.
 

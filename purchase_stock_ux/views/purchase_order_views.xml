@@ -13,8 +13,8 @@
             </field>
             <!-- agregamos boton de cancelar linea -->
             <xpath expr="//field[@name='order_line']/list/field[@name='qty_received']" position="after">
-                <field name="delivery_status" optional="hidden"/>
-                <button name="button_cancel_remaining" type="object" title="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" invisible="delivery_status != 'to receive'" groups="purchase.group_purchase_manager"/>
+                <field name="receipt_status" optional="hidden"/>
+                <button name="button_cancel_remaining" type="object" title="Cancel remaining quanitity to be received. This will set line quantity equal to received qty and will cancel remaining moves" icon="fa-ban" confirm="This will set line quantity equal to received qty and will cancel remaining moves. This can not be undone. Are you sure you want to continue?" invisible="receipt_status == 'full' or receipt_status == False" groups="purchase.group_purchase_manager"/>
                 <field name="qty_returned" string="Returned Quantity" column_invisible="parent.state not in ('purchase', 'done')" optional="show"/>
             </xpath>
         </field>
@@ -31,12 +31,13 @@
                 <separator/>
             </filter>
             <filter name="to_approve" position="before">
-                <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]" help="Purchase orders that include lines not received."/>
-                <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]" help="Purchase orders with all lines received."/>
+                <filter name="not_received" string="Not Received" domain="[('receipt_status','=', 'pending')]" help="Purchase orders with no lines received."/>
+                <filter name="partial" string="Partially Received" domain="[('receipt_status','=', 'partial')]" help="Purchase orders that include lines partially received."/>
+                <filter name="received" string="Received" domain="[('receipt_status','=', 'full')]" help="Purchase orders with all lines received."/>
                 <separator/>
             </filter>
             <filter name="invoice_status" position="after">
-                <filter name="delivery_status" string="Delivery Satus" domain="[]" context="{'group_by':'delivery_status'}"/>
+                <filter name="receipt_status" string="Receipt Status" domain="[]" context="{'group_by':'receipt_status'}"/>
             </filter>
         </field>
     </record>
@@ -47,10 +48,10 @@
         <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
             <list>
-                <field name="delivery_status"
-                       decoration-success="delivery_status == 'received'"
-                       decoration-warning="delivery_status == 'to receive'"
-                       decoration-info="delivery_status == 'no'"
+                <field name="receipt_status"
+                       decoration-success="receipt_status == 'full'"
+                       decoration-warning="receipt_status == 'partial'"
+                       decoration-danger="receipt_status == 'pending'"
                        widget="badge" optional="show"/>
             </list>
         </field>

@@ -16,18 +16,18 @@ _logger = logging.getLogger(__name__)
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
 
-    delivery_status = fields.Selection(
+    receipt_status = fields.Selection(
         [
-            ("no", "Not purchased"),
-            ("to receive", "To Receive"),
-            ("received", "Received"),
+            ("pending", "Not Received"),
+            ("partial", "Partially Received"),
+            ("full", "Fully Received"),
         ],
-        compute="_compute_delivery_status",
+        compute="_compute_receipt_status",
         store=True,
         readonly=True,
         copy=False,
-        default="no",
     )
+
     vouchers = fields.Char(compute="_compute_vouchers")
 
     qty_on_voucher = fields.Float(
@@ -111,27 +111,23 @@ class PurchaseOrderLine(models.Model):
             rec.vouchers = ", ".join(vouchers)
 
     @api.depends("order_id.state", "qty_received", "qty_returned", "product_qty", "order_id.force_delivered_status")
-    def _compute_delivery_status(self):
+    def _compute_receipt_status(self):
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         for line in self:
             if line.state not in ("purchase", "done"):
-                line.delivery_status = "no"
+                line.receipt_status = False
                 continue
             if line.order_id.force_delivered_status:
-                line.delivery_status = line.order_id.force_delivered_status
+                line.receipt_status = line.order_id.force_delivered_status
                 continue
-            if (
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                == -1
-            ):
-                line.delivery_status = "to receive"
-            elif (
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                >= 0
-            ):
-                line.delivery_status = "received"
+
+            qty_total = line.qty_received + line.qty_returned
+            if float_is_zero(qty_total, precision_digits=precision):
+                line.receipt_status = "pending"
+            elif float_compare(qty_total, line.product_qty, precision_digits=precision) >= 0:
+                line.receipt_status = "full"
             else:
-                line.delivery_status = "no"
+                line.receipt_status = "partial"
 
     @api.onchange("product_qty")
     def _onchange_product_qty(self):
