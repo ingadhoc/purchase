@@ -23,8 +23,8 @@
         <field name="arch" type="xml">
             <filter position="before">
                 <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]" context="{'voucher': self}"/>
-                <filter name="to_receive" string="To Receive" domain="[('delivery_status','=', 'to receive')]"/>
-                <filter name="received" string="Received" domain="[('delivery_status','=', 'received')]"/>
+                <filter name="not_received" string="Not Received" domain="[('receipt_status','=', 'pending')]"/>
+                <filter name="received" string="Received" domain="[('receipt_status','=', 'full')]"/>
                 <separator/>
             </filter>
         </field>

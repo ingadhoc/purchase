@@ -65,13 +65,7 @@ msgstr ""
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "Delivery Satus"
-msgstr ""
-
-#. module: purchase_stock_ux
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__delivery_status
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__delivery_status
-msgid "Delivery Status"
+msgid "Receipt Status"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -105,9 +99,9 @@ msgid "Minimum Inventory Rule"
 msgstr ""
 
 #. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__delivery_status__no
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__no
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__no
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__delivery_status__no
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__no
 msgid "Not purchased"
 msgstr ""
 
@@ -167,12 +161,12 @@ msgid "Purchase orders with billable returns"
 msgstr ""
 
 #. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__delivery_status__received
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__received
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__delivery_status__received
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__full
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__full
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__full
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "Received"
+msgid "full"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -203,8 +197,8 @@ msgid ""
 msgstr ""
 
 #. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__delivery_status__to_receive
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__delivery_status__to_receive
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__to_receive
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__to_receive
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "To Receive"

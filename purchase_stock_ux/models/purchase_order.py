@@ -4,7 +4,6 @@
 ##############################################################################
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare
 
 
 class PurchaseOrder(models.Model):
@@ -12,23 +11,12 @@ class PurchaseOrder(models.Model):
 
     force_delivered_status = fields.Selection(
         [
-            ("no", "Not purchased"),
-            ("received", "Received"),
+            ("pending", "Not Received"),
+            ("partial", "Partially Received"),
+            ("full", "Fully Received"),
         ],
         tracking=True,
         copy=False,
-    )
-    delivery_status = fields.Selection(
-        [
-            ("no", "Not purchased"),
-            ("to receive", "To Receive"),
-            ("received", "Received"),
-        ],
-        compute="_compute_delivery_status",
-        store=True,
-        readonly=True,
-        copy=False,
-        default="no",
     )
 
     with_returns = fields.Boolean(
@@ -44,38 +32,12 @@ class PurchaseOrder(models.Model):
             else:
                 order.with_returns = False
 
-    @api.depends(
-        "state",
-        "order_line.qty_received",
-        "order_line.qty_returned",
-        "order_line.product_qty",
-        "force_delivered_status",
-    )
-    def _compute_delivery_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
-        for order in self:
-            if order.state not in ("purchase", "done"):
-                order.delivery_status = "no"
-                continue
+    @api.depends("force_delivered_status")
+    def _compute_receipt_status(self):
+        super()._compute_receipt_status()
 
-            if order.force_delivered_status:
-                order.delivery_status = order.force_delivered_status
-                continue
-
-            if any(
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                == -1
-                for line in order.order_line
-            ):
-                order.delivery_status = "to receive"
-            elif all(
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                >= 0
-                for line in order.order_line
-            ):
-                order.delivery_status = "received"
-            else:
-                order.delivery_status = "no"
+        for order in self.filtered("force_delivered_status"):
+            order.receipt_status = order.force_delivered_status
 
     def write(self, values):
         self = self.with_context(cancel_from_order=True)
