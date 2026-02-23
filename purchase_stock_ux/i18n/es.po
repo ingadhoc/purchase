@@ -12,15 +12,17 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-11 12:30+0000\n"
-"PO-Revision-Date: 2024-11-20 17:23+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
-"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
+"PO-Revision-Date: 2026-02-23 22:21+0000\n"
+"Last-Translator: BAF <baf@adhoc.inc>\n"
+"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
+"purchase-19-0/purchase-19-0-purchase_stock_ux/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
-"1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: purchase_stock_ux
 #. odoo-python
@@ -99,7 +101,7 @@ msgstr "Estado de la recepción"
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nombre a Mostrar"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
