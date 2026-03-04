@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 15:40+0000\n"
-"PO-Revision-Date: 2026-01-20 15:40+0000\n"
+"POT-Creation-Date: 2026-03-04 14:24+0000\n"
+"PO-Revision-Date: 2026-03-04 14:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -121,14 +121,26 @@ msgid "Currency Rate"
 msgstr ""
 
 #. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__reference_description
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_tree_ux
+msgid "Description"
+msgstr ""
+
+#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_product_template__display_name
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_res_company__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
+msgid "En Factura Actual"
 msgstr ""
 
 #. module: purchase_ux
@@ -162,6 +174,7 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__id
 #: model:ir.model.fields,field_description:purchase_ux.field_product_template__id
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_change_currency__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__id
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line__id
@@ -243,6 +256,11 @@ msgid "No Bill to Receive"
 msgstr ""
 
 #. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
+msgid "No Facturado"
+msgstr ""
+
+#. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
 msgid "No Purchase Order on context as \"active_id\""
@@ -299,6 +317,11 @@ msgid "Purchase Line"
 msgstr ""
 
 #. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_purchase_bill_line_match
+msgid "Purchase Line and Vendor Bill line matching view"
+msgstr ""
+
+#. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree
 #: model:ir.ui.menu,name:purchase_ux.menu_action_purchase_line_tree
 msgid "Purchase Lines"
@@ -322,8 +345,18 @@ msgid "Purchase Orders"
 msgstr ""
 
 #. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_tree_ux
+msgid "Qty Received"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
 msgid "Quotations"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__qty_received
+msgid "Received"
 msgstr ""
 
 #. module: purchase_ux
@@ -413,4 +446,9 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
+msgstr ""
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
+msgid "Órdenes de Compra"
 msgstr ""
