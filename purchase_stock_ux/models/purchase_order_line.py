@@ -99,6 +99,8 @@ class PurchaseOrderLine(models.Model):
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
+            if rec.product_qty < old_product_qty:
+                rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
                 body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
                 % (rec.name, rec.id, old_product_qty, rec.product_qty)
@@ -174,10 +176,12 @@ class PurchaseOrderLine(models.Model):
         for line in self:
             qty = 0.0
             for move in line.move_ids.filtered(
-                lambda m: m.state == "done"
-                and m.location_id.usage != "supplier"
-                and m.to_refund
-                and not m._is_exchange_move_helper()
+                lambda m: (
+                    m.state == "done"
+                    and m.location_id.usage != "supplier"
+                    and m.to_refund
+                    and not m._is_exchange_move_helper()
+                )
             ):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
             line.qty_returned = qty
