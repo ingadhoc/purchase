@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 12:30+0000\n"
+"POT-Creation-Date: 2026-03-11 19:56+0000\n"
 "PO-Revision-Date: 2026-02-23 22:21+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
@@ -83,11 +83,6 @@ msgstr ""
 "de la moneda seteada en el producto."
 
 #. module: purchase_stock_ux
-#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "Receipt Status"
-msgstr "Estado de la recepción"
-
-#. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__display_name
@@ -101,6 +96,12 @@ msgstr "Nombre a Mostrar"
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
 msgid "Force Delivered Status"
 msgstr "Forzar estado de entrega"
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__full
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__full
+msgid "Fully Received"
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__id
@@ -118,10 +119,11 @@ msgid "Minimum Inventory Rule"
 msgstr "Regla de inventario mínimo"
 
 #. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__no
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__no
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__no
-msgid "Not purchased"
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__pending
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__pending
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Not Received"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -152,6 +154,13 @@ msgid "Ordered quantity decreased!"
 msgstr "Alerta sobre disminunción de cantidades"
 
 #. module: purchase_stock_ux
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__partial
+#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__partial
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Partially Received"
+msgstr ""
+
+#. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__propagate_uom
 msgid "Propagate unit of measure"
 msgstr "Propagar unidad de medida"
@@ -170,8 +179,8 @@ msgstr "Línea de pedido de compra"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "Purchase orders that include lines not received."
-msgstr "Pedidos de compra que incluyen líneas no recibidas"
+msgid "Purchase orders that include lines partially received."
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
@@ -184,13 +193,21 @@ msgid "Purchase orders with billable returns"
 msgstr "Órdenes de compra con devoluciones facturables"
 
 #. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__full
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__full
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__full
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Purchase orders with no lines received."
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__receipt_status
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
+msgid "Receipt Status"
+msgstr "Estado de la recepción"
+
+#. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "full"
-msgstr "Recibido"
+msgid "Received"
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_returned
@@ -221,14 +238,6 @@ msgstr ""
 "Esta acción disminuirá la cantidad a comprar igualándola con la cantidad "
 "recibida y cancelará los movimientos restantes. Esta acción no se podrá "
 "deshacer. ¿Estás seguro de continuar?"
-
-#. module: purchase_stock_ux
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__receipt_status__to_receive
-#: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__to_receive
-#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
-#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
-msgid "To Receive"
-msgstr "A Recibir"
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.res_config_settings_view_form
@@ -269,6 +278,15 @@ msgid ""
 "¡Está reduciendo la cantidad pedida! Recomendamos usar el botón para "
 "cancelar remanente y luego setear la cantidad deseada."
 msgstr ""
+
+#~ msgid "Purchase orders that include lines not received."
+#~ msgstr "Pedidos de compra que incluyen líneas no recibidas"
+
+#~ msgid "full"
+#~ msgstr "Recibido"
+
+#~ msgid "To Receive"
+#~ msgstr "A Recibir"
 
 #~ msgid "Order Reference"
 #~ msgstr "Referencia de la orden"
