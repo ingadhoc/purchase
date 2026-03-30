@@ -129,7 +129,7 @@ class PurchaseOrder(models.Model):
 
     def update_prices(self):
         for line in self.order_line:
-            line._compute_price_unit_and_date_planned_and_name()
+            line.with_context(update_prices=True)._compute_price_unit_and_date_planned_and_name()
 
     def _prepare_invoice(self):
         result = super()._prepare_invoice()
