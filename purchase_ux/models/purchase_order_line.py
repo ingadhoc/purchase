@@ -40,6 +40,15 @@ class PurchaseOrderLine(models.Model):
         default=0.0,
     )
 
+    # Campo relacionado para poder usar aggregator en agrupaciones sin afectar el campo base
+    price_subtotal_aggregable = fields.Monetary(
+        related="price_subtotal",
+        string="Subtotal ",
+        aggregator="sum",
+        store=False,
+        readonly=True,
+    )
+
     @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
