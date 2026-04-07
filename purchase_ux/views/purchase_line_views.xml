@@ -25,6 +25,9 @@
                 <!-- to display currency symbol on monetary widget -->
                 <field name="currency_id" column_invisible="True"/>
             </field>
+            <field name="price_subtotal" position="replace">
+                <field name="price_subtotal_aggregable" widget="monetary"/>
+            </field>
             <list>
                 <field name="state" column_invisible="True"/>
             </list>
