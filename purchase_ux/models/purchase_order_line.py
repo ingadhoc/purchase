@@ -40,6 +40,13 @@ class PurchaseOrderLine(models.Model):
         default=0.0,
     )
 
+    price_subtotal = fields.Monetary(
+        compute="_compute_amount",
+        string="Subtotal",
+        aggregator="sum",
+        store=True,
+    )
+
     @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
