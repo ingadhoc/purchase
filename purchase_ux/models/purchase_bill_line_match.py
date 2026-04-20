@@ -37,3 +37,16 @@ class PurchaseBillLineMatch(models.Model):
                 rec.reference_description = rec.pol_id.name
             else:
                 rec.reference_description = rec.display_name
+
+    def _compute_product_uom_qty(self):
+        # Only apply the incompatibility filter when the view was opened
+        # via the purchase matching action (context flag set by the action).
+        if self.env.context.get("purchase_matching_from_button"):
+            for rec in self:
+                if rec.line_uom_id.category_id.id != rec.product_uom_id.category_id.id:
+                    # incompatible categories: ignore this line for matching
+                    rec.product_uom_qty = 0.0
+                else:
+                    rec.product_uom_qty = rec.line_uom_id._compute_quantity(rec.line_qty, rec.product_uom_id)
+        else:
+            return super()._compute_product_uom_qty()
