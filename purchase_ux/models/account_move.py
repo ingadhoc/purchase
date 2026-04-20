@@ -82,3 +82,12 @@ class AccountMove(models.Model):
 
     def get_product_lines_to_update(self):
         return self.with_company(self.company_id.id).invoice_line_ids.filtered(lambda x: x.product_id and x.price_unit)
+
+    def action_purchase_matching(self):
+        res = super().action_purchase_matching()
+        # mark the action so compute method in the view can apply special filtering
+        if isinstance(res, dict):
+            ctx = dict(res.get("context") or {})
+            ctx["purchase_matching_from_button"] = True
+            res["context"] = ctx
+        return res
