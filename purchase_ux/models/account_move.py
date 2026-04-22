@@ -85,9 +85,12 @@ class AccountMove(models.Model):
 
     def action_purchase_matching(self):
         res = super().action_purchase_matching()
+        # mark the action so compute method in the view can apply special filtering
+        # also pass the current move id so matching adds POLs to this bill instead of creating a new one
         if isinstance(res, dict):
             ctx = dict(res.get("context") or {})
             ctx["purchase_matching_from_button"] = True
+            ctx["default_account_move_id"] = self.id
             res["context"] = ctx
             # Include PO lines from vendor child contacts (same commercial partner)
             commercial_partner = self.partner_id | self.partner_id.commercial_partner_id
@@ -97,4 +100,19 @@ class AccountMove(models.Model):
                 else c
                 for c in res.get("domain", [])
             ]
+            # Show only POLs where ordered qty > invoiced qty (fully invoiced lines excluded).
+            all_pols = self.env["purchase.order.line"].search(
+                [
+                    ("partner_id", "in", commercial_partner.ids),
+                    ("state", "in", ["purchase", "done"]),
+                ]
+            )
+            # exclude POLs already matched to a line in this bill (qty_invoiced ignores drafts)
+            already_matched = set(self.invoice_line_ids.filtered("purchase_line_id").mapped("purchase_line_id").ids)
+            pending_pol_ids = all_pols.filtered(
+                lambda p: p.product_qty > p.qty_invoiced and p.id not in already_matched
+            ).ids
+            domain = list(res.get("domain") or [])
+            domain += ["|", ("pol_id", "=", False), ("pol_id", "in", pending_pol_ids)]
+            res["domain"] = domain
         return res
