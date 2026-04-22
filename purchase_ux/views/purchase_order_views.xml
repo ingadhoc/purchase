@@ -45,10 +45,15 @@
             <widget name="purchase_file_uploader" position="replace">
                 <widget name="purchase_file_uploader" invisible="state != 'purchase' or skip_upload"/>
                 <button name="action_create_invoice" type="object" string="Create Bill"
-                    invisible="state != 'purchase' or not skip_upload"
+                    invisible="state != 'purchase' or not skip_upload or invoice_status in ('no', 'invoiced')"
                     class="oe_highlight"
-                    data-hotkey="i"/>
-            </widget>
+                    data-hotkey="i"
+                />
+                <button name="action_create_invoice" string="Create Bill" type="object"
+                    invisible="state != 'purchase' or not skip_upload or invoice_status not in ('no', 'invoiced') or not order_line"
+                    data-hotkey="w"
+                />
+                </widget>
         </field>
     </record>
 
