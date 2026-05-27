@@ -131,6 +131,25 @@ class PurchaseOrder(models.Model):
         for line in self.order_line:
             line.with_context(update_prices=True)._compute_price_unit_and_date_planned_and_name()
 
+    def _update_order_line_info(self, product_id, quantity, *, section_id=False, child_field="order_line", **kwargs):
+        existing_line = self.order_line.filtered(
+            lambda line: line.product_id.id == product_id and line.get_parent_section_line().id == section_id
+        )
+        price_unit = super()._update_order_line_info(
+            product_id, quantity, section_id=section_id, child_field=child_field, **kwargs
+        )
+        if existing_line or quantity <= 0 or "net_price" not in self.env["product.supplierinfo"]._fields:
+            return price_unit
+
+        purchase_line = self.order_line.filtered(
+            lambda line: line.product_id.id == product_id and line.get_parent_section_line().id == section_id
+        )
+        if not purchase_line:
+            return price_unit
+
+        purchase_line.with_context(update_prices=True)._compute_price_unit_and_date_planned_and_name()
+        return purchase_line.price_unit_discounted
+
     def _prepare_invoice(self):
         result = super()._prepare_invoice()
         if self.internal_notes:
