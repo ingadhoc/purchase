@@ -43,7 +43,11 @@ class PurchaseBillLineMatch(models.Model):
         # via the purchase matching action (context flag set by the action).
         if self.env.context.get("purchase_matching_from_button"):
             for rec in self:
-                if rec.line_uom_id.category_id.id != rec.product_uom_id.category_id.id:
+                if (
+                    not rec.line_uom_id
+                    or not rec.product_uom_id
+                    or not rec.line_uom_id._has_common_reference(rec.product_uom_id)
+                ):
                     # incompatible categories: ignore this line for matching
                     rec.product_uom_qty = 0.0
                 else:
