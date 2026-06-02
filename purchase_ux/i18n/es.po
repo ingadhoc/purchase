@@ -324,11 +324,6 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: purchase_ux
-#: model_terms:ir.ui.view,arch_db:purchase_ux.view_company_form
-msgid "Purchase"
-msgstr ""
-
-#. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/purchase_order_line.py:0
 msgid "Purchase Line"
@@ -400,6 +395,7 @@ msgstr "Establecer como facturado"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_res_company__skip_upload
+#: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__skip_upload
 msgid "Skip Bill File Upload"
 msgstr ""
 
@@ -422,6 +418,15 @@ msgstr ""
 #: code:addons/purchase_ux/wizards/purchase_order_line_add_to_invoice.py:0
 msgid "This wizard must be called from purchase lines"
 msgstr "El asistente debe ser llamado desde las líneas de compra"
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order__skip_upload
+#: model:ir.model.fields,help:purchase_ux.field_res_company__skip_upload
+#: model:ir.model.fields,help:purchase_ux.field_res_config_settings__skip_upload
+msgid ""
+"When enabled, bills will be created directly without requiring file upload "
+"in purchase orders."
+msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_change_currency
@@ -448,14 +453,6 @@ msgstr "Remito"
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order_line__invoice_status__to_invoice
 msgid "Waiting Invoices"
 msgstr "Esperando facturas"
-
-#. module: purchase_ux
-#: model:ir.model.fields,help:purchase_ux.field_purchase_order__skip_upload
-#: model:ir.model.fields,help:purchase_ux.field_res_company__skip_upload
-msgid ""
-"When enabled, bills will be created directly without requiring file upload "
-"in purchase orders."
-msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form

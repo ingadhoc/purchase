@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase UX",
-    "version": "19.0.1.3.0",
+    "version": "19.0.1.4.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "Purchase order improvements: currency change, price updates, invoice controls and menu enhancements",
@@ -41,7 +41,7 @@
         "views/purchase_line_views.xml",
         "views/product_template_views.xml",
         "views/product_supplierinfo_views.xml",
-        "views/res_company_views.xml",
+        "views/res_config_settings_views.xml",
         "views/purchase_bill_line_match_views.xml",
     ],
     "demo": [
