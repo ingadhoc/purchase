@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 19:56+0000\n"
+"POT-Creation-Date: 2026-06-03 13:55+0000\n"
 "PO-Revision-Date: 2026-02-23 22:21+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
@@ -52,16 +52,6 @@ msgstr ""
 "Cancelar cantidades pendientes de recibir. Al hacer click en el botón se "
 "ejecutará una acción que disminuirá la cantidad a comprar igualándola con la "
 "cantidad recibida y cancelará los movimientos restantes."
-
-#. module: purchase_stock_ux
-#. odoo-python
-#: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
-msgid ""
-"Cancel remaining quantities can't be called for blocked purchase orders. "
-"First unblock the purchase order"
-msgstr ""
-"Cancelar las cantidades remanentes no puede utilizarse para ordenes de "
-"compra bloqueadas. Primero desbloquee la orden de compra."
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_res_config_settings
@@ -278,6 +268,13 @@ msgid ""
 "¡Está reduciendo la cantidad pedida! Recomendamos usar el botón para "
 "cancelar remanente y luego setear la cantidad deseada."
 msgstr ""
+
+#~ msgid ""
+#~ "Cancel remaining quantities can't be called for blocked purchase orders. "
+#~ "First unblock the purchase order"
+#~ msgstr ""
+#~ "Cancelar las cantidades remanentes no puede utilizarse para ordenes de "
+#~ "compra bloqueadas. Primero desbloquee la orden de compra."
 
 #~ msgid "Purchase orders that include lines not received."
 #~ msgstr "Pedidos de compra que incluyen líneas no recibidas"
