@@ -235,8 +235,9 @@ class PurchaseOrderLine(models.Model):
     def _compute_price_unit_and_date_planned_and_name(self):
         # Esto lo hacemos por un caso raro de cancelacion de remanentes,
         # Odoo cambia el price_unit del move antes de commitear a 0 la qty y hace que cree contraentregas
+        # El filtro aplica solo a líneas confirmadas/hechas: en borradores qty=0 es válido (línea nueva)
         all_lines = self
         for line in all_lines:
-            if not line.product_qty:
+            if not line.product_qty and line.state in ("purchase", "done"):
                 all_lines -= line
         super(PurchaseOrderLine, all_lines)._compute_price_unit_and_date_planned_and_name()
