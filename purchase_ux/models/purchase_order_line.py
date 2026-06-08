@@ -173,6 +173,17 @@ class PurchaseOrderLine(models.Model):
         price_update_lines = self.filtered(lambda x: x.state not in ["purchase", "done"])
         res = super(PurchaseOrderLine, price_update_lines)._compute_price_unit_and_date_planned_and_name()
 
+        # Lines in confirmed/done POs without date_planned are new lines added after confirmation.
+        # Price and description must NOT be updated (rule a), but date_planned must be initialized.
+        for line in (self - price_update_lines).filtered(lambda x: not x.date_planned and x.product_id):
+            seller = line.product_id._select_seller(
+                partner_id=line.partner_id,
+                quantity=line.product_qty,
+                date=line.order_id.date_order and line.order_id.date_order.date() or fields.Date.context_today(line),
+                uom_id=line.product_uom,
+            )
+            line.date_planned = line._get_date_planned(seller)
+
         for line in price_update_lines.filtered(lambda x: x.product_id and not x.price_unit):
             price_unit = line.with_company(line.company_id.id).product_id.standard_price
             if price_unit and line.currency_id != line.company_id.currency_id:
