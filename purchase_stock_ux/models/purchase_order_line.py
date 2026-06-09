@@ -59,6 +59,27 @@ class PurchaseOrderLine(models.Model):
         for line in lines:
             line.qty_on_voucher = sum(moves.filtered(lambda x: x.id in line.move_ids.ids).mapped("product_uom_qty"))
 
+    def unlink(self):
+        """Evitar el bloqueo al borrar líneas MTO cuya entrega ya se hizo.
+
+        El unlink estándar de ``purchase_stock`` cancela los ``move_dest_ids`` de
+        las líneas con ``propagate_cancel`` sin filtrar los movimientos ya
+        realizados. Si el destino -la entrega al cliente de una línea MTO- ya
+        está en estado ``done`` (porque se entregó desde stock disponible),
+        ``stock.move._action_cancel()`` lanza "No puede cancelar un movimiento de
+        existencias que se haya configurado como 'Hecho'" y bloquea el borrado.
+
+        ``purchase.order.button_cancel()`` ya contempla este caso filtrando los
+        movimientos ``state != 'done'`` antes de cancelar; replicamos esa misma
+        protección acá: desvinculamos los movimientos destino ya hechos para que
+        el borrado no intente cancelarlos. El movimiento entregado queda intacto.
+        """
+        for line in self:
+            done_dest_moves = line.move_dest_ids.filtered(lambda m: m.state == "done")
+            if done_dest_moves:
+                line.move_dest_ids = [fields.Command.unlink(move.id) for move in done_dest_moves]
+        return super().unlink()
+
     def button_cancel_remaining(self):
         # la cancelación de kits no está bien resuelta ya que odoo
         # solo computa la cantidad entregada cuando todo el kit se entregó.
