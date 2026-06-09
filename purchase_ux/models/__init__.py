@@ -9,3 +9,4 @@ from . import res_config_settings
 from . import purchase_order_line
 from . import product_template
 from . import purchase_bill_line_match
+from . import res_partner

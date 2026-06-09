@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase UX",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "Purchase order improvements: currency change, price updates, invoice controls and menu enhancements",
