@@ -85,9 +85,16 @@ class AccountMove(models.Model):
 
     def action_purchase_matching(self):
         res = super().action_purchase_matching()
-        # mark the action so compute method in the view can apply special filtering
         if isinstance(res, dict):
             ctx = dict(res.get("context") or {})
             ctx["purchase_matching_from_button"] = True
             res["context"] = ctx
+            # Include PO lines from vendor child contacts (same commercial partner)
+            commercial_partner = self.partner_id | self.partner_id.commercial_partner_id
+            res["domain"] = [
+                ("partner_id.commercial_partner_id", "in", commercial_partner.ids)
+                if isinstance(c, (list, tuple)) and c[0] == "partner_id"
+                else c
+                for c in res.get("domain", [])
+            ]
         return res
