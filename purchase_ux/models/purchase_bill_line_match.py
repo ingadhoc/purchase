@@ -3,6 +3,7 @@
 # directory
 ##############################################################################
 from odoo import api, fields, models
+from odoo.tools import SQL
 
 
 class PurchaseBillLineMatch(models.Model):
@@ -37,6 +38,19 @@ class PurchaseBillLineMatch(models.Model):
                 rec.reference_description = rec.pol_id.name
             else:
                 rec.reference_description = rec.display_name
+
+    @property
+    def _table_query(self):
+        return SQL(
+            """
+            SELECT base.* FROM (%s) AS base
+            WHERE base.purchase_order_id IS NULL
+               OR base.purchase_order_id NOT IN (
+                   SELECT id FROM purchase_order WHERE force_invoiced_status = 'invoiced'
+               )
+            """,
+            super()._table_query,
+        )
 
     def _compute_product_uom_qty(self):
         # Only apply the incompatibility filter when the view was opened
