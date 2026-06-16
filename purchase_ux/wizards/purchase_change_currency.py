@@ -18,6 +18,7 @@ class PurchaseChangeCurrency(models.TransientModel):
     )
     currency_rate = fields.Float(
         required=True,
+        digits=(16, 6),
         help="Select a currency rate to apply on the purchase order",
     )
 
@@ -36,14 +37,11 @@ class PurchaseChangeCurrency(models.TransientModel):
         else:
             if self.currency_id == purchase_order.currency_id:
                 raise UserError(_("Old Currency And New Currency can not be the same"))
-            currency = purchase_order.currency_id.with_context(
-                date=purchase_order.date_order or fields.Date.context_today(self)
-            )
-            self.currency_rate = currency._convert(
-                1.0,
-                self.currency_id,
-                purchase_order.company_id,
-                purchase_order.date_order or fields.Date.context_today(self),
+            self.currency_rate = self.env["res.currency"]._get_conversion_rate(
+                from_currency=purchase_order.currency_id,
+                to_currency=self.currency_id,
+                company=purchase_order.company_id,
+                date=purchase_order.date_order or fields.Date.context_today(self),
             )
 
     def change_currency(self):
