@@ -165,6 +165,29 @@ class PurchaseOrderLine(models.Model):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
             line.qty_returned = qty
 
+    @api.depends("move_ids.is_exchange_move")
+    def _compute_qty_received(self):
+        """En una devolución para cambio, el movimiento de devolución (salida al proveedor) tiene
+        ``to_refund=False`` y no descuenta cantidad recibida, mientras que el movimiento de reposición
+        (entrada) la vuelve a sumar. Eso deja ``qty_received`` por encima de lo pedido.
+
+        Espejamos el comportamiento de ``sale_stock_ux`` sobre ``qty_delivered``: descontamos los
+        movimientos de cambio entrantes (reposición) y volvemos a sumar los salientes, para que el
+        cambio quede neutro en la cantidad recibida.
+        """
+        super()._compute_qty_received()
+        for line in self:
+            if line.qty_received_method == "stock_moves":
+                outgoing_moves, incoming_moves = line._get_outgoing_incoming_moves()
+                for move in incoming_moves.filtered(lambda m: m.is_exchange_move and m.state == "done"):
+                    line.qty_received -= move.product_uom._compute_quantity(
+                        move.quantity, line.product_uom_id, rounding_method="HALF-UP"
+                    )
+                for move in outgoing_moves.filtered(lambda m: m.is_exchange_move and m.state == "done"):
+                    line.qty_received += move.product_uom._compute_quantity(
+                        move.quantity, line.product_uom_id, rounding_method="HALF-UP"
+                    )
+
     # Overwrite the origin method to introduce the qty_on_voucher
     def action_add_all_to_invoice(self):
         for rec in self:
