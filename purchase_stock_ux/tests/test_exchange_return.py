@@ -51,9 +51,7 @@ class TestExchangeReturn(PurchaseTestCommon):
 
         # 2) Devolución para cambio de 4 (to_refund=False), genera salida + entrada de reposición
         return_wizard = (
-            self.env["stock.return.picking"]
-            .with_context(active_id=receipt.id, active_model="stock.picking")
-            .create({})
+            self.env["stock.return.picking"].with_context(active_id=receipt.id, active_model="stock.picking").create({})
         )
         return_wizard.product_return_moves.write({"quantity": 4.0, "to_refund": False})
         action = return_wizard.action_create_exchanges()
