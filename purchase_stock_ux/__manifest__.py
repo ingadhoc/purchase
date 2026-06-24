@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase Stock UX",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.2.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "",
@@ -33,10 +33,12 @@
         "stock_ux",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "views/purchase_order_views.xml",
         "views/purchase_line_views.xml",
         "views/stock_move_views.xml",
         "wizards/res_config_settings_views.xml",
+        "wizards/purchase_order_cancel_remaining.xml",
     ],
     "demo": [],
     "installable": True,
