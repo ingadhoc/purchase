@@ -12,6 +12,7 @@ class StockMove(models.Model):
         related="purchase_line_id.order_id",
         string="Purchase Order",
     )
+    is_exchange_move = fields.Boolean()
 
     def _compute_origin_description(self):
         super()._compute_origin_description()
@@ -26,4 +27,7 @@ class StockMove(models.Model):
         distinct_fields = super()._prepare_merge_moves_distinct_fields()
         if self.env.context.get("cancel_from_order") and "price_unit" in distinct_fields:
             distinct_fields.remove("price_unit")
+        # Un movimiento de cambio (devolución para cambio) no debe mergearse con uno que no lo es,
+        # para poder descontarlo del cómputo de cantidad recibida.
+        distinct_fields.append("is_exchange_move")
         return distinct_fields

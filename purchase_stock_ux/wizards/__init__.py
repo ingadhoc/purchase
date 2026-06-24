@@ -3,3 +3,4 @@
 # directory
 ##############################################################################
 from . import res_config_settings
+from . import stock_return_picking
