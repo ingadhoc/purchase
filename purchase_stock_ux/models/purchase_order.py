@@ -4,6 +4,7 @@
 ##############################################################################
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_is_zero
 
 
 class PurchaseOrder(models.Model):
@@ -60,6 +61,31 @@ class PurchaseOrder(models.Model):
                 )
             else:
                 raise UserError(_('Only users with "%s" can Set Received manually') % (group.name))
+
+    def action_create_invoice(self, attachment_ids=False):
+        """Drop the zero-quantity lines Odoo 19 leaves on the draft vendor bill.
+
+        Odoo 19's ``action_create_invoice`` iterates over every ``order_line``
+        without filtering by ``qty_to_invoice`` (the old ``_get_invoiceable_lines``
+        is gone). Our ``_compute_qty_invoiced`` subtracts ``qty_returned``, so a
+        fully-returned line has ``qty_to_invoice = 0`` and core still adds it to
+        the bill as a zero-quantity line.
+
+        We let ``super`` build the invoice and clean it up afterwards instead of
+        reimplementing the whole method, so we don't bypass other overrides of it
+        in the MRO (e.g. ``purchase_force_invoiced``, which skips invoicing on
+        force-invoiced orders). Sections, notes and down payment lines are kept.
+        """
+        invoices_before = self.invoice_ids
+        action = super().action_create_invoice(attachment_ids=attachment_ids)
+        precision = self.env["decimal.precision"].precision_get("Product Unit")
+        new_invoices = self.invoice_ids - invoices_before
+        new_invoices.invoice_line_ids.filtered(
+            lambda aml: aml.display_type == "product"
+            and not aml.is_downpayment
+            and float_is_zero(aml.quantity, precision_digits=precision)
+        ).unlink()
+        return action
 
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
