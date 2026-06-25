@@ -163,6 +163,7 @@ class PurchaseOrderLine(models.Model):
         for rec in self:
             rec.invoice_qty = rec.qty_to_invoice + rec.invoice_qty
 
+    @api.depends("product_qty", "product_uom", "company_id", "order_id.partner_id")
     def _compute_price_unit_and_date_planned_and_name(self):
         """Basicamente modificamos dos cosas:
         a) si la compra esta confirmada y cambiamos cantidades u otro dato, que no se actualice ni precio,
