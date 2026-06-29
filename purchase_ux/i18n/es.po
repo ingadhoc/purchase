@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 15:29+0000\n"
+"POT-Creation-Date: 2026-06-29 15:21+0000\n"
 "PO-Revision-Date: 2026-02-23 22:21+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
@@ -118,6 +118,11 @@ msgid "Confirm Draft Invoices"
 msgstr "Confirmar facturas en borrador"
 
 #. module: purchase_ux
+#: model:ir.model,name:purchase_ux.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
 msgid "Create Bill"
 msgstr "Crear Factura"
@@ -155,6 +160,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_res_company__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:purchase_ux.field_res_partner__display_name
 msgid "Display Name"
 msgstr "Nombre a Mostrar"
 
@@ -201,6 +207,7 @@ msgstr "Tiene Compras?"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__id
 #: model:ir.model.fields,field_description:purchase_ux.field_res_company__id
 #: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__id
+#: model:ir.model.fields,field_description:purchase_ux.field_res_partner__id
 msgid "ID"
 msgstr "ID"
 
@@ -208,6 +215,12 @@ msgstr "ID"
 #. odoo-python
 #: code:addons/purchase_ux/models/product_template.py:0
 msgid "Import Template for Products"
+msgstr ""
+
+#. module: purchase_ux
+#. odoo-python
+#: code:addons/purchase_ux/models/res_partner.py:0
+msgid "Import Template for Vendors"
 msgstr ""
 
 #. module: purchase_ux
