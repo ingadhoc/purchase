@@ -159,9 +159,8 @@ class PurchaseOrderLine(models.Model):
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
-            for move in line.move_ids.filtered(
-                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m.to_refund
-            ):
+            # Count only real vendor returns (excludes the subcontract receipt move).
+            for move in line.move_ids.filtered(lambda m: m.state == "done" and m.to_refund and m._is_purchase_return()):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
             line.qty_returned = qty
 

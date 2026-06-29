@@ -131,6 +131,83 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(len(product_lines), 1)
         self.assertAlmostEqual(product_lines.quantity, 6.0, places=2)
 
+    def test_real_return_sets_qty_returned(self):
+        """A genuine refundable return to the vendor must feed qty_returned."""
+        po = self.env["purchase.order"].create(
+            {
+                "partner_id": self.vendor.id,
+                "order_line": [
+                    Command.create(
+                        {
+                            "product_id": self.product.id,
+                            "product_qty": 10,
+                            "price_unit": 50,
+                        }
+                    ),
+                ],
+            }
+        )
+        po.button_confirm()
+
+        picking = po.picking_ids
+        picking.move_ids.quantity = 10
+        picking.with_context(skip_backorder=True).button_validate()
+
+        self._create_return_for_product(picking, self.product, qty=4)
+
+        self.assertAlmostEqual(po.order_line.qty_returned, 4.0, places=2)
+
+    def test_subcontract_receipt_not_flagged_as_returned(self):
+        """Ticket 121292: a ``to_refund`` move that is NOT a purchase return
+        (e.g. the subcontracting receipt when the MO is closed before validating
+        the receipt) must not inflate qty_returned, otherwise the line drops to
+        qty_to_invoice = 0 and the received goods cannot be billed."""
+        po = self.env["purchase.order"].create(
+            {
+                "partner_id": self.vendor.id,
+                "order_line": [
+                    Command.create(
+                        {
+                            "product_id": self.product.id,
+                            "product_qty": 10,
+                            "price_unit": 50,
+                        }
+                    ),
+                ],
+            }
+        )
+        po.button_confirm()
+
+        picking = po.picking_ids
+        picking.move_ids.quantity = 10
+        picking.with_context(skip_backorder=True).button_validate()
+        line = po.order_line
+
+        # Mimic the subcontracting receipt move: done, to_refund, internal source
+        # and destination (no return to supplier, no origin_returned_move_id), so
+        # ``_is_purchase_return()`` is False even though ``to_refund`` is True.
+        internal_loc = picking.location_dest_id
+        bogus_move = self.env["stock.move"].create(
+            {
+                "product_id": self.product.id,
+                "product_uom_qty": 10,
+                "product_uom": self.product.uom_id.id,
+                "location_id": internal_loc.id,
+                "location_dest_id": internal_loc.id,
+                "to_refund": True,
+                "purchase_line_id": line.id,
+            }
+        )
+        bogus_move.write({"state": "done"})
+
+        self.assertFalse(
+            bogus_move._is_purchase_return(),
+            "Sanity check: the crafted move must not be a purchase return",
+        )
+        line.invalidate_recordset(["qty_returned", "qty_to_invoice"])
+        self.assertAlmostEqual(line.qty_returned, 0.0, places=2, msg="Subcontract receipt must not count as returned")
+        self.assertAlmostEqual(line.qty_to_invoice, 10.0, places=2, msg="Received goods must stay invoiceable")
+
     def test_invoice_keeps_note_lines(self):
         """Note lines also have qty_to_invoice = 0 but must stay on the bill."""
         product2 = self.env["product.product"].create(
