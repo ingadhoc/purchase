@@ -283,7 +283,7 @@ class PurchaseOrderLine(models.Model):
             else:
                 line.invoice_status = "no"
 
-    @api.depends()
+    @api.depends("product_qty", "product_uom", "company_id", "order_id.partner_id")
     def _compute_price_unit_and_date_planned_and_name(self):
         # Esto lo hacemos por un caso raro de cancelacion de remanentes,
         # Odoo cambia el price_unit del move antes de commitear a 0 la qty y hace que cree contraentregas
