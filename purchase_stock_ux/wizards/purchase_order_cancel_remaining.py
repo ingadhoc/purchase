@@ -14,6 +14,6 @@ class PurchaseOrderCancelRemaining(models.TransientModel):
         return self.env["purchase.order"].browse(self.env.context.get("active_ids", [])).mapped("order_line")
 
     def action_confirm(self):
-        self.purchase_order_line_ids.filtered(
-            lambda x: x.receipt_status in ("pending", "partial")
-        ).with_context(cancel_from_order=True).button_cancel_remaining()
+        self.purchase_order_line_ids.filtered(lambda x: x.receipt_status in ("pending", "partial")).with_context(
+            cancel_from_order=True
+        ).button_cancel_remaining()
