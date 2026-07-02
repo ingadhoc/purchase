@@ -6,14 +6,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 13:55+0000\n"
-"PO-Revision-Date: 2026-06-03 13:55+0000\n"
+"POT-Creation-Date: 2026-07-02 18:08+0000\n"
+"PO-Revision-Date: 2026-07-02 18:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_cancel_remaining_form
+msgid ""
+"'Do you want to cancel remaining quantities to receive for these orders? "
+"This can´t be undone'"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_cancel_remaining_form
+msgid "Cancel"
+msgstr ""
 
 #. module: purchase_stock_ux
 #. odoo-python
@@ -44,6 +56,11 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: purchase_stock_ux
+#: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_cancel_remaining_form
+msgid "Confirm"
+msgstr ""
+
+#. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__use_supplier_currency
 msgid "Create purchase order in supplier's currency"
 msgstr ""
@@ -56,7 +73,18 @@ msgid ""
 msgstr ""
 
 #. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__display_name
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__display_name
@@ -78,12 +106,28 @@ msgstr ""
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__id
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__id
 msgid "ID"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.actions.act_window,name:purchase_stock_ux.action_purchase_order_massive_cancel_wizard
+msgid "Mass cancellation of remaining quantities"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -142,7 +186,13 @@ msgid "Purchase Order"
 msgstr ""
 
 #. module: purchase_stock_ux
+#: model:ir.model,name:purchase_stock_ux.model_purchase_order_cancel_remaining
+msgid "Purchase Order Cancel Remaining"
+msgstr ""
+
+#. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_purchase_order_line
+#: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__purchase_order_line_ids
 msgid "Purchase Order Line"
 msgstr ""
 
