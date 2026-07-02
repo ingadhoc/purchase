@@ -12,6 +12,12 @@
                     <field name="skip_upload"/>
                 </setting>
             </xpath>
+            <xpath expr="//block[@name='purchase_setting_container']" position="inside">
+                <setting id="purchase_order_line_view_limit" string="Lines per page"
+                    help="Lines shown per page on the order. Leave empty to keep the default; a lower value (e.g. 40) speeds up very long orders.">
+                    <field name="purchase_order_line_view_limit"/>
+                </setting>
+            </xpath>
         </field>
     </record>
 

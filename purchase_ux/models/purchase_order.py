@@ -136,3 +136,29 @@ class PurchaseOrder(models.Model):
         if self.internal_notes:
             result["internal_notes"] = self.internal_notes
         return result
+
+    def _order_line_view_limit(self):
+        """Configurable page size for the order_line list; 0 keeps the core default (ticket 121312)."""
+        param = self.env["ir.config_parameter"].sudo().get_param("purchase_ux.order_line_view_limit")
+        try:
+            # clamp to 0..200 (200 = Odoo's native max; higher only renders more rows)
+            return min(max(int(param or 0), 0), 200)
+        except ValueError:
+            return 0
+
+    @api.model
+    def _get_view_cache_key(self, view_id=None, view_type="form", **options):
+        key = super()._get_view_cache_key(view_id=view_id, view_type=view_type, **options)
+        # only the form arch depends on this param, so vary just the form cache key on change
+        if view_type == "form":
+            key += (self._order_line_view_limit(),)
+        return key
+
+    @api.model
+    def _get_view(self, view_id=None, view_type="form", **options):
+        arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
+        limit = self._order_line_view_limit()
+        if view_type == "form" and limit:
+            for node in arch.xpath("//field[@name='order_line']/list"):
+                node.set("limit", str(limit))
+        return arch, view
