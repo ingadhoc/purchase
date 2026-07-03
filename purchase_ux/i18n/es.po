@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-29 15:21+0000\n"
+"POT-Creation-Date: 2026-07-03 13:33+0000\n"
 "PO-Revision-Date: 2026-02-23 22:21+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
@@ -145,7 +145,15 @@ msgid "Currency Rate"
 msgstr "Tasa de cambio"
 
 #. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_bill_line_match__date_order
+msgid ""
+"Depicts the date within which the Quotation should be confirmed and "
+"converted into a purchase order."
+msgstr ""
+
+#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__reference_description
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_tree_ux
 msgid "Description"
 msgstr ""
@@ -178,6 +186,11 @@ msgstr ""
 #: model:product.template,name:purchase_ux.product_1_product_template
 msgid "Ergonomic Office Chair"
 msgstr "Silla de Oficina Ergonómica"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
+msgid "Fecha"
+msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -340,6 +353,11 @@ msgid "Only users with \"%s\" can Set Invoiced manually"
 msgstr "Solo usuarios con \"%s / %s\" pueden establecer Facturado manualmente"
 
 #. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__date_order
+msgid "Order Deadline"
+msgstr ""
+
+#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__partner_id
 msgid "Partner"
 msgstr "Empresa"
@@ -368,6 +386,7 @@ msgstr "Lineas de Compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
 msgid "Purchase Order"
 msgstr "Pedido de compra"
 
@@ -397,6 +416,11 @@ msgstr "Presupuestos"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__qty_received
 msgid "Received"
 msgstr "Recibido"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
+msgid "Recibido"
+msgstr ""
 
 #. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_purchase_change_currency__currency_rate
