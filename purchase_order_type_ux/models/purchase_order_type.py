@@ -48,6 +48,18 @@ class PurchaseOrderType(models.Model):
         check_company=False,
         string="Billing Journal",
     )
+    set_locked_on_confirmation = fields.Boolean(
+        string="Lock on Confirmation",
+        help="If enabled, purchase orders of this type are automatically locked when they are approved,"
+        " preventing further edits. This is additive to the global 'Lock Confirmed Orders' setting: when that"
+        " setting is on, every confirmed order is locked regardless of this flag, and the global setting prevails.",
+    )
+    lock_confirmed_po_setting = fields.Boolean(
+        compute="_compute_lock_confirmed_po_setting",
+        help="Technical field: True when the global 'Lock Confirmed Orders' setting is enabled for this type's"
+        " company. Analogous to sale_order_type_automation's 'auto_done_setting', it hides the per-type"
+        " 'Lock on Confirmation' flag while the global setting prevails, since the flag would then be irrelevant.",
+    )
 
     @api.depends("company_id")
     def _compute_invoice_company_id(self):
@@ -66,3 +78,9 @@ class PurchaseOrderType(models.Model):
         for rec in self:
             if rec.journal_id and rec.journal_id not in rec.env["account.journal"].search(rec.journal_domain):
                 raise ValidationError("The selected 'Billing Journal' does not belong to the selected invoice company.")
+
+    @api.depends("company_id")
+    def _compute_lock_confirmed_po_setting(self):
+        for rec in self:
+            company = rec.company_id or self.env.company
+            rec.lock_confirmed_po_setting = company.sudo().po_lock == "lock"

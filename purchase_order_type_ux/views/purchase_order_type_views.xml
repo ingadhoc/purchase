@@ -17,6 +17,7 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/group/group/field[@name='sequence_id']" position="after">
                 <field name="picking_type_id"/>
+                <field name="set_locked_on_confirmation" invisible="lock_confirmed_po_setting"/>
             </xpath>
             <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
                 <field name="invoice_company_id" options="{'no_create': True}"/>
