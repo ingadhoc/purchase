@@ -17,6 +17,8 @@ Purchase Order Type UX
 On purchase order type:
 
 #. Adds to the purchase order type the report partner, the project, the billing journal and the billing policy.
+#. Adds a per-type "Lock on Confirmation" flag that locks orders of that type when they are approved. It is
+   additive to the global "Lock Confirmed Orders" setting, which always prevails.
 
 Installation
 ============

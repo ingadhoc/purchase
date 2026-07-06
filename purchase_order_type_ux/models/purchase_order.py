@@ -23,6 +23,16 @@ class PurchaseOrder(models.Model):
             if order.order_type.fiscal_position_id:
                 order.fiscal_position_id = order.order_type.fiscal_position_id
 
+    def button_approve(self, force=False):
+        res = super().button_approve(force=force)
+        # En compras el "bloqueo" es el booleano `locked` (en 19.0 ya no existe el
+        # estado 'done'; el core lo setea acá cuando el lock global está activo).
+        # Lo replicamos por tipo de forma aditiva: solo órdenes recién aprobadas.
+        self.filtered(
+            lambda o: o.order_type.set_locked_on_confirmation and o.state == "purchase" and not o.locked
+        ).write({"locked": True})
+        return res
+
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
         if self.order_type.journal_id:
