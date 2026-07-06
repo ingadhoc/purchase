@@ -53,6 +53,11 @@ msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__set_locked_on_confirmation
+msgid "Lock on Confirmation"
+msgstr "Bloquear al confirmar"
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields.selection,name:purchase_order_type_ux.selection__purchase_order_type__purchase_method__purchase
 msgid "On ordered quantities"
 msgstr ""
