@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-03 11:43+0000\n"
-"PO-Revision-Date: 2025-12-03 11:43+0000\n"
+"POT-Creation-Date: 2026-07-14 17:41+0000\n"
+"PO-Revision-Date: 2026-07-14 17:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,6 +51,15 @@ msgid "ID"
 msgstr ""
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__set_locked_on_confirmation
+msgid ""
+"If enabled, purchase orders of this type are automatically locked when they "
+"are approved, preventing further edits. This is additive to the global 'Lock"
+" Confirmed Orders' setting: when that setting is on, every confirmed order "
+"is locked regardless of this flag, and the global setting prevails."
+msgstr ""
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__fiscal_position_id
 msgid ""
 "If you choose a fiscal position then this fiscal positioon would be used as "
@@ -70,6 +79,16 @@ msgstr ""
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_domain
 msgid "Journal Domain"
+msgstr ""
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__lock_confirmed_po_setting
+msgid "Lock Confirmed Po Setting"
+msgstr ""
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__set_locked_on_confirmation
+msgid "Lock on Confirmation"
 msgstr ""
 
 #. module: purchase_order_type_ux
@@ -103,6 +122,15 @@ msgid "Purchase Order Line"
 msgstr ""
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__lock_confirmed_po_setting
+msgid ""
+"Technical field: True when the global 'Lock Confirmed Orders' setting is "
+"enabled for this type's company. Analogous to sale_order_type_automation's "
+"'auto_done_setting', it hides the per-type 'Lock on Confirmation' flag while"
+" the global setting prevails, since the flag would then be irrelevant."
+msgstr ""
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__picking_type_id
 msgid "This will determine operation type of incoming shipment"
 msgstr ""
@@ -110,4 +138,12 @@ msgstr ""
 #. module: purchase_order_type_ux
 #: model:ir.model,name:purchase_order_type_ux.model_purchase_order_type
 msgid "Type of purchase order"
+msgstr ""
+
+#. module: purchase_order_type_ux
+#: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.res_config_settings_view_form
+msgid ""
+"When enabled, every confirmed order is locked, regardless of the per-type\n"
+"                    \"Lock on Confirmation\" flag. That flag (off by default on each Purchase Order Type)\n"
+"                    only takes effect when this setting is off; this global setting always prevails."
 msgstr ""
