@@ -160,12 +160,14 @@ class PurchaseOrderLine(models.Model):
         a) si la compra esta confirmada y cambiamos cantidades u otro dato, que no se actualice ni precio,
         ni descripcion ni nada. Esto, además de ser más lindo a nivel usabilidad resuelve problema de cancelar
         remanente si el precio estaba modificado
-        b) if price was not computed (not seller or seller price = 0.0), then use standard price
+        b) if no seller was selected and price was not computed, then use standard price
         """
         price_update_lines = self.filtered(lambda x: x.state not in ["purchase", "done"])
         res = super(PurchaseOrderLine, price_update_lines)._compute_price_unit_and_date_planned_and_name()
 
-        for line in price_update_lines.filtered(lambda x: x.product_id and not x.price_unit):
+        for line in price_update_lines.filtered(
+            lambda x: x.product_id and not x.price_unit and not x.selected_seller_id
+        ):
             price_unit = line.with_company(line.company_id.id).product_id.standard_price
             if price_unit and line.currency_id != line.company_id.currency_id:
                 price_unit = line.company_id.currency_id._convert(
