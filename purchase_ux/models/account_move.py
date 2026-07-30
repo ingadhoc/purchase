@@ -3,6 +3,7 @@
 # directory
 ##############################################################################
 from odoo import fields, models
+from odoo.tools import float_compare
 
 
 class AccountMove(models.Model):
@@ -92,7 +93,12 @@ class AccountMove(models.Model):
             ctx["purchase_matching_from_button"] = True
             ctx["default_account_move_id"] = self.id
             res["context"] = ctx
-            # Show only POLs where ordered qty > invoiced qty (fully invoiced lines excluded).
+            # Show POLs with a pending amount to invoice, using qty_to_invoice so that
+            # returns are handled: on a bill (in_invoice) we want lines still to bill
+            # (qty_to_invoice > 0), on a credit note (in_refund) we want lines with a
+            # pending refund left by a return (qty_to_invoice < 0). The previous check
+            # (product_qty > qty_invoiced) ignored returns, since product_qty does not
+            # drop with a return, and hid those lines from the matcher.
             all_pols = self.env["purchase.order.line"].search(
                 [
                     ("partner_id", "in", (self.partner_id | self.partner_id.commercial_partner_id).ids),
@@ -101,9 +107,16 @@ class AccountMove(models.Model):
             )
             # exclude POLs already matched to a line in this bill (qty_invoiced ignores drafts)
             already_matched = set(self.invoice_line_ids.filtered("purchase_line_id").mapped("purchase_line_id").ids)
-            pending_pol_ids = all_pols.filtered(
-                lambda p: p.product_qty > p.qty_invoiced and p.id not in already_matched
-            ).ids
+            is_refund = self.move_type == "in_refund"
+            uom_precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+
+            def _pending(pol):
+                if pol.id in already_matched:
+                    return False
+                sign = float_compare(pol.qty_to_invoice, 0.0, precision_digits=uom_precision)
+                return sign < 0 if is_refund else sign > 0
+
+            pending_pol_ids = all_pols.filtered(_pending).ids
             domain = list(res.get("domain") or [])
             domain += ["|", ("pol_id", "=", False), ("pol_id", "in", pending_pol_ids)]
             res["domain"] = domain
