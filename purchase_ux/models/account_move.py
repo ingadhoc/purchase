@@ -93,12 +93,14 @@ class AccountMove(models.Model):
             ctx["purchase_matching_from_button"] = True
             ctx["default_account_move_id"] = self.id
             res["context"] = ctx
-            # Show POLs with a pending amount to invoice, using qty_to_invoice so that
-            # returns are handled: on a bill (in_invoice) we want lines still to bill
-            # (qty_to_invoice > 0), on a credit note (in_refund) we want lines with a
-            # pending refund left by a return (qty_to_invoice < 0). The previous check
-            # (product_qty > qty_invoiced) ignored returns, since product_qty does not
-            # drop with a return, and hid those lines from the matcher.
+            # Show POLs with something pending, with a different criterion per document type:
+            # * on a bill (in_invoice): ordered qty not billed yet (product_qty > qty_invoiced),
+            #   received or not. qty_to_invoice cannot be used here because on products
+            #   controlled on received quantities it is qty_received - qty_invoiced, so a
+            #   confirmed PO with no receipt yet gives 0 and the line would be hidden.
+            # * on a credit note (in_refund): lines left with a pending refund by a return,
+            #   ie. billed more than received (qty_to_invoice < 0). product_qty cannot be used
+            #   here because it does not drop with a return, so a fully billed line gives 0.
             all_pols = self.env["purchase.order.line"].search(
                 [
                     ("partner_id", "in", (self.partner_id | self.partner_id.commercial_partner_id).ids),
@@ -113,8 +115,9 @@ class AccountMove(models.Model):
             def _pending(pol):
                 if pol.id in already_matched:
                     return False
-                sign = float_compare(pol.qty_to_invoice, 0.0, precision_digits=uom_precision)
-                return sign < 0 if is_refund else sign > 0
+                if is_refund:
+                    return float_compare(pol.qty_to_invoice, 0.0, precision_digits=uom_precision) < 0
+                return float_compare(pol.product_qty, pol.qty_invoiced, precision_digits=uom_precision) > 0
 
             pending_pol_ids = all_pols.filtered(_pending).ids
             domain = list(res.get("domain") or [])
