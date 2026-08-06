@@ -33,7 +33,7 @@ class PurchaseOrderLine(models.Model):
     qty_on_voucher = fields.Float(
         compute="_compute_qty_on_voucher",
         string="On Voucher",
-        digits="Product Unit of Measure",
+        digits="Product Unit",
     )
 
     qty_returned = fields.Float(
@@ -138,22 +138,31 @@ class PurchaseOrderLine(models.Model):
                     vouchers += picking.voucher_ids.mapped("display_name")
             rec.vouchers = ", ".join(vouchers)
 
-    @api.depends("order_id.state", "qty_received", "qty_returned", "product_qty", "order_id.force_delivered_status")
+    @api.depends(
+        "display_type",
+        "order_id.state",
+        "qty_received",
+        "qty_returned",
+        "product_qty",
+        "order_id.force_delivered_status",
+    )
     def _compute_receipt_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+        precision = self.env["decimal.precision"].precision_get("Product Unit")
         for line in self:
-            if line.state not in ("purchase", "done"):
+            if line.display_type or line.state not in ("purchase", "done"):
                 line.receipt_status = False
                 continue
             if line.order_id.force_delivered_status:
                 line.receipt_status = line.order_id.force_delivered_status
                 continue
 
+            # 'full' antes que 'pending': una línea sin nada pedido (product_qty 0, ej. anulada
+            # bajando la cantidad) no tiene nada por recibir
             qty_total = line.qty_received + line.qty_returned
-            if float_is_zero(qty_total, precision_digits=precision):
-                line.receipt_status = "pending"
-            elif float_compare(qty_total, line.product_qty, precision_digits=precision) >= 0:
+            if float_compare(qty_total, line.product_qty, precision_digits=precision) >= 0:
                 line.receipt_status = "full"
+            elif float_is_zero(qty_total, precision_digits=precision):
+                line.receipt_status = "pending"
             else:
                 line.receipt_status = "partial"
 
@@ -243,7 +252,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+        precision = self.env["decimal.precision"].precision_get("Product Unit")
         super()._compute_invoice_status()
         for line in self:
             if not float_is_zero(line.qty_to_invoice, precision_digits=precision):

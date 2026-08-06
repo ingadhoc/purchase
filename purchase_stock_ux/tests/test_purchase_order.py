@@ -309,3 +309,64 @@ class TestPurchaseOrder(PurchaseTestCommon):
         # El movimiento entregado debe quedar intacto.
         self.assertEqual(done_move.state, "done")
         self.assertFalse(draft_po.order_line)
+
+    def _confirmed_po_with_note(self):
+        """OC confirmada con una línea de producto y una nota."""
+        po = self.env["purchase.order"].create(
+            {
+                "partner_id": self.vendor.id,
+                "order_line": [
+                    Command.create(
+                        {
+                            "product_id": self.product.id,
+                            "product_qty": 10,
+                            "price_unit": 50,
+                        }
+                    ),
+                    Command.create(
+                        {
+                            "display_type": "line_note",
+                            "name": "Handle with care",
+                            "product_id": False,
+                            "product_qty": 0.0,
+                            "product_uom_id": False,
+                            "price_unit": 0.0,
+                        }
+                    ),
+                ],
+            }
+        )
+        po.button_confirm()
+        return po
+
+    def test_receipt_status_note_line_has_no_status(self):
+        """Las notas no tienen nada por recibir: receipt_status vacío, no 'pending'."""
+        po = self._confirmed_po_with_note()
+        note = po.order_line.filtered(lambda line: line.display_type)
+
+        self.assertFalse(note.receipt_status, "Una nota no debe quedar como pendiente de recibir")
+
+    def test_receipt_status_zero_qty_line_is_not_pending(self):
+        """Línea anulada bajando la cantidad a 0: no queda nada por recibir."""
+        po = self._confirmed_po_with_note()
+        line = po.order_line.filtered(lambda line: not line.display_type)
+        self.assertEqual(line.receipt_status, "pending", "Sanity check: sin recibir arranca pendiente")
+
+        line.product_qty = 0
+
+        self.assertEqual(line.receipt_status, "full", "Sin cantidad pedida no queda nada por recibir")
+
+    def test_receipt_status_partial_and_full(self):
+        """Recepción parcial y total siguen mapeando a 'partial' y 'full'."""
+        po = self._confirmed_po_with_note()
+        line = po.order_line.filtered(lambda line: not line.display_type)
+
+        picking = po.picking_ids
+        picking.move_ids.quantity = 4
+        picking.with_context(skip_backorder=True).button_validate()
+        self.assertEqual(line.receipt_status, "partial")
+
+        backorder = po.picking_ids - picking
+        backorder.move_ids.quantity = 6
+        backorder.with_context(skip_backorder=True).button_validate()
+        self.assertEqual(line.receipt_status, "full")
