@@ -23,7 +23,9 @@
         <field name="arch" type="xml">
             <filter position="before">
                 <field name="vouchers" string="Vouchers" filter_domain="[('move_ids.picking_id.voucher_ids', 'like', self)]" context="{'voucher': self}"/>
+                <filter name="to_receive" string="To Receive" domain="[('receipt_status','in', ('pending', 'partial'))]"/>
                 <filter name="not_received" string="Not Received" domain="[('receipt_status','=', 'pending')]"/>
+                <filter name="partial" string="Partially Received" domain="[('receipt_status','=', 'partial')]"/>
                 <filter name="received" string="Received" domain="[('receipt_status','=', 'full')]"/>
                 <separator/>
             </filter>
