@@ -118,9 +118,31 @@ class PurchaseOrderLine(models.Model):
             if printed_pickings:
                 printed_pickings.write({"printed": False})
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
+
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
+            #
+            # Excepción (ticket 124773): si hubo devolución con reembolso, core cuenta la devolución como
+            # salida y a la vez qty_returned suma en el product_qty objetivo -> doble conteo, y en vez de
+            # cancelar el IN pendiente lo deja/infla vivo en el pronóstico. Cancelamos el remanente de
+            # recepción que quede abierto, siguiendo la cadena interna (recepción en 2/3 pasos, donde core
+            # no propaga la baja porque el move interno comparte origen con lo ya recibido). No tocamos los
+            # reemplazos de devolución con cambio, que son una recepción legítima esperada.
+            def _open_reception(move):
+                return move.state not in ("done", "cancel") and not move._is_exchange_move_helper()
+
+            remaining = rec.move_ids.filtered(_open_reception)
+            chain = remaining
+            while remaining:
+                remaining = (
+                    remaining.move_dest_ids.filtered(
+                        lambda m: _open_reception(m) and m.location_dest_id.usage in ("internal", "transit")
+                    )
+                    - chain
+                )
+                chain |= remaining
+            chain.with_context(cancel_from_order=True)._action_cancel()
             if rec.product_qty < old_product_qty:
                 rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
