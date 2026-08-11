@@ -33,6 +33,6 @@ class StockMove(models.Model):
         # en 19 vamos mover el campo a stock ux asi no tenemos que hacer este
         # feo hack
         self.ensure_one()
-        if self.fields_get().get("is_exchange_move"):
+        if "is_exchange_move" in self._fields:
             return self.is_exchange_move
         return False

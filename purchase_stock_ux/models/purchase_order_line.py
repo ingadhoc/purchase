@@ -118,9 +118,21 @@ class PurchaseOrderLine(models.Model):
             if printed_pickings:
                 printed_pickings.write({"printed": False})
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
-            # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
-            # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
-            # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
+            # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
+            # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
+            # netea contra el pendiente (precio/ubicación final distintos), queda una recepción viva en
+            # el pronóstico (o una contra-entrega al proveedor). Cancelamos explícitamente el remanente
+            # abierto de la línea. En recepción de 1, 2 o 3 pasos el pendiente vive siempre en el move de
+            # primer paso (proveedor->entrada), que cuelga de move_ids; core (_action_cancel) propaga a
+            # los downstream si hiciera falta. Acotamos a las recepciones forward genuinas del proveedor:
+            # excluimos los reemplazos de devolución con cambio (recepción legítima esperada) y las
+            # devoluciones al proveedor abiertas sin validar (origin_returned_move_id), que no son parte
+            # del remanente y no deben cancelarse.
+            rec.move_ids.filtered(
+                lambda m: m.state not in ("done", "cancel")
+                and not m._is_exchange_move_helper()
+                and not m.origin_returned_move_id
+            ).with_context(cancel_from_order=True)._action_cancel()
             if rec.product_qty < old_product_qty:
                 rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
