@@ -19,6 +19,11 @@ class StockMove(models.Model):
             if rec.purchase_line_id:
                 rec.origin_description = rec.purchase_line_id.name
 
+    def _is_exchange_receipt(self):
+        # A receipt created from a vendor return that did not update the PO (exchange)
+        self.ensure_one()
+        return bool(self.picking_id.return_id and not self.origin_returned_move_id and not self.to_refund)
+
     @api.model
     def _prepare_merge_moves_distinct_fields(self):
         # Esto lo hacemos porque si por ejemplo el replenishment_cost del producto cambió, este cambia el price unit al momento
