@@ -44,6 +44,7 @@ class PurchaseOrder(models.Model):
     def button_set_invoiced(self):
         if not self.env.user.has_group("base.group_system"):
             group = self.env.ref("base.group_system").sudo()
+<<<<<<< bed80522437e95ca8fdfb04e2f801b9beced261b
             if group.privilege_id:
                 raise UserError(
                     _('Only users with "%s / %s" can Set Invoiced manually') % (group.privilege_id.name, group.name)
@@ -56,6 +57,25 @@ class PurchaseOrder(models.Model):
 
         self.write({"invoice_status": "invoiced"})
         self.order_line.write({"qty_to_invoice": 0.0})
+||||||| 44a1146a97c5cbcb5e7733eb02d6d7bf66bad909
+            raise UserError(
+                _('Only users with "%s / %s" can Set Invoiced manually') % (group.category_id.name, group.name)
+            )
+        # In purchases the invoice status is not calculated from the lines,
+        # so we step on it in the PO. Do not step on the qty_invoiced because
+        # it seems more neat to restore what happened
+
+        self.write({"invoice_status": "invoiced"})
+        self.order_line.write({"qty_to_invoice": 0.0})
+=======
+            raise UserError(
+                _('Only users with "%s / %s" can Set Invoiced manually') % (group.category_id.name, group.name)
+            )
+        # force_invoiced_status is the only value that survives a recompute: both
+        # invoice_status and qty_to_invoice are stored computed fields, so stamping
+        # them was undone by the next recompute of the order or its lines.
+        self.write({"force_invoiced_status": "invoiced"})
+>>>>>>> 869952226fa0e3a7a7ecdb217f1108ddbcf122e1
         self.message_post(body=_("Manually setted as invoiced"))
 
     def write(self, vals):
