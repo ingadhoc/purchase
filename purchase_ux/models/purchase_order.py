@@ -46,12 +46,10 @@ class PurchaseOrder(models.Model):
             raise UserError(
                 _('Only users with "%s / %s" can Set Invoiced manually') % (group.category_id.name, group.name)
             )
-        # In purchases the invoice status is not calculated from the lines,
-        # so we step on it in the PO. Do not step on the qty_invoiced because
-        # it seems more neat to restore what happened
-
-        self.write({"invoice_status": "invoiced"})
-        self.order_line.write({"qty_to_invoice": 0.0})
+        # force_invoiced_status is the only value that survives a recompute: both
+        # invoice_status and qty_to_invoice are stored computed fields, so stamping
+        # them was undone by the next recompute of the order or its lines.
+        self.write({"force_invoiced_status": "invoiced"})
         self.message_post(body=_("Manually setted as invoiced"))
 
     def write(self, vals):
