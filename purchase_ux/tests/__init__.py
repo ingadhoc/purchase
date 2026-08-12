@@ -3,4 +3,5 @@
 # directory
 ##############################################################################
 
+from . import test_purchase_matching
 from . import test_purchase_order
