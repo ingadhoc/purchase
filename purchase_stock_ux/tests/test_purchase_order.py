@@ -31,6 +31,12 @@ class TestPurchaseOrder(PurchaseTestCommon):
 
         cls.purchase_order.button_confirm()
 
+    def test_forced_invoiced_status_on_lines(self):
+        """La OC forzada a facturada mantiene ese estado en sus líneas."""
+        self.env.user.groups_id |= self.env.ref("base.group_system")
+        self.purchase_order.force_invoiced_status = "invoiced"
+        self.assertEqual(self.purchase_order.order_line.invoice_status, "invoiced")
+
     def test_unlink_line_with_done_dest_move(self):
         """Borrar una línea de OC cuya entrega destino ya está 'done' no debe fallar.
 

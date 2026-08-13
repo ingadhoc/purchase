@@ -285,6 +285,9 @@ class PurchaseOrderLine(models.Model):
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         super()._compute_invoice_status()
         for line in self:
+            if line.order_id.force_invoiced_status:
+                # keep the forced status that super() already applied
+                continue
             if not float_is_zero(line.qty_to_invoice, precision_digits=precision):
                 line.invoice_status = "to invoice"
             elif (
