@@ -32,6 +32,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
 
         cls.purchase_order.button_confirm()
 
+<<<<<<< bed80522437e95ca8fdfb04e2f801b9beced261b
     def _create_return_for_product(self, picking, product, qty, to_refund=True):
         """Return `qty` units of `product` from a validated picking."""
         return_wiz = (
@@ -265,6 +266,15 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(product_lines.product_id, self.product)
         self.assertEqual(note_lines.name, "Handle with care", "Note lines must be kept on the bill")
 
+||||||| 44a1146a97c5cbcb5e7733eb02d6d7bf66bad909
+=======
+    def test_forced_invoiced_status_on_lines(self):
+        """La OC forzada a facturada mantiene ese estado en sus líneas."""
+        self.env.user.groups_id |= self.env.ref("base.group_system")
+        self.purchase_order.force_invoiced_status = "invoiced"
+        self.assertEqual(self.purchase_order.order_line.invoice_status, "invoiced")
+
+>>>>>>> ded69f3dfd06ef63fd68a2fc2a022ae7bf5ffb24
     def test_unlink_line_with_done_dest_move(self):
         """Borrar una línea de OC cuya entrega destino ya está 'done' no debe fallar.
 
