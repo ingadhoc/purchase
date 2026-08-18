@@ -5,6 +5,7 @@
         <field name="context">{'search_default_approved': 1}</field>
         <!-- <field name="domain">[('product_id.product_tmpl_id','in',active_ids)]</field> -->
         <field name="name">Purchase Lines</field>
+        <field name="view_mode">list,form,pivot</field>
         <field name="res_model">purchase.order.line</field>
         <field name="view_id" ref="purchase.purchase_order_line_tree"/>
     </record>

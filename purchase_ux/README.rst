@@ -35,6 +35,7 @@ Purchase Order Lines
 
 * Use product standard price when supplier price is not available (seller price = 0.0)
 * Enhanced invoice quantity management and controls
+* Add pivot view to the purchase lines menu, to analyse lines without a predefined report
 
 
 Installation

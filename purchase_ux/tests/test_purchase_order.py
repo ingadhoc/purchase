@@ -77,3 +77,10 @@ class TestPurchaseOrder(common.ProductCommon):
             "<p>Test internal notes</p>",
             "Internal notes should be transferred to the invoice.",
         )
+
+    def test_purchase_line_action_has_pivot(self):
+        """The purchase lines menu offers a pivot view, as the sale lines one does."""
+        action = self.env.ref("purchase_ux.action_purchase_line_tree")
+        self.assertIn("pivot", action.view_mode)
+        views = self.env["purchase.order.line"].get_views(action.views)["views"]
+        self.assertIn("pivot", views)
