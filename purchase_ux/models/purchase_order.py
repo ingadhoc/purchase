@@ -19,6 +19,9 @@ class PurchaseOrder(models.Model):
         ],
         tracking=True,
         copy=False,
+        help="Forces the invoicing status of the whole order, ignoring the per-line computation: "
+        "'Nothing to Bill' marks it as having nothing pending and "
+        "'No Bill to Receive' as already invoiced.",
     )
 
     @api.depends("force_invoiced_status")
