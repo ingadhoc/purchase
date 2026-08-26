@@ -205,6 +205,17 @@ msgid "Force Invoiced Status"
 msgstr "Forzar estado facturado"
 
 #. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order__force_invoiced_status
+msgid ""
+"Forces the invoicing status of the whole order, ignoring the per-line "
+"computation: 'Nothing to Bill' marks it as having nothing pending and 'No "
+"Bill to Receive' as already invoiced."
+msgstr ""
+"Fuerza el estado de facturación de toda la orden ignorando el cálculo por "
+"líneas: «Nada que facturar» la marca como sin pendientes y «Sin factura por "
+"recibir» como ya facturada."
+
+#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_bank_statement_line__has_purchases
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__has_purchases
 msgid "Has Purchases?"
@@ -301,6 +312,8 @@ msgid ""
 "Lines shown per page on the order. Leave empty to keep the default; a lower "
 "value (e.g. 40) speeds up very long orders."
 msgstr ""
+"Líneas que se muestran por página en el pedido. Dejalo vacío para conservar el "
+"valor por defecto; un valor más bajo (por ej. 40) agiliza los pedidos muy largos."
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_product_product__main_seller_id
@@ -448,7 +461,7 @@ msgstr "Selecciona una tasa de cambio para aplicar en la orden de compra"
 #. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_purchase_change_currency__currency_id
 msgid "Select a currency to apply on the purchase order"
-msgstr "Seleeciona una moneda para aplicar en la orden de compra"
+msgstr "Selecciona una moneda para aplicar en la orden de compra"
 
 #. module: purchase_ux
 #. odoo-python
@@ -507,6 +520,16 @@ msgstr "Actualizar Precios de Proveedores"
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
 msgid "Voucher"
 msgstr "Remito"
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
+msgid ""
+"Remito (delivery note) number: when set, only the quantities received under "
+"that remito are added to the invoice, instead of everything pending to "
+"invoice."
+msgstr ""
+"Número de remito: al indicarlo, solo se agregan a la factura las cantidades "
+"recibidas en ese remito, en lugar de todo lo pendiente de facturar."
 
 #. module: purchase_ux
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order_line__invoice_status__to_invoice
