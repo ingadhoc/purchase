@@ -191,6 +191,14 @@ msgid "Force Invoiced Status"
 msgstr ""
 
 #. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order__force_invoiced_status
+msgid ""
+"Forces the invoicing status of the whole order, ignoring the per-line "
+"computation: 'Nothing to Bill' marks it as having nothing pending and 'No "
+"Bill to Receive' as already invoiced."
+msgstr ""
+
+#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_bank_statement_line__has_purchases
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__has_purchases
 msgid "Has Purchases?"
@@ -486,6 +494,14 @@ msgstr ""
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
 msgid "Voucher"
+msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,help:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
+msgid ""
+"Remito (delivery note) number: when set, only the quantities received under "
+"that remito are added to the invoice, instead of everything pending to "
+"invoice."
 msgstr ""
 
 #. module: purchase_ux

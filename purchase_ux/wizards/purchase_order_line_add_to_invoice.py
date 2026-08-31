@@ -39,7 +39,10 @@ class PurchaseOrderLineAddToInvoice(models.TransientModel):
         "('state', '=', 'draft'), "
         "('move_type', 'in', ['in_invoice', 'in_refund'])]",
     )
-    voucher = fields.Char()
+    voucher = fields.Char(
+        help="Remito (delivery note) number: when set, only the quantities received under "
+        "that remito are added to the invoice, instead of everything pending to invoice.",
+    )
 
     @api.model
     def get_purchase_lines(self):
