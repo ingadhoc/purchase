@@ -198,30 +198,56 @@ class PurchaseOrderLine(models.Model):
 
     @api.depends("qty_received_method", "qty_received_manual")
     def _compute_qty_received(self):
-        super()._compute_qty_received()
-        for line in self.filtered(lambda l: l.qty_received_method in ["manual", "stock_moves"]):
-            exchange_move_ids = line.move_ids.filtered(
-                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m._is_exchange_move_helper()
-            )
-            if exchange_move_ids:
-                line.qty_received -= sum(
-                    line.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
-                    for move in exchange_move_ids
-                )
+        # For non-stock_moves lines delegate entirely to super.
+        non_stock = self.filtered(lambda l: l.qty_received_method != "stock_moves")
+        super(PurchaseOrderLine, non_stock)._compute_qty_received()
+
+        for line in self.filtered(lambda l: l.qty_received_method == "stock_moves"):
+            total = 0.0
+            for move in line._get_po_line_moves():
+                if move.state != "done":
+                    continue
+                if move._is_purchase_return():
+                    if not move.origin_returned_move_id or move.to_refund:
+                        # Normal refund return: subtract
+                        total -= move.product_uom._compute_quantity(
+                            move.quantity, line.product_uom, rounding_method="HALF-UP"
+                        )
+                    elif move.picking_id.return_ids:
+                        # Exchange OUT (to_refund=False but picking has a return = exchange IN):
+                        # physically left the warehouse, must subtract.
+                        total -= move.product_uom._compute_quantity(
+                            move.quantity, line.product_uom, rounding_method="HALF-UP"
+                        )
+                    # else: to_refund=False, no exchange IN yet → pass (same as core)
+                elif (
+                    move.origin_returned_move_id
+                    and move.origin_returned_move_id._is_purchase_return()
+                    and not move.to_refund
+                ):
+                    # Exchange IN: return of a purchase return with to_refund=False → don't count
+                    pass
+                elif (
+                    move.origin_returned_move_id
+                    and move.origin_returned_move_id._is_dropshipped()
+                    and not move._is_dropshipped_returned()
+                ):
+                    pass
+                else:
+                    total += move.product_uom._compute_quantity(
+                        move.quantity, line.product_uom, rounding_method="HALF-UP"
+                    )
+            line._track_qty_received(total)
+            line.qty_received = total
 
     @api.depends("order_id.state", "move_ids.state")
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
             for move in line.move_ids.filtered(
-                lambda m: (
-                    m.state == "done"
-                    and m.location_id.usage != "supplier"
-                    and m.to_refund
-                    and not m._is_exchange_move_helper()
-                )
+                lambda m: (m.state == "done" and m.location_id.usage != "supplier" and m.to_refund)
             ):
-                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                qty += move.product_uom._compute_quantity(move.quantity, line.product_uom, rounding_method="HALF-UP")
             line.qty_returned = qty
 
     # Overwrite the origin method to introduce the qty_on_voucher
