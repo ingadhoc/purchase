@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Store the generated PDF on the purchase order and reuse it instead of
+        calling wkhtmltopdf again for the same version of the document.
+
+        The mail composer recomputes attachment_ids on every onchange, and each
+        recompute used to render the same PDF again. The write_date in the
+        attachment name is what invalidates it: an edited purchase order gets a
+        new name, so it is rendered fresh.
+    -->
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="attachment">'Purchase Order - %s - %s.pdf' % (object.name, object.write_date and object.write_date.strftime('%Y%m%d%H%M%S') or '')</field>
+        <field name="attachment_use" eval="True"/>
+    </record>
+
+    <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+        <field name="attachment">'Request for Quotation - %s - %s.pdf' % (object.name, object.write_date and object.write_date.strftime('%Y%m%d%H%M%S') or '')</field>
+        <field name="attachment_use" eval="True"/>
+    </record>
+</odoo>
