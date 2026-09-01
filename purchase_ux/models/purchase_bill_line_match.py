@@ -39,12 +39,13 @@ class PurchaseBillLineMatch(models.Model):
 
     @property
     def _table_query(self):
+        # any forced invoice status closes the order for billing, also 'no' (nothing to bill)
         return SQL(
             """
             SELECT base.* FROM (%s) AS base
             WHERE base.purchase_order_id IS NULL
                OR base.purchase_order_id NOT IN (
-                   SELECT id FROM purchase_order WHERE force_invoiced_status = 'invoiced'
+                   SELECT id FROM purchase_order WHERE force_invoiced_status IS NOT NULL
                )
             """,
             super()._table_query,
