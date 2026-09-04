@@ -209,11 +209,11 @@ class PurchaseOrderLine(models.Model):
                     for move in exchange_move_ids
                 )
 
-    @api.depends("order_id.state", "move_ids.state")
+    @api.depends("order_id.state", "move_ids.state", "move_ids.to_refund")
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
-            for move in line.move_ids.filtered(
+            for move in line._get_po_line_moves().filtered(
                 lambda m: (
                     m.state == "done"
                     and m.location_id.usage != "supplier"
