@@ -185,13 +185,67 @@ class PurchaseOrderLine(models.Model):
             return {"warning": warning_mess}
         return {}
 
+<<<<<<< 43b4f59c454753480ff90f3037d1b07e42d82ed7
     @api.depends("order_id.state", "move_ids.state")
+||||||| e67119e1f5b065fafbd0d5310bb17129cb453079
+    @api.depends("qty_received_method", "qty_received_manual")
+    def _compute_qty_received(self):
+        super()._compute_qty_received()
+        for line in self.filtered(lambda l: l.qty_received_method in ["manual", "stock_moves"]):
+            exchange_move_ids = line.move_ids.filtered(
+                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m._is_exchange_move_helper()
+            )
+            if exchange_move_ids:
+                line.qty_received -= sum(
+                    line.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                    for move in exchange_move_ids
+                )
+
+    @api.depends("order_id.state", "move_ids.state")
+=======
+    @api.depends("qty_received_method", "qty_received_manual")
+    def _compute_qty_received(self):
+        super()._compute_qty_received()
+        for line in self.filtered(lambda l: l.qty_received_method in ["manual", "stock_moves"]):
+            exchange_move_ids = line.move_ids.filtered(
+                lambda m: m.state == "done" and m.location_id.usage != "supplier" and m._is_exchange_move_helper()
+            )
+            if exchange_move_ids:
+                line.qty_received -= sum(
+                    line.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                    for move in exchange_move_ids
+                )
+
+    @api.depends("order_id.state", "move_ids.state", "move_ids.to_refund")
+>>>>>>> 955b1890650ae278b691ed999cdbebc9ee835608
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
+<<<<<<< 43b4f59c454753480ff90f3037d1b07e42d82ed7
             # Count only real vendor returns (excludes the subcontract receipt move).
             for move in line.move_ids.filtered(lambda m: m.state == "done" and m.to_refund and m._is_purchase_return()):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
+||||||| e67119e1f5b065fafbd0d5310bb17129cb453079
+            for move in line.move_ids.filtered(
+                lambda m: (
+                    m.state == "done"
+                    and m.location_id.usage != "supplier"
+                    and m.to_refund
+                    and not m._is_exchange_move_helper()
+                )
+            ):
+                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+=======
+            for move in line._get_po_line_moves().filtered(
+                lambda m: (
+                    m.state == "done"
+                    and m.location_id.usage != "supplier"
+                    and m.to_refund
+                    and not m._is_exchange_move_helper()
+                )
+            ):
+                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+>>>>>>> 955b1890650ae278b691ed999cdbebc9ee835608
             line.qty_returned = qty
 
     # Overwrite the origin method to introduce the qty_on_voucher
