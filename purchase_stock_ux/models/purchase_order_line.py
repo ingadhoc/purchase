@@ -185,12 +185,15 @@ class PurchaseOrderLine(models.Model):
             return {"warning": warning_mess}
         return {}
 
-    @api.depends("order_id.state", "move_ids.state")
+    @api.depends("order_id.state", "move_ids.state", "move_ids.to_refund")
     def _compute_qty_returned(self):
         for line in self:
             qty = 0.0
-            # Count only real vendor returns (excludes the subcontract receipt move).
-            for move in line.move_ids.filtered(lambda m: m.state == "done" and m.to_refund and m._is_purchase_return()):
+            # Count only real vendor returns of the line product (excludes the subcontract
+            # receipt move, and returns of a product that was later replaced on the line).
+            for move in line._get_po_line_moves().filtered(
+                lambda m: m.state == "done" and m.to_refund and m._is_purchase_return()
+            ):
                 qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
             line.qty_returned = qty
 
