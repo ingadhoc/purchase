@@ -154,7 +154,22 @@ class PurchaseOrderLine(models.Model):
                     vouchers += picking.voucher_ids.mapped("display_name")
             rec.vouchers = ", ".join(vouchers)
 
-    @api.depends("order_id.state", "qty_received", "qty_returned", "product_qty", "order_id.force_delivered_status")
+    def _is_receipt_closed(self, precision):
+        """Nothing is left to receive: the quantity arrived, or the pending receipts were cancelled."""
+        self.ensure_one()
+        if float_compare(self.qty_received + self.qty_returned, self.product_qty, precision_digits=precision) >= 0:
+            return True
+        states = set(self._get_po_line_moves().filtered(lambda m: m.location_id.usage == "supplier").mapped("state"))
+        return "cancel" in states and states <= {"done", "cancel"}
+
+    @api.depends(
+        "order_id.state",
+        "qty_received",
+        "qty_returned",
+        "product_qty",
+        "move_ids.state",
+        "order_id.force_delivered_status",
+    )
     def _compute_delivery_status(self):
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         for line in self:
@@ -164,18 +179,7 @@ class PurchaseOrderLine(models.Model):
             if line.order_id.force_delivered_status:
                 line.delivery_status = line.order_id.force_delivered_status
                 continue
-            if (
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                == -1
-            ):
-                line.delivery_status = "to receive"
-            elif (
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                >= 0
-            ):
-                line.delivery_status = "received"
-            else:
-                line.delivery_status = "no"
+            line.delivery_status = "received" if line._is_receipt_closed(precision) else "to receive"
 
     @api.onchange("product_qty")
     def _onchange_product_qty(self):

@@ -4,7 +4,6 @@
 ##############################################################################
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare
 
 
 class PurchaseOrder(models.Model):
@@ -44,15 +43,8 @@ class PurchaseOrder(models.Model):
             else:
                 order.with_returns = False
 
-    @api.depends(
-        "state",
-        "order_line.qty_received",
-        "order_line.qty_returned",
-        "order_line.product_qty",
-        "force_delivered_status",
-    )
+    @api.depends("state", "order_line.delivery_status", "force_delivered_status")
     def _compute_delivery_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         for order in self:
             if order.state not in ("purchase", "done"):
                 order.delivery_status = "no"
@@ -62,20 +54,10 @@ class PurchaseOrder(models.Model):
                 order.delivery_status = order.force_delivered_status
                 continue
 
-            if any(
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                == -1
-                for line in order.order_line
-            ):
+            if any(line.delivery_status == "to receive" for line in order.order_line):
                 order.delivery_status = "to receive"
-            elif all(
-                float_compare((line.qty_received + line.qty_returned), line.product_qty, precision_digits=precision)
-                >= 0
-                for line in order.order_line
-            ):
-                order.delivery_status = "received"
             else:
-                order.delivery_status = "no"
+                order.delivery_status = "received"
 
     def write(self, values):
         self = self.with_context(cancel_from_order=True)

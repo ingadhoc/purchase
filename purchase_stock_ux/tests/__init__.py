@@ -7,3 +7,4 @@ from . import test_purchase_order
 from . import test_stock_orderpoint
 from . import test_cancel_remaining
 from . import test_qty_returned
+from . import test_delivery_status
