@@ -21,8 +21,20 @@ msgid "Bill Control"
 msgstr ""
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__purchase_method
+msgid ""
+"Default invoicing method for orders of this type: bill based on ordered "
+"quantities or on received quantities."
+msgstr ""
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_id
 msgid "Billing Journal"
+msgstr ""
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__journal_id
+msgid "Accounting journal used to register the vendor bill of orders of this type."
 msgstr ""
 
 #. module: purchase_order_type_ux
@@ -104,6 +116,11 @@ msgstr ""
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__payment_term_id
 msgid "Payment Term"
+msgstr ""
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__payment_term_id
+msgid "Payment terms applied by default to purchase orders of this type."
 msgstr ""
 
 #. module: purchase_order_type_ux

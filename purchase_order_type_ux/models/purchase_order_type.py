@@ -15,8 +15,15 @@ class PurchaseOrderType(models.Model):
             ("receive", "On received quantities"),
         ],
         string="Bill Control",
+        help="Default invoicing method for orders of this type: bill based on ordered "
+        "quantities or on received quantities.",
     )
-    payment_term_id = fields.Many2one(comodel_name="account.payment.term", string="Payment Term", check_company=True)
+    payment_term_id = fields.Many2one(
+        comodel_name="account.payment.term",
+        string="Payment Term",
+        check_company=True,
+        help="Payment terms applied by default to purchase orders of this type.",
+    )
     picking_type_id = fields.Many2one(
         "stock.picking.type",
         "Deliver To",
@@ -47,6 +54,7 @@ class PurchaseOrderType(models.Model):
         domain="journal_domain",
         check_company=False,
         string="Billing Journal",
+        help="Accounting journal used to register the vendor bill of orders of this type.",
     )
     set_locked_on_confirmation = fields.Boolean(
         string="Lock on Confirmation",
