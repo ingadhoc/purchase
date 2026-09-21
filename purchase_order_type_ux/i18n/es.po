@@ -28,9 +28,25 @@ msgid "Bill Control"
 msgstr "Control de facturación"
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__purchase_method
+msgid ""
+"Default invoicing method for orders of this type: bill based on ordered "
+"quantities or on received quantities."
+msgstr ""
+"Método de facturación por defecto de las órdenes de este tipo: facturar según "
+"las cantidades pedidas o según las recibidas."
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_id
 msgid "Billing Journal"
 msgstr "Diario de facturación"
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__journal_id
+msgid "Accounting journal used to register the vendor bill of orders of this type."
+msgstr ""
+"Diario contable que se usará para registrar la factura de proveedor de las "
+"órdenes de este tipo."
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__picking_type_id
@@ -112,6 +128,11 @@ msgstr "Sobre cantidades recibidas"
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__payment_term_id
 msgid "Payment Term"
 msgstr "Términos del Pago"
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__payment_term_id
+msgid "Payment terms applied by default to purchase orders of this type."
+msgstr "Plazo de pago que se aplica por defecto a las órdenes de compra de este tipo."
 
 #. module: purchase_order_type_ux
 #: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.view_purchase_order_type_search_inherit
