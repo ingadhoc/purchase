@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-14 17:41+0000\n"
+"POT-Creation-Date: 2026-09-22 18:35+0000\n"
 "PO-Revision-Date: 2026-05-07 17:41+0000\n"
 "Last-Translator: Luciano Esperlazza <les@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
@@ -23,9 +23,22 @@ msgstr ""
 "X-Generator: Weblate 5.10.4\n"
 
 #. module: purchase_order_type_ux
+#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__journal_id
+msgid ""
+"Accounting journal used to register the vendor bill of orders of this type."
+msgstr ""
+"Diario contable que se usará para registrar la factura de proveedor de las "
+"órdenes de este tipo."
+
+#. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__purchase_method
 msgid "Bill Control"
 msgstr "Control de facturación"
+
+#. module: purchase_order_type_ux
+#: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_id
+msgid "Billing Journal"
+msgstr "Diario de facturación"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__purchase_method
@@ -35,19 +48,6 @@ msgid ""
 msgstr ""
 "Método de facturación por defecto de las órdenes de este tipo: facturar "
 "según las cantidades pedidas o según las recibidas."
-
-#. module: purchase_order_type_ux
-#: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_id
-msgid "Billing Journal"
-msgstr "Diario de facturación"
-
-#. module: purchase_order_type_ux
-#: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__journal_id
-msgid ""
-"Accounting journal used to register the vendor bill of orders of this type."
-msgstr ""
-"Diario contable que se usará para registrar la factura de proveedor de las "
-"órdenes de este tipo."
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__picking_type_id
