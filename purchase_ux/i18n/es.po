@@ -312,8 +312,9 @@ msgid ""
 "Lines shown per page on the order. Leave empty to keep the default; a lower "
 "value (e.g. 40) speeds up very long orders."
 msgstr ""
-"Líneas que se muestran por página en el pedido. Dejalo vacío para conservar el "
-"valor por defecto; un valor más bajo (por ej. 40) agiliza los pedidos muy largos."
+"Líneas que se muestran por página en el pedido. Dejalo vacío para conservar "
+"el valor por defecto; un valor más bajo (por ej. 40) agiliza los pedidos muy "
+"largos."
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_product_product__main_seller_id
