@@ -163,3 +163,27 @@ class PurchaseOrder(models.Model):
             for node in arch.xpath("//field[@name='order_line']/list"):
                 node.set("limit", str(limit))
         return arch, view
+
+    def action_rfq_send(self):
+        # Render the reports of the mail template once before the composer
+        # opens: its concurrent onchanges then reuse the stored PDF instead of
+        # rendering it again. Only reports that store and reuse their PDF are
+        # worth it; the rest would be rendered again by the composer anyway.
+        self.ensure_one()
+        template_xmlid = (
+            "purchase.email_template_edi_purchase"
+            if self.env.context.get("send_rfq")
+            else "purchase.email_template_edi_purchase_done"
+        )
+        template = self.env.ref(template_xmlid, raise_if_not_found=False)
+        reports = template and template.report_template_ids.filtered(
+            lambda r: r.report_type == "qweb-pdf" and r.attachment and r.attachment_use
+        )
+        if reports:
+            # the template writes the portal token on first send; do it now so
+            # the write_date in the PDF name does not change under the composer
+            self._portal_ensure_token()
+            lang = template._render_lang(self.ids)[self.id] if template.lang else self.env.context.get("lang")
+            for report in reports:
+                report.with_context(lang=lang)._render_qweb_pdf(report, res_ids=self.ids)
+        return super().action_rfq_send()
