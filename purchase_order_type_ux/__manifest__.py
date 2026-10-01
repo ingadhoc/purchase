@@ -33,6 +33,6 @@
         "views/purchase_order_type_views.xml",
         "views/res_config_settings_views.xml",
     ],
-    "installable": True,
+    "installable": False,
     "auto_install": False,
 }

@@ -41,7 +41,7 @@
         "wizards/purchase_order_cancel_remaining.xml",
     ],
     "demo": [],
-    "installable": True,
+    "installable": False,
     "auto_install": True,
     "application": False,
 }
