@@ -36,6 +36,17 @@ msgstr ""
 #. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 msgid ""
+"The subcontractor already recorded production on %(productions)s. Receive "
+"what was produced or cancel that manufacturing order before cancelling the "
+"remaining quantity."
+msgstr ""
+"El subcontratista ya registró producción en %(productions)s. Reciba lo "
+"producido o cancele esa orden de producción antes de cancelar el remanente."
+
+#. module: purchase_stock_ux
+#. odoo-python
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
+msgid ""
 "Cancel remaining can't be called for Kit Products (products with a bom of "
 "type kit)."
 msgstr ""
