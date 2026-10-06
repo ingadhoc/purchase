@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.addons.purchase_stock.tests.common import PurchaseTestCommon
+from odoo.exceptions import UserError
 
 
 class TestCancelRemaining(PurchaseTestCommon):
@@ -197,3 +198,166 @@ class TestCancelRemaining(PurchaseTestCommon):
         )
         self.assertTrue(internal_alive, "se canceló por error la mercadería recibida en tránsito a stock")
         self.assertAlmostEqual(sum(internal_alive.mapped("product_uom_qty")), 2)
+
+    def _subcontracted_product(self, name):
+        """Storable product with a subcontracting BoM (subcontractor: self.partner) whose component
+        is resupplied on order. Skips the test when mrp_subcontracting is not installed."""
+        resupply_route = self.env.ref("mrp_subcontracting.route_resupply_subcontractor_mto", raise_if_not_found=False)
+        if not resupply_route:
+            self.skipTest("mrp_subcontracting is not installed")
+        component = self._product("%s component" % name)
+        component.route_ids = [Command.link(resupply_route.id)]
+        finished = self._product(name)
+        bom = self.env["mrp.bom"].create(
+            {
+                "product_tmpl_id": finished.product_tmpl_id.id,
+                "type": "subcontract",
+                "subcontractor_ids": [Command.link(self.partner.id)],
+                "bom_line_ids": [Command.create({"product_id": component.id, "product_qty": 1})],
+            }
+        )
+        return finished, bom
+
+    def _open_moves_of_order(self, po, exclude=None):
+        return self.env["stock.move"].search(
+            [("group_id", "=", po.group_id.id), ("state", "not in", ("done", "cancel"))]
+        ) - (exclude or self.env["stock.move"])
+
+    def test_subcontracted_cancel_remaining_nothing_received(self):
+        """Subcontracting: cancel remaining with nothing received must not raise and must cancel the
+        whole receipt chain (1/2/3 steps), the subcontracting MO and the resupply, so the line can be
+        re-ordered with the new BoM."""
+        for steps in self.STEPS:
+            with self.subTest(steps=steps):
+                self.warehouse.reception_steps = steps
+                finished, bom = self._subcontracted_product("CR subcontract %s" % steps)
+                po = self._confirm_po(finished, 10)
+                line = po.order_line
+                production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
+                resupply = production.picking_ids
+                self.assertTrue(resupply, "no resupply picking was created for the subcontracting MO")
+                # the BoM changes after the order was confirmed
+                new_comp = self._product("CR subcontract new component %s" % steps)
+                bom.bom_line_ids = [Command.clear(), Command.create({"product_id": new_comp.id, "product_qty": 1})]
+
+                line.button_cancel_remaining()
+
+                self.assertEqual(line.product_qty, 0)
+                self.assertFalse(self._open_moves_of_order(po), "a receipt leg was left open")
+                self.assertEqual(production.state, "cancel")
+                self.assertEqual(resupply.state, "cancel")
+
+                # ordering again takes the current BoM
+                line.product_qty = 10
+                new_production = self.env["mrp.production"].search(
+                    [("product_id", "=", finished.id), ("state", "!=", "cancel")]
+                )
+                self.assertEqual(new_production.move_raw_ids.product_id, new_comp)
+
+    def test_subcontracted_recorded_production_blocks_cancel_remaining(self):
+        """If the subcontractor already recorded production, cancel remaining stops with a message
+        instead of cancelling the MO and losing what was recorded."""
+        self.warehouse.reception_steps = "one_step"
+        finished, _bom = self._subcontracted_product("CR subcontract recorded")
+        po = self._confirm_po(finished, 10)
+        line = po.order_line
+        production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
+        production.subcontracting_has_been_recorded = True
+
+        with self.assertRaisesRegex(UserError, production.name):
+            line.button_cancel_remaining()
+        self.assertEqual(line.product_qty, 10)
+        self.assertNotEqual(production.state, "cancel")
+
+    def test_subcontracted_partial_receipt_cancel_remaining(self):
+        """Subcontracting with a partial receipt: cancel remaining cancels the pending receipt and its
+        MO, and keeps the internal legs (2/3 steps) that bring the received goods to stock."""
+        for steps in self.STEPS:
+            with self.subTest(steps=steps):
+                self.warehouse.reception_steps = steps
+                finished, _bom = self._subcontracted_product("CR subcontract partial %s" % steps)
+                po = self._confirm_po(finished, 10)
+                line = po.order_line
+                self._receive_partial_at_input(po, 4)
+
+                line.button_cancel_remaining()
+
+                self.assertEqual(line.product_qty, 4)
+                self.assertFalse(
+                    self._open_moves_of_order(po).filtered("purchase_line_id"), "the pending receipt was left open"
+                )
+                self.assertFalse(
+                    self.env["mrp.production"].search(
+                        [("product_id", "=", finished.id), ("state", "not in", ("done", "cancel"))]
+                    ),
+                    "the MO of the pending quantity was left open",
+                )
+                internal_alive = self._open_moves_of_order(po).filtered(
+                    lambda m: m.location_id.usage == "internal" and m.location_dest_id.usage == "internal"
+                )
+                if steps == "one_step":
+                    self.assertFalse(internal_alive)
+                else:
+                    self.assertAlmostEqual(sum(internal_alive.mapped("product_uom_qty")), 4)
+
+    def test_subcontracted_refunded_return_cancel_remaining(self):
+        """Subcontracting with a refunded return: cancel remaining closes the line without creating
+        (and cancelling) a new receipt and MO for the returned quantity."""
+        self.warehouse.reception_steps = "one_step"
+        finished, _bom = self._subcontracted_product("CR subcontract refund")
+        po = self._confirm_po(finished, 10)
+        line = po.order_line
+        self._receive_partial_at_input(po, 4)
+        self._return(po, 2, to_refund=True)
+        line.invalidate_recordset()
+        productions = self.env["mrp.production"].search([("product_id", "=", finished.id)])
+        pickings = po.picking_ids
+
+        line.button_cancel_remaining()
+
+        self.assertEqual(line.product_qty, line.qty_received + line.qty_returned)
+        self.assertFalse(
+            self._open_moves_of_order(po).filtered("purchase_line_id"), "the pending receipt was left open"
+        )
+        self.assertEqual(self.env["mrp.production"].search([("product_id", "=", finished.id)]), productions)
+        self.assertEqual(po.picking_ids, pickings)
+
+    def test_subcontracted_cancel_remaining_keeps_sale_delivery(self):
+        """Subcontracting bought on order for a sale: cancel remaining on the purchase cancels the
+        receipt chain (1/2/3 steps) but not the customer delivery, as core's netting does not either."""
+        if "sale_line_id" not in self.env["stock.move"]._fields:
+            self.skipTest("sale_stock is not installed")
+        self.warehouse.delivery_steps = "ship_only"
+        mto_route = self.warehouse.mto_pull_id.route_id
+        mto_route.active = True
+        for steps in self.STEPS:
+            with self.subTest(steps=steps):
+                self.warehouse.reception_steps = steps
+                # the purchase line takes it from the buy rule; with it on, a plain cancel would reach the delivery
+                self.warehouse.buy_pull_id.propagate_cancel = True
+                finished, _bom = self._subcontracted_product("CR subcontract MTO %s" % steps)
+                finished.route_ids = [
+                    Command.link(mto_route.id),
+                    Command.link(self.warehouse.buy_pull_id.route_id.id),
+                ]
+                finished.seller_ids = [Command.create({"partner_id": self.partner.id, "price": 10.0})]
+                sale = self.env["sale.order"].create(
+                    {
+                        "partner_id": self.env["res.partner"].create({"name": "CR customer"}).id,
+                        "order_line": [Command.create({"product_id": finished.id, "product_uom_qty": 5})],
+                    }
+                )
+                sale.action_confirm()
+                delivery_move = sale.order_line.move_ids
+                line = self.env["purchase.order.line"].search([("product_id", "=", finished.id)])
+                self.assertEqual(len(line), 1, "the sale did not generate the purchase to the subcontractor")
+                line.order_id.button_confirm()
+                self.assertTrue(line.propagate_cancel)
+                self.assertIn(delivery_move, self._chain(line))
+
+                line.button_cancel_remaining()
+
+                self.assertFalse(
+                    self._open_moves_of_order(line.order_id, exclude=delivery_move), "a receipt leg was left open"
+                )
+                self.assertNotEqual(delivery_move.state, "cancel", "cancel remaining cancelled the customer delivery")
