@@ -172,7 +172,7 @@ class PurchaseOrderLine(models.Model):
                 partner_id=line.partner_id,
                 quantity=line.product_qty,
                 date=line.order_id.date_order and line.order_id.date_order.date() or fields.Date.context_today(line),
-                uom_id=line.product_uom,
+                uom_id=line.product_uom_id,
             )
             line.date_planned = line._get_date_planned(seller)
 
