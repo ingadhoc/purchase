@@ -41,7 +41,7 @@ class AccountMove(models.Model):
                     [
                         ("partner_id", "=", rec.move_id.partner_id.id),
                         ("product_tmpl_id", "=", rec.product_id.product_tmpl_id.id),
-                        ("company_id", "=", self.company_id.id),
+                        ("company_id", "=", rec.product_id.company_id.id),
                     ],
                     limit=1,
                 )
@@ -58,7 +58,7 @@ class AccountMove(models.Model):
                             "currency_id": rec.move_id.partner_id.property_purchase_currency_id.id
                             or self.currency_id.id,
                             "product_tmpl_id": rec.product_id.product_tmpl_id.id,
-                            "company_id": self.company_id.id,
+                            "company_id": rec.product_id.company_id.id,
                         }
                     )
                 )

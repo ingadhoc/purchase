@@ -85,7 +85,7 @@ class PurchaseOrder(models.Model):
                             rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                         ),
                         ("product_tmpl_id", "=", rec.product_id.product_tmpl_id.id),
-                        ("company_id", "=", self.company_id.id),
+                        ("company_id", "=", rec.product_id.company_id.id),
                     ],
                     limit=1,
                 )
@@ -97,7 +97,7 @@ class PurchaseOrder(models.Model):
                         "partner_id": rec.order_id.partner_id.id,
                         "currency_id": rec.order_id.partner_id.property_purchase_currency_id.id or self.currency_id.id,
                         "product_tmpl_id": rec.product_id.product_tmpl_id.id,
-                        "company_id": self.company_id.id,
+                        "company_id": rec.product_id.company_id.id,
                     }
                 )
             price_unit = rec.price_unit
