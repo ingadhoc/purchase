@@ -63,6 +63,37 @@ class TestPurchaseOrder(common.TestProductCommon):
         self.assertTrue(supplier_info, "Supplier info should exit")
         self.assertEqual(supplier_info.price, 100.0, "Supplier price should be updated to 100.0")
 
+    def test_update_company_less_supplier_price(self):
+        """A shared (company-less) supplier line must be updated in place, not
+        shadowed by a new company-scoped line (ticket 129603).
+
+        When buying from a secondary company, scoping the created/searched
+        supplierinfo to the order company left the company-less cost (the one
+        the planned price reads through the main company) untouched.
+        """
+        shared_info = self.env["product.supplierinfo"].create(
+            {
+                "partner_id": self.partner.id,
+                "product_tmpl_id": self.product.product_tmpl_id.id,
+                "price": 80.0,
+                "currency_id": self.env.company.currency_id.id,
+                "company_id": False,
+            }
+        )
+
+        self.purchase_order.update_prices_with_supplier_cost()
+
+        self.assertFalse(shared_info.company_id, "The shared line must stay company-less.")
+        self.assertEqual(shared_info.price, 100.0, "The shared line must be the one updated.")
+        self.assertEqual(self.supplier_info.price, 80.0, "The company-scoped line must not be touched.")
+        all_lines = self.env["product.supplierinfo"].search(
+            [
+                ("partner_id", "=", self.partner.id),
+                ("product_tmpl_id", "=", self.product.product_tmpl_id.id),
+            ]
+        )
+        self.assertEqual(all_lines, shared_info | self.supplier_info, "No new supplier line should be created.")
+
     def test_internal_notes_in_invoice(self):
         """
         Test that internal notes are correctly transferred to the invoice.
