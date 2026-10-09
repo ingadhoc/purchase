@@ -48,7 +48,18 @@
     "demo": [
         "demo/purchase_order_demo.xml",
     ],
+<<<<<<< 4026f2cf5b296579ab4dd7a384f99ef3fc503d56
     "installable": False,
+||||||| 28154baa3c011c4fc757ef6d8c9f5887e314e43a
+    "installable": True,
+=======
+    "assets": {
+        "web.assets_backend": [
+            "purchase_ux/static/src/views/purchase_dashboard.xml",
+        ],
+    },
+    "installable": True,
+>>>>>>> d0e4f07197e71bb518c8fea06a046b71bdbcae1b
     "auto_install": False,
     "application": False,
 }
