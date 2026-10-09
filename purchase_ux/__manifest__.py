@@ -48,6 +48,11 @@
     "demo": [
         "demo/purchase_order_demo.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "purchase_ux/static/src/views/purchase_dashboard.xml",
+        ],
+    },
     "installable": True,
     "auto_install": False,
     "application": False,

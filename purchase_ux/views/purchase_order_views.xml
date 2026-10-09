@@ -25,6 +25,11 @@
             <field name="invoice_status" position="before">
                 <field name="force_invoiced_status" groups="base.group_no_one"/>
             </field>
+
+            <!-- "Acknowledge" is translated as "Confirmar" in es_419, clashing with "Confirm Order" -->
+            <button name="action_acknowledge" position="attributes">
+                <attribute name="string">Acknowledge Receipt</attribute>
+            </button>
             <!-- agregamos boton de actualizar precios a las lineas -->
             <field name="order_line" position="before">
                 <button name="update_prices" string="Update Prices" help="Actualiza los precios de las líneas con los precios del proveedor definidos en los productos" type="object" invisible="state not in ('draft', 'sent')"/>
@@ -64,6 +69,9 @@
         <field name="arch" type="xml">
             <filter name="to_approve" position="after">
                 <separator/>
+            </filter>
+            <filter name="not_acknowledged" position="attributes">
+                <attribute name="string">Not Acknowledged nor Received</attribute>
             </filter>
             <group>
                 <filter name="invoice_status" string="Invoice Status" domain="[]" context="{'group_by':'invoice_status'}"/>
