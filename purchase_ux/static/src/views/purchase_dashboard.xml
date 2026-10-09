@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="purchase_ux.PurchaseDashboard" t-inherit="purchase.PurchaseDashboard" t-inherit-mode="extension">
+
+        <xpath expr="//div[@filter_name='not_acknowledged']" position="attributes">
+            <attribute name="title">All POs with no vendor acknowledgement and no validated receipt</attribute>
+        </xpath>
+
+        <xpath expr="//div[@filter_name='not_acknowledged,my_purchases']" position="attributes">
+            <attribute name="title">My POs with no vendor acknowledgement and no validated receipt</attribute>
+        </xpath>
+
+        <!-- the card label is a bare text node, so the whole anchor must be replaced to rename it -->
+        <xpath expr="//div[@filter_name='not_acknowledged']/a" position="replace">
+            <a href="#" class="btn purchase-dashboard-card p-1 p-lg-2 text-truncate text-wrap"
+               t-attf-class="o_purchase_dashboard_card_{{ multiuser ? 'top' : 'sole' }}
+                   {{ purchaseData['global']['not_acknowledged']['all'] == 0
+                      ? 'bg-secondary-subtle text-secondary-emphasis'
+                      : 'bg-info-subtle text-info-emphasis' }}">
+                <div class="fs-2">
+                    <span t-out="purchaseData['global']['not_acknowledged']['all']"/>
+                    <span class="ps-4" t-if="purchaseData['global']['not_acknowledged']['priority']">
+                        <span class="o_priority_star fa fa-star "/> <span t-out="purchaseData['global']['not_acknowledged']['priority']"/>
+                    </span>
+                </div>Not Acknowledged nor Received
+            </a>
+        </xpath>
+
+    </t>
+
+</templates>
