@@ -41,9 +41,21 @@ msgid ""
 msgstr ""
 
 #. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Acknowledge Receipt"
+msgstr "Acusar recibo"
+
+#. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
 msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
 msgstr ""
+
+#. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+msgid "All POs with no vendor acknowledgement and no validated receipt"
+msgstr ""
+"Todas las órdenes de compra sin acuse del proveedor y sin recepción validada"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -330,6 +342,12 @@ msgid "Manually setted as invoiced"
 msgstr "Seteado Manualmente como Facturado"
 
 #. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+msgid "My POs with no vendor acknowledgement and no validated receipt"
+msgstr "Mis órdenes de compra sin acuse del proveedor y sin recepción validada"
+
+#. module: purchase_ux
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order__force_invoiced_status__invoiced
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order_line__invoice_status__invoiced
 msgid "No Bill to Receive"
@@ -345,6 +363,13 @@ msgstr ""
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
 msgid "No Purchase Order on context as \"active_id\""
 msgstr "No hay Orden de Compra en contexto como \"id activo\""
+
+#. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
+msgid "Not Acknowledged nor Received"
+msgstr "Sin acuse ni recepción"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
