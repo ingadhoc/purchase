@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class StockMove(models.Model):
@@ -19,11 +19,11 @@ class StockMove(models.Model):
             if rec.purchase_line_id:
                 rec.origin_description = rec.purchase_line_id.name
 
-    @api.model
-    def _prepare_merge_moves_distinct_fields(self):
-        # Esto lo hacemos porque si por ejemplo el replenishment_cost del producto cambió, este cambia el price unit al momento
-        # de ver si mergea moves o no, y como siempre queremos que mergee lo sacamos, no es elegante pero resuelve.
-        distinct_fields = super()._prepare_merge_moves_distinct_fields()
-        if self.env.context.get("cancel_from_order") and "price_unit" in distinct_fields:
-            distinct_fields.remove("price_unit")
-        return distinct_fields
+    # NOTA (123822): acá vivía un override de _prepare_merge_moves_distinct_fields que, bajo
+    # cancel_from_order, sacaba price_unit de la clave de merge para que al cancelar remanente
+    # el move negativo pudiera netear contra el pendiente aunque el costo/descuento hubiera
+    # cambiado. Como stock_ux inyecta cancel_from_order=True en TODOS los merges, ese override
+    # aflojaba también el merge positivo-positivo de toda confirmación de compra (over-broad).
+    # Se reemplazó por el override de _prepare_merge_negative_moves_excluded_distinct_fields en
+    # stock_ux, que excluye price_unit SOLO de la clave del move negativo: el neteo de cancelar
+    # remanente sigue funcionando y el merge positivo vuelve a ser estricto por price_unit.
