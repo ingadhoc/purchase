@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 19:16+0000\n"
-"PO-Revision-Date: 2026-09-22 19:16+0000\n"
+"POT-Creation-Date: 2026-10-13 17:08+0000\n"
+"PO-Revision-Date: 2026-10-13 17:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,14 +27,14 @@ msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
-msgid ""
-"Actualiza los precios de las líneas con los precios del proveedor definidos "
-"en los productos"
+msgid "Acknowledge Receipt"
 msgstr ""
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
-msgid "Acknowledge Receipt"
+msgid ""
+"Actualiza los precios de las líneas con los precios del proveedor definidos "
+"en los productos"
 msgstr ""
 
 #. module: purchase_ux
