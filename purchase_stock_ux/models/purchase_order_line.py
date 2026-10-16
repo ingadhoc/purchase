@@ -113,10 +113,74 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(
                         _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
+<<<<<<< 29a5bf9453e6f8355b9804bab6200592cc655957
+||||||| 889d8a34cdeabdd58ee894664ac8b2512a348324
+            # Resetear printed=False en pickings asociados para evitar contra-entregas
+            printed_pickings = rec.move_ids.mapped("picking_id").filtered("printed")
+            if printed_pickings:
+                printed_pickings.write({"printed": False})
+=======
+            # Resetear printed=False en pickings asociados para evitar contra-entregas
+            printed_pickings = rec.move_ids.mapped("picking_id").filtered("printed")
+            if printed_pickings:
+                printed_pickings.write({"printed": False})
+            # Subcontracting: once core nets the negative move, mrp_subcontracting runs action_assign
+            # on the emptied receipt and raises. Cancel the remainder first so no negative move is
+            # created; like core's netting, don't propagate the cancel to destination moves.
+            subcontracted_moves = rec._get_remaining_moves_to_cancel().filtered(
+                lambda m: "is_subcontract" in m._fields and m.is_subcontract
+            )
+            if subcontracted_moves:
+                recorded_productions = subcontracted_moves._get_recorded_subcontract_production()
+                if recorded_productions:
+                    raise UserError(
+                        _(
+                            "The subcontractor already recorded production on %(productions)s. "
+                            "Receive what was produced or cancel that manufacturing order before "
+                            "cancelling the remaining quantity.",
+                            productions=", ".join(recorded_productions.mapped("name")),
+                        )
+                    )
+                # With refunded returns the negative move does not empty the receipt, and cancelling
+                # first would make core create a new receipt (and MO) for the returned quantity.
+                if float_is_zero(rec.qty_returned, precision_rounding=rec.product_uom.rounding):
+                    subcontracted_moves.write({"propagate_cancel": False})
+                    subcontracted_moves.with_context(cancel_from_order=True)._action_cancel()
+>>>>>>> 2b8bde15e519c1cfdf96d3833b58986102c1254c
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
+<<<<<<< 29a5bf9453e6f8355b9804bab6200592cc655957
             # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
             # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
             # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
+||||||| 889d8a34cdeabdd58ee894664ac8b2512a348324
+            # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
+            # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
+            # netea contra el pendiente (precio/ubicación final distintos), queda una recepción viva en
+            # el pronóstico (o una contra-entrega al proveedor). Cancelamos explícitamente el remanente
+            # abierto de la línea. En recepción de 1, 2 o 3 pasos el pendiente vive siempre en el move de
+            # primer paso (proveedor->entrada), que cuelga de move_ids; core (_action_cancel) propaga a
+            # los downstream si hiciera falta. Acotamos a las recepciones forward genuinas del proveedor:
+            # excluimos los reemplazos de devolución con cambio (recepción legítima esperada) y las
+            # devoluciones al proveedor abiertas sin validar (origin_returned_move_id), que no son parte
+            # del remanente y no deben cancelarse.
+            rec.move_ids.filtered(
+                lambda m: m.state not in ("done", "cancel")
+                and not m._is_exchange_move_helper()
+                and not m.origin_returned_move_id
+            ).with_context(cancel_from_order=True)._action_cancel()
+=======
+            # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
+            # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
+            # netea contra el pendiente (precio/ubicación final distintos), queda una recepción viva en
+            # el pronóstico (o una contra-entrega al proveedor). Cancelamos explícitamente el remanente
+            # abierto de la línea. En recepción de 1, 2 o 3 pasos el pendiente vive siempre en el move de
+            # primer paso (proveedor->entrada), que cuelga de move_ids; core (_action_cancel) propaga a
+            # los downstream si hiciera falta. Acotamos a las recepciones forward genuinas del proveedor:
+            # excluimos los reemplazos de devolución con cambio (recepción legítima esperada) y las
+            # devoluciones al proveedor abiertas sin validar (origin_returned_move_id), que no son parte
+            # del remanente y no deben cancelarse.
+            rec._get_remaining_moves_to_cancel().with_context(cancel_from_order=True)._action_cancel()
+>>>>>>> 2b8bde15e519c1cfdf96d3833b58986102c1254c
             if rec.product_qty < old_product_qty:
                 rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
@@ -127,6 +191,15 @@ class PurchaseOrderLine(models.Model):
         # Volver a bloquear las órdenes que estaban bloqueadas sin generar mensaje
         if orders_to_relock:
             orders_to_relock.with_context(tracking_disable=True).write({"state": "done"})
+
+    def _get_remaining_moves_to_cancel(self):
+        """Open moves of the line, without exchange replacements nor moves created by a return."""
+        self.ensure_one()
+        return self.move_ids.filtered(
+            lambda m: m.state not in ("done", "cancel")
+            and not m._is_exchange_move_helper()
+            and not m.origin_returned_move_id
+        )
 
     def _compute_vouchers(self):
         # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
