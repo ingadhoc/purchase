@@ -31,7 +31,7 @@
     ],
     "external_dependencies": {},
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "wizard/purchase_global_discount_wizard_view.xml",
         "views/purchase_order_views.xml",
     ],
