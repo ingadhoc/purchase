@@ -29,7 +29,8 @@ Usage
 
 To use this module, you need to:
 
-#. When you enter to Purchase Order, you click on "Set Global Discount" Button then you set amount to the total discount and confirm.
+#. When you enter to Purchase Order, you click on "Set Global Discount" Button then you set the discount percentage and confirm.
+#. The button is only shown while the order is a request for quotation (draft or sent); once it is confirmed, the button is hidden.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
