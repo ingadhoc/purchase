@@ -28,7 +28,7 @@ class PurchaseOrderLine(models.Model):
         compute="_compute_invoice_qty",
         inverse="_inverse_invoice_qty",
         search="_search_invoice_qty",
-        digits="Product Unit of Measure",
+        digits="Product Unit",
     )
 
     qty_to_invoice = fields.Float(
@@ -36,13 +36,13 @@ class PurchaseOrderLine(models.Model):
         string="Cantidad en factura actual",
         store=True,
         readonly=True,
-        digits="Product Unit of Measure",
+        digits="Product Unit",
         default=0.0,
     )
 
     @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+        precision = self.env["decimal.precision"].precision_get("Product Unit")
         for line in self:
             if line.state not in ("purchase", "done"):
                 line.invoice_status = "no"
