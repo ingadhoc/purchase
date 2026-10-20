@@ -120,7 +120,7 @@ class AccountMove(models.Model):
             # exclude POLs already matched to a line in this bill (qty_invoiced ignores drafts)
             already_matched = set(self.invoice_line_ids.filtered("purchase_line_id").mapped("purchase_line_id").ids)
             is_refund = self.move_type == "in_refund"
-            uom_precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+            uom_precision = self.env["decimal.precision"].precision_get("Product Unit")
 
             def _pending(pol):
                 if pol.id in already_matched:
