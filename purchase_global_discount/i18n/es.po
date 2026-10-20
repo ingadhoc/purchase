@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-19 18:39+0000\n"
-"PO-Revision-Date: 2026-10-19 18:39+0000\n"
+"POT-Creation-Date: 2026-10-22 11:47+0000\n"
+"PO-Revision-Date: 2026-10-22 11:47+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
 "purchase-19-0/purchase-19-0-purchase_global_discount/es/>\n"
@@ -120,7 +120,7 @@ msgstr "Descuento"
 #. module: purchase_global_discount
 #: model:ir.model.fields,field_description:purchase_global_discount.field_purchase_order_global_discount_wizard__display_name
 msgid "Display Name"
-msgstr "Nombre a Mostrar"
+msgstr "Nombre en pantalla"
 
 #. module: purchase_global_discount
 #: model_terms:ir.ui.view,arch_db:purchase_global_discount.view_purchase_global_discount_wizard_form
@@ -135,17 +135,17 @@ msgstr "Asistente de Descuento Global"
 #. module: purchase_global_discount
 #: model:ir.model.fields,field_description:purchase_global_discount.field_purchase_order_global_discount_wizard__id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: purchase_global_discount
 #: model:ir.model.fields,field_description:purchase_global_discount.field_purchase_order_global_discount_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización realizada por"
+msgstr "Última actualización por"
 
 #. module: purchase_global_discount
 #: model:ir.model.fields,field_description:purchase_global_discount.field_purchase_order_global_discount_wizard__write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Última actualización el"
 
 #. module: purchase_global_discount
 #: model:ir.module.module,shortdesc:base.module_purchase_global_discount
@@ -160,5 +160,5 @@ msgstr "Establecer Descuento Global"
 #. module: purchase_global_discount
 #: model:ir.model,name:purchase_global_discount.model_purchase_order_global_discount_wizard
 msgid "Transient model to apply global discounts on POs"
-msgstr "Modelo transitorio para aplicar descuentos globales en órdenes de compra"
+msgstr ""
 "Modelo transitorio para aplicar descuentos globales en Órdenes de Compra"
