@@ -111,8 +111,8 @@ class PurchaseOrder(models.Model):
                     }
                 )
             price_unit = rec.price_unit
-            if rec.product_uom_id and seller.product_uom_id != rec.product_uom_id:
-                price_unit = rec.product_uom_id._compute_price(price_unit, seller.product_uom_id)
+            if rec.uom_id and seller.uom_id != rec.uom_id:
+                price_unit = rec.uom_id._compute_price(price_unit, seller.uom_id)
             if net_price_installed:
                 seller.net_price = rec.order_id.currency_id._convert(
                     price_unit,
@@ -140,7 +140,7 @@ class PurchaseOrder(models.Model):
 
     def _order_line_view_limit(self):
         """Configurable page size for the order_line list; 0 keeps the core default (ticket 121312)."""
-        param = self.env["ir.config_parameter"].sudo().get_param("purchase_ux.order_line_view_limit")
+        param = self.env["ir.config_parameter"].sudo().get_str("purchase_ux.order_line_view_limit")
         try:
             # clamp to 0..200 (200 = Odoo's native max; higher only renders more rows)
             return min(max(int(param or 0), 0), 200)

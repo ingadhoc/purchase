@@ -102,6 +102,21 @@ class TestPurchaseMatching(AccountTestInvoicingCommon):
         self._bill(line, 600)
         self.assertIn(line, self._offered(move_type="in_refund"))
 
+    def test_incompatible_uom_shows_nothing_to_invoice(self):
+        line = self._line(10, received=10)
+        line.uom_id = self.env.ref("uom.product_uom_kgm")
+        move = self.env["account.move"].create({"move_type": "in_invoice", "partner_id": self.vendor.id})
+        action = move.action_purchase_matching()
+        self.env.flush_all()
+        match = (
+            self.env["purchase.bill.line.match"]
+            .with_context(**action["context"])
+            .search(action["domain"] + [("pol_id", "=", line.id)])
+        )
+        self.assertTrue(match)
+        self.assertEqual(match.product_uom_qty, 0.0)
+        self.assertEqual(match.product_uom_qty_to_invoice, 0.0)
+
     def test_refund_already_credited(self):
         line = self._line(600, received=500)
         self._bill(line, 600)

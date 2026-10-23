@@ -8,6 +8,10 @@
         <field name="view_mode">list,form,pivot</field>
         <field name="res_model">purchase.order.line</field>
         <field name="view_id" ref="purchase.purchase_order_line_tree"/>
+        <field name="view_ids" eval="[Command.clear(),
+            Command.create({'view_mode': 'list', 'view_id': ref('purchase.purchase_order_line_tree')}),
+            Command.create({'view_mode': 'form', 'view_id': ref('purchase.purchase_order_line_form2')}),
+            Command.create({'view_mode': 'pivot'})]"/>
     </record>
 
     <menuitem action="action_purchase_line_tree" id="menu_action_purchase_line_tree" parent="purchase.menu_procurement_management" sequence="7"/>
@@ -38,6 +42,18 @@
         <field name="inherit_id" ref="purchase.purchase_order_line_form2"/>
         <field name="arch" type="xml">
             <!-- very important because user can delete or edit confirmed lines -->
+            <form position="attributes">
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_view_form_invoice" model="ir.ui.view">
+        <field name="name">purchase.order.line.view.form.invoice</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_view_form_invoice"/>
+        <field name="arch" type="xml">
             <form position="attributes">
                 <attribute name="edit">false</attribute>
                 <attribute name="delete">false</attribute>

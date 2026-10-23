@@ -87,7 +87,7 @@
         <field name="priority" eval="99"/>
         <field name="arch" type="xml">
             <button name="action_purchase_matching" position="replace">
-                <button class="oe_stat_button" name="action_purchase_matching" type="object" groups="purchase.group_purchase_user" icon="fa-bullseye" invisible="not partner_id or move_type not in ('in_invoice', 'in_refund') or state not in ('draft','cancel')">
+                <button class="oe_stat_button" name="action_purchase_matching" type="object" groups="purchase.group_purchase_user" icon="crisis_alert" invisible="not partner_id or move_type not in ('in_invoice', 'in_refund') or state not in ('draft','cancel')">
                     <div class="o_field_statinfo">
                         <span class="o_stat_text">Purchase Matching</span>
                     </div>

@@ -2,6 +2,9 @@ from odoo.addons.product.tests import common
 
 
 class TestPurchaseOrder(common.ProductCommon):
+    # keep running as admin, as ProductCommon did before 20.0
+    _test_user_groups = None
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -84,3 +87,19 @@ class TestPurchaseOrder(common.ProductCommon):
         self.assertIn("pivot", action.view_mode)
         views = self.env["purchase.order.line"].get_views(action.views)["views"]
         self.assertIn("pivot", views)
+
+    def test_purchase_line_action_opens_read_only_form(self):
+        """The purchase lines menu opens form2, which cannot edit or delete lines of confirmed orders."""
+        action = self.env.ref("purchase_ux.action_purchase_line_tree")
+        form_view = dict((mode, view_id) for view_id, mode in action.views)["form"]
+        self.assertEqual(form_view, self.env.ref("purchase.purchase_order_line_form2").id)
+        arch = self.env["purchase.order.line"].get_views([(form_view, "form")])["views"]["form"]["arch"]
+        self.assertIn('edit="false"', arch)
+        self.assertIn('delete="false"', arch)
+
+    def test_default_purchase_line_form_is_read_only(self):
+        """The default line form of 20.0, opened from any other path, cannot edit or delete lines either."""
+        default_form = self.env["ir.ui.view"].default_view("purchase.order.line", "form")
+        arch = self.env["purchase.order.line"].get_views([(default_form, "form")])["views"]["form"]["arch"]
+        self.assertIn('edit="false"', arch)
+        self.assertIn('delete="false"', arch)

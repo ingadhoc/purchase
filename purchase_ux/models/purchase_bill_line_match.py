@@ -8,10 +8,8 @@ from odoo.tools import SQL
 
 class PurchaseBillLineMatch(models.Model):
     _inherit = "purchase.bill.line.match"
-    _order = "state, product_id, aml_id, pol_id"
 
     reference_description = fields.Char(
-        string="Description",
         compute="_compute_reference_description",
     )
 
@@ -23,7 +21,7 @@ class PurchaseBillLineMatch(models.Model):
 
     date_order = fields.Datetime(related="pol_id.order_id.date_order", readonly=True)
 
-    @api.depends("pol_id", "product_id", "display_name")
+    @api.depends("pol_id", "product_id", "description")
     def _compute_reference_description(self):
         lang = self.env.user.lang
         for rec in self:
@@ -35,20 +33,20 @@ class PurchaseBillLineMatch(models.Model):
                 extra = parts[1].strip() if len(parts) > 1 else ""
                 rec.reference_description = extra or rec.pol_id.product_id.with_context(lang=lang).display_name
             else:
-                rec.reference_description = rec.display_name
+                rec.reference_description = rec.product_id.display_name or rec.description
 
     @property
-    def _table_query(self):
+    def _table_sql(self):
         # any forced invoice status closes the order for billing, also 'no' (nothing to bill)
         return SQL(
             """
-            SELECT base.* FROM (%s) AS base
+            (SELECT base.* FROM %s AS base
             WHERE base.purchase_order_id IS NULL
                OR base.purchase_order_id NOT IN (
                    SELECT id FROM purchase_order WHERE force_invoiced_status IS NOT NULL
-               )
+               ))
             """,
-            super()._table_query,
+            super()._table_sql,
         )
 
     def action_match_lines(self):
@@ -63,19 +61,33 @@ class PurchaseBillLineMatch(models.Model):
                 return bill._get_records_action()
         return super().action_match_lines()
 
+    def _has_incompatible_uom(self):
+        self.ensure_one()
+        return (
+            not self.line_uom_id
+            or not self.product_uom_id
+            or not self.line_uom_id._has_common_reference(self.product_uom_id)
+        )
+
+    @api.depends_context("purchase_matching_from_button")
     def _compute_product_uom_qty(self):
         # Only apply the incompatibility filter when the view was opened
         # via the purchase matching action (context flag set by the action).
         if self.env.context.get("purchase_matching_from_button"):
             for rec in self:
-                if (
-                    not rec.line_uom_id
-                    or not rec.product_uom_id
-                    or not rec.line_uom_id._has_common_reference(rec.product_uom_id)
-                ):
+                if rec._has_incompatible_uom():
                     # incompatible categories: ignore this line for matching
                     rec.product_uom_qty = 0.0
                 else:
                     rec.product_uom_qty = rec.line_uom_id._compute_quantity(rec.line_qty, rec.product_uom_id)
         else:
             return super()._compute_product_uom_qty()
+
+    @api.depends_context("purchase_matching_from_button")
+    def _compute_product_uom_qty_to_invoice(self):
+        # same filter for the "Qty to invoice" column that 20.0 shows on purchase lines
+        if self.env.context.get("purchase_matching_from_button"):
+            incompatible = self.filtered(lambda rec: rec._has_incompatible_uom())
+            incompatible.product_uom_qty_to_invoice = 0.0
+            return super(PurchaseBillLineMatch, self - incompatible)._compute_product_uom_qty_to_invoice()
+        return super()._compute_product_uom_qty_to_invoice()
