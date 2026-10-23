@@ -63,8 +63,8 @@ class AccountMove(models.Model):
                     )
                 )
             price_unit = rec.price_unit
-            if rec.product_uom_id and seller.product_uom_id != rec.product_uom_id:
-                price_unit = rec.product_uom_id._compute_price(price_unit, seller.product_uom_id)
+            if rec.product_uom_id and seller.uom_id != rec.product_uom_id:
+                price_unit = rec.product_uom_id._compute_price(price_unit, seller.uom_id)
 
             if net_price_installed:
                 seller.net_price = rec.move_id.currency_id._convert(
@@ -120,7 +120,7 @@ class AccountMove(models.Model):
             # exclude POLs already matched to a line in this bill (qty_invoiced ignores drafts)
             already_matched = set(self.invoice_line_ids.filtered("purchase_line_id").mapped("purchase_line_id").ids)
             is_refund = self.move_type == "in_refund"
-            uom_precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+            uom_precision = self.env["decimal.precision"].precision_get("Product Unit")
 
             def _pending(pol):
                 if pol.id in already_matched:

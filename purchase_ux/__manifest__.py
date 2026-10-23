@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Purchase UX",
-    "version": "19.0.1.11.0",
+    "version": "20.0.1.0.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "Purchase order improvements: currency change, price updates, invoice controls and menu enhancements",
@@ -32,7 +32,7 @@
         "account_ux",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "data/ir_actions_report_data.xml",
         "wizards/purchase_change_currency_views.xml",
         "wizards/purchase_order_line_add_to_invoice_views.xml",
@@ -48,7 +48,12 @@
     "demo": [
         "demo/purchase_order_demo.xml",
     ],
-    "installable": False,
+    "assets": {
+        "web.assets_backend": [
+            "purchase_ux/static/src/views/purchase_dashboard.xml",
+        ],
+    },
+    "installable": True,
     "auto_install": False,
     "application": False,
 }

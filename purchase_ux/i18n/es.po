@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 19:16+0000\n"
-"PO-Revision-Date: 2026-02-23 22:21+0000\n"
+"POT-Creation-Date: 2026-10-22 15:59+0000\n"
+"PO-Revision-Date: 2026-10-22 15:59+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
 "Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
 "purchase-19-0/purchase-19-0-purchase_ux/es/>\n"
@@ -29,9 +29,129 @@ msgid "(change)"
 msgstr "(cambiar)"
 
 #. module: purchase_ux
+#: model:ir.module.module,description:base.module_purchase_ux
+msgid ""
+".. |company| replace:: ADHOC SA\n"
+"\n"
+".. |company_logo| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-logo.png\n"
+"   :alt: ADHOC SA\n"
+"   :target: https://www.adhoc.com.ar\n"
+"\n"
+".. |icon| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-icon.png\n"
+"\n"
+".. image:: https://img.shields.io/badge/license-AGPL--3-blue.png\n"
+"   :target: https://www.gnu.org/licenses/agpl\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"===========\n"
+"Purchase UX\n"
+"===========\n"
+"\n"
+"This module provides several improvements and enhancements to the standard Odoo purchase workflow, making it more user-friendly and feature-rich.\n"
+"\n"
+"Features\n"
+"========\n"
+"\n"
+"Purchase Orders\n"
+"---------------\n"
+"\n"
+"* Hide purchase quotations menu for cleaner navigation\n"
+"* Show all purchase records (quotations and confirmed orders) in unified menu\n"
+"* Add \"Force Invoice Status\" button (admin only with technical features)\n"
+"* Add \"Change Currency\" button to update order line prices\n"
+"* Add \"Update Prices\" button to refresh prices from supplier\n"
+"* Add \"Update Supplier Prices\" button to update/create supplier pricelists\n"
+"* Include internal notes field for better documentation\n"
+"* Store the purchase order and request for quotation PDF and reuse it while the order does not change\n"
+"* Rename the \"Not Acknowledged\" dashboard card, its tooltips and its filter to \"Not Acknowledged nor Received\", and the \"Acknowledge\" button to \"Acknowledge Receipt\"\n"
+"\n"
+"Purchase Order Lines\n"
+"--------------------\n"
+"\n"
+"* Use product standard price when supplier price is not available (seller price = 0.0)\n"
+"* Enhanced invoice quantity management and controls\n"
+"* Add pivot view to the purchase lines menu, to analyse lines without a predefined report\n"
+"* Wizard to add the selected purchase lines to a draft vendor bill\n"
+"\n"
+"Purchase Matching\n"
+"-----------------\n"
+"\n"
+"* On vendor bills, also show the purchase lines of the vendor's contacts\n"
+"* From a vendor bill, show only purchase lines with something pending to bill (or to refund, on credit notes)\n"
+"* Matching purchase lines from a draft bill adds them to that bill instead of creating a new one\n"
+"* Leave out orders with a forced invoice status\n"
+"* Show the received quantity, and add filters by order, invoice status and reception to the native ones\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"1. Install this module through Odoo Apps or manually\n"
+"2. It depends on ``account_ux`` (``ingadhoc/account-financial-tools``)\n"
+"\n"
+"Configuration\n"
+"=============\n"
+"\n"
+"In *Purchase > Configuration > Settings*:\n"
+"\n"
+"* **Skip Bill File Upload**: create bills from purchase orders without uploading the file (enabled by default)\n"
+"\n"
+"Usage\n"
+"=====\n"
+"\n"
+"Purchase Invoices\n"
+"-----------------\n"
+"\n"
+"* Use **Update Supplier Prices** button to update supplier pricelists from invoice data\n"
+"\n"
+"Products\n"
+"--------\n"
+"\n"
+"* Search products by supplier using the enhanced search filters\n"
+"* Group products by main supplier in list views\n"
+"\n"
+".. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas\n"
+"   :alt: Try me on Runbot\n"
+"   :target: http://runbot.adhoc.com.ar/\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/ingadhoc/purchase/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smashing it by providing a detailed and welcomed feedback.\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Images\n"
+"------\n"
+"\n"
+"* |company| |icon|\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+"|company_logo|\n"
+"\n"
+"This module is maintained by the |company|.\n"
+"\n"
+"To contribute to this module, please visit https://www.adhoc.com.ar.\n"
+msgstr ""
+
+#. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.view_inherit_purchase_matching
 msgid "<span class=\"o_stat_text\">Purchase Matching</span>"
 msgstr "<span class=\"o_stat_text\">Asociar líneas de compra</span>"
+
+#. module: purchase_ux
+#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
+msgid "Acknowledge Receipt"
+msgstr "Acusar recibo"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -44,6 +164,13 @@ msgstr ""
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_order_line_add_to_invoice
 msgid "Agregar todo en 'Para Facturar' a la factura a elegir"
 msgstr ""
+
+#. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+msgid "All POs with no vendor acknowledgement and no validated receipt"
+msgstr ""
+"Todas las órdenes de compra sin acuse del proveedor y sin recepción validada"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -99,13 +226,13 @@ msgstr "Cambiar a"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_res_company
-msgid "Companies"
-msgstr "Compañías"
+msgid "Company"
+msgstr "Empresa"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Ajustes de configuración"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -120,7 +247,7 @@ msgstr "Confirmar facturas en borrador"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -145,18 +272,24 @@ msgid "Currency Rate"
 msgstr "Tasa de cambio"
 
 #. module: purchase_ux
+#: model:product.category,name:purchase_ux.product_category_demo
+msgid "Demo Category"
+msgstr "Categoría demo"
+
+#. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_purchase_bill_line_match__date_order
 msgid ""
 "Depicts the date within which the Quotation should be confirmed and "
 "converted into a purchase order."
 msgstr ""
+"Representa la fecha en la que la solicitud de cotización debe "
+"validarse y convertirse en una orden de compra."
 
 #. module: purchase_ux
-#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__reference_description
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_tree_ux
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_move__display_name
@@ -170,7 +303,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:purchase_ux.field_res_partner__display_name
 msgid "Display Name"
-msgstr "Nombre a Mostrar"
+msgstr "Nombre en pantalla"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
@@ -233,19 +366,19 @@ msgstr "Tiene Compras?"
 #: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__id
 #: model:ir.model.fields,field_description:purchase_ux.field_res_partner__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/product_template.py:0
 msgid "Import Template for Products"
-msgstr ""
+msgstr "Plantilla de importación de productos"
 
 #. module: purchase_ux
 #. odoo-python
 #: code:addons/purchase_ux/models/res_partner.py:0
 msgid "Import Template for Vendors"
-msgstr ""
+msgstr "Plantilla de importación de proveedores"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__internal_notes
@@ -301,22 +434,6 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: purchase_ux
-#: model_terms:ir.ui.view,arch_db:purchase_ux.res_config_settings_view_form_purchase_ux
-msgid "Lines per page"
-msgstr ""
-
-#. module: purchase_ux
-#: model:ir.model.fields,help:purchase_ux.field_res_config_settings__purchase_order_line_view_limit
-#: model_terms:ir.ui.view,arch_db:purchase_ux.res_config_settings_view_form_purchase_ux
-msgid ""
-"Lines shown per page on the order. Leave empty to keep the default; a lower "
-"value (e.g. 40) speeds up very long orders."
-msgstr ""
-"Líneas que se muestran por página en el pedido. Dejalo vacío para conservar "
-"el valor por defecto; un valor más bajo (por ej. 40) agiliza los pedidos muy "
-"largos."
-
-#. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_product_product__main_seller_id
 #: model:ir.model.fields,field_description:purchase_ux.field_product_template__main_seller_id
 #: model_terms:ir.ui.view,arch_db:purchase_ux.product_template_search_view
@@ -328,6 +445,12 @@ msgstr "Vendedor Principal"
 #: code:addons/purchase_ux/models/purchase_order.py:0
 msgid "Manually setted as invoiced"
 msgstr "Seteado Manualmente como Facturado"
+
+#. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+msgid "My POs with no vendor acknowledgement and no validated receipt"
+msgstr "Mis órdenes de compra sin acuse del proveedor y sin recepción validada"
 
 #. module: purchase_ux
 #: model:ir.model.fields.selection,name:purchase_ux.selection__purchase_order__force_invoiced_status__invoiced
@@ -345,6 +468,13 @@ msgstr ""
 #: code:addons/purchase_ux/wizards/purchase_change_currency.py:0
 msgid "No Purchase Order on context as \"active_id\""
 msgstr "No hay Orden de Compra en contexto como \"id activo\""
+
+#. module: purchase_ux
+#. odoo-javascript
+#: code:addons/purchase_ux/static/src/views/purchase_dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:purchase_ux.view_purchase_order_filter
+msgid "Not Acknowledged nor Received"
+msgstr "Sin acuse ni recepción"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -382,7 +512,7 @@ msgstr "Solo usuarios con \"%s / %s\" pueden establecer Facturado manualmente"
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__date_order
 msgid "Order Deadline"
-msgstr ""
+msgstr "Fecha límite de la orden"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order_line_add_to_invoice__partner_id
@@ -404,6 +534,8 @@ msgstr "Línea de Compra"
 #: model:ir.model,name:purchase_ux.model_purchase_bill_line_match
 msgid "Purchase Line and Vendor Bill line matching view"
 msgstr ""
+"Vista de conciliación entre líneas de compra y líneas de factura del "
+"proveedor"
 
 #. module: purchase_ux
 #: model:ir.actions.act_window,name:purchase_ux.action_purchase_line_tree
@@ -415,12 +547,12 @@ msgstr "Lineas de Compra"
 #: model:ir.model,name:purchase_ux.model_purchase_order
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
 msgid "Purchase Order"
-msgstr "Pedido de compra"
+msgstr "Orden de compra"
 
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de pedido de compra"
+msgstr "Línea de la orden de compra"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_account_bank_statement_line__purchase_order_ids
@@ -430,14 +562,23 @@ msgid "Purchase Orders"
 msgstr "Órdenes de Compra"
 
 #. module: purchase_ux
-#: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__purchase_order_line_view_limit
-msgid "Purchase order lines per page"
+#: model:ir.module.module,shortdesc:base.module_purchase_ux
+msgid "Purchase UX"
 msgstr ""
+
+#. module: purchase_ux
+#: model:ir.module.module,summary:base.module_purchase_ux
+msgid ""
+"Purchase order improvements: currency change, price updates, invoice "
+"controls and menu enhancements"
+msgstr ""
+"Mejoras en las órdenes de compra: cambio de moneda, actualización de "
+"precios, controles de facturación y mejoras en los menús"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_tree_ux
 msgid "Qty Received"
-msgstr ""
+msgstr "Cant. recibida"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_search
@@ -453,6 +594,11 @@ msgstr "Recibido"
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
 msgid "Recibido"
 msgstr ""
+
+#. module: purchase_ux
+#: model:ir.model.fields,field_description:purchase_ux.field_purchase_bill_line_match__reference_description
+msgid "Reference Description"
+msgstr "Descripción de referencia"
 
 #. module: purchase_ux
 #: model:ir.model.fields,help:purchase_ux.field_purchase_order_line_add_to_invoice__voucher
@@ -489,12 +635,12 @@ msgstr "Establecer como facturado"
 #: model:ir.model.fields,field_description:purchase_ux.field_res_company__skip_upload
 #: model:ir.model.fields,field_description:purchase_ux.field_res_config_settings__skip_upload
 msgid "Skip Bill File Upload"
-msgstr ""
+msgstr "Omitir la carga del archivo de la factura"
 
 #. module: purchase_ux
 #: model:ir.model.fields,field_description:purchase_ux.field_purchase_order__skip_upload
 msgid "Skip File Upload"
-msgstr ""
+msgstr "Omitir la carga del archivo"
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_form
@@ -546,6 +692,8 @@ msgid ""
 "When enabled, bills will be created directly without requiring file upload "
 "in purchase orders."
 msgstr ""
+"Si está activo, las facturas se crean directamente desde las órdenes "
+"de compra, sin necesidad de cargar el archivo."
 
 #. module: purchase_ux
 #: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_order_line_add_to_invoice_form
@@ -556,9 +704,4 @@ msgstr "o"
 #. module: purchase_ux
 #: model:ir.model,name:purchase_ux.model_purchase_order_line_add_to_invoice
 msgid "purchase.order.line.add_to_invoice"
-msgstr ""
-
-#. module: purchase_ux
-#: model_terms:ir.ui.view,arch_db:purchase_ux.purchase_bill_line_match_search
-msgid "Órdenes de Compra"
 msgstr ""

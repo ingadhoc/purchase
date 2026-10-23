@@ -29,6 +29,8 @@ Purchase Orders
 * Add "Update Prices" button to refresh prices from supplier
 * Add "Update Supplier Prices" button to update/create supplier pricelists
 * Include internal notes field for better documentation
+* Store the purchase order and request for quotation PDF and reuse it while the order does not change
+* Rename the "Not Acknowledged" dashboard card, its tooltips and its filter to "Not Acknowledged nor Received", and the "Acknowledge" button to "Acknowledge Receipt"
 
 Purchase Order Lines
 --------------------
@@ -36,18 +38,30 @@ Purchase Order Lines
 * Use product standard price when supplier price is not available (seller price = 0.0)
 * Enhanced invoice quantity management and controls
 * Add pivot view to the purchase lines menu, to analyse lines without a predefined report
+* Wizard to add the selected purchase lines to a draft vendor bill
+
+Purchase Matching
+-----------------
+
+* On vendor bills, also show the purchase lines of the vendor's contacts
+* From a vendor bill, show only purchase lines with something pending to bill (or to refund, on credit notes)
+* Matching purchase lines from a draft bill adds them to that bill instead of creating a new one
+* Leave out orders with a forced invoice status
+* Show the received quantity, and add filters by order, invoice status and reception to the native ones
 
 
 Installation
 ============
 
 1. Install this module through Odoo Apps or manually
-2. No additional dependencies required beyond standard Odoo
+2. It depends on ``account_ux`` (``ingadhoc/account-financial-tools``)
 
 Configuration
 =============
 
-No special configuration is required. All features are available immediately after installation.
+In *Purchase > Configuration > Settings*:
+
+* **Skip Bill File Upload**: create bills from purchase orders without uploading the file (enabled by default)
 
 Usage
 =====

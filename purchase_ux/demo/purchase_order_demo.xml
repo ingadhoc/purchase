@@ -29,7 +29,7 @@
                 'name': obj().env.ref('purchase_ux.product_1').partner_ref,
                 'price_unit': 130.80,
                 'product_qty': 10.0,
-                'product_uom_id': ref('uom.product_uom_unit'),
+                'uom_id': ref('uom.product_uom_unit'),
                 'date_planned': DateTime.today() + relativedelta(days=3)}),
         ]"/>
     </record>

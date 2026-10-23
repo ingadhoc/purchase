@@ -28,7 +28,7 @@ class PurchaseOrderLine(models.Model):
         compute="_compute_invoice_qty",
         inverse="_inverse_invoice_qty",
         search="_search_invoice_qty",
-        digits="Product Unit of Measure",
+        digits="Product Unit",
     )
 
     qty_to_invoice = fields.Float(
@@ -36,13 +36,13 @@ class PurchaseOrderLine(models.Model):
         string="Cantidad en factura actual",
         store=True,
         readonly=True,
-        digits="Product Unit of Measure",
+        digits="Product Unit",
         default=0.0,
     )
 
     @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
     def _compute_invoice_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+        precision = self.env["decimal.precision"].precision_get("Product Unit")
         for line in self:
             if line.state not in ("purchase", "done"):
                 line.invoice_status = "no"
@@ -168,13 +168,7 @@ class PurchaseOrderLine(models.Model):
         # Lines in confirmed/done POs without date_planned are new lines added after confirmation.
         # Price and description must NOT be updated (rule a), but date_planned must be initialized.
         for line in (self - price_update_lines).filtered(lambda x: not x.date_planned and x.product_id):
-            seller = line.product_id._select_seller(
-                partner_id=line.partner_id,
-                quantity=line.product_qty,
-                date=line.order_id.date_order and line.order_id.date_order.date() or fields.Date.context_today(line),
-                uom_id=line.product_uom,
-            )
-            line.date_planned = line._get_date_planned(seller)
+            line.date_planned = line._get_date_planned(line._get_seller_info())
 
         for line in price_update_lines.filtered(lambda x: x.product_id and not x.price_unit):
             price_unit = line.with_company(line.company_id.id).product_id.standard_price
@@ -182,7 +176,7 @@ class PurchaseOrderLine(models.Model):
                 price_unit = line.company_id.currency_id._convert(
                     price_unit, line.currency_id, line.company_id, line.date_order or fields.Date.today()
                 )
-            if price_unit and line.product_uom_id and line.product_id.uom_id != line.product_uom_id:
-                price_unit = line.product_id.uom_id._compute_price(price_unit, line.product_uom_id)
+            if price_unit and line.uom_id and line.product_id.uom_id != line.uom_id:
+                price_unit = line.product_id.uom_id._compute_price(price_unit, line.uom_id)
             line.price_unit = price_unit
         return res
