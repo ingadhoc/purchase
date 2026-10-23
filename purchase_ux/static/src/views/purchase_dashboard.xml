@@ -14,14 +14,14 @@
         <!-- the card label is a bare text node, so the whole anchor must be replaced to rename it -->
         <xpath expr="//div[@filter_name='not_acknowledged']/a" position="replace">
             <a href="#" class="btn purchase-dashboard-card p-1 p-lg-2 text-truncate text-wrap"
-               t-attf-class="o_purchase_dashboard_card_{{ multiuser ? 'top' : 'sole' }}
-                   {{ purchaseData['global']['not_acknowledged']['all'] == 0
-                      ? 'bg-secondary-subtle text-secondary-emphasis'
+               t-attf-class="o_purchase_dashboard_card_{{ this.state.multiuser ? 'top' : 'sole' }}
+                   {{ this.state.purchaseData['global']['not_acknowledged']['all'] == 0
+                      ? 'bg-dark-subtle text-dark-emphasis'
                       : 'bg-info-subtle text-info-emphasis' }}">
                 <div class="fs-2">
-                    <span t-out="purchaseData['global']['not_acknowledged']['all']"/>
-                    <span class="ps-4" t-if="purchaseData['global']['not_acknowledged']['priority']">
-                        <span class="o_priority_star fa fa-star "/> <span t-out="purchaseData['global']['not_acknowledged']['priority']"/>
+                    <span t-out="this.state.purchaseData['global']['not_acknowledged']['all']"/>
+                    <span class="ps-4" t-if="this.state.purchaseData['global']['not_acknowledged']['priority']">
+                        <span class="o_priority_star oi oi-filled" data-icon="star"/> <span t-out="this.state.purchaseData['global']['not_acknowledged']['priority']"/>
                     </span>
                 </div>Not Acknowledged nor Received
             </a>

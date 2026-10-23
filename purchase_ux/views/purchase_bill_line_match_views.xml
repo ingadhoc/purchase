@@ -5,11 +5,10 @@
         <field name="model">purchase.bill.line.match</field>
         <field name="inherit_id" ref="purchase.purchase_bill_line_match_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='display_name']" position="replace">
-                <field name="product_id"/>
+            <xpath expr="//field[@name='description']" position="replace">
                 <field name="reference_description" string="Description" decoration-it="not product_id"/>
             </xpath>
-            <xpath expr="//field[@name='product_uom_qty']" position="after">
+            <xpath expr="//field[@name='product_uom_qty_to_invoice']" position="before">
                 <field name="qty_received" string="Qty Received" optional="show"/>
             </xpath>
         </field>
@@ -18,12 +17,13 @@
     <record id="purchase_bill_line_match_search" model="ir.ui.view">
         <field name="name">purchase.bill.line.match.search</field>
         <field name="model">purchase.bill.line.match</field>
+        <field name="inherit_id" ref="purchase.purchase_bill_line_match_search"/>
         <field name="arch" type="xml">
-            <search>
+            <field name="partner_id" position="after">
                 <field name="product_id"/>
-                <field name="reference_description" string="Description"/>
                 <field name="purchase_order_id" string="Purchase Order"/>
-                <filter string="Órdenes de Compra" name="pol_id" domain="[('pol_id', '!=', False)]"/>
+            </field>
+            <filter name="unmatched" position="after">
                 <separator/>
                 <filter string="No Facturado" name="not_invoiced" domain="[('account_move_id', '=', False)]"/>
                 <filter string="En Factura Actual" name="current_invoice" domain="[('account_move_id', '!=', False), ('state', '=', 'draft')]"/>
@@ -31,7 +31,7 @@
                 <filter string="Recibido" name="received" domain="[('qty_received', '>', 0)]"/>
                 <separator/>
                 <filter string="Fecha" name="Date" date="date_order"/>
-            </search>
+            </filter>
         </field>
     </record>
 </odoo>
