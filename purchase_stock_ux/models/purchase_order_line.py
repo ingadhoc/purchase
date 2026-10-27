@@ -104,6 +104,7 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(
                         _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
+<<<<<<< cd27a2c78a6de7649e9013cf887b7237f10e9557
             # Subcontracting: once core nets the negative move, mrp_subcontracting runs action_assign
             # on the emptied receipt and raises. Cancel the remainder first so no negative move is
             # created; like core's netting, don't propagate the cancel to destination moves.
@@ -132,6 +133,33 @@ class PurchaseOrderLine(models.Model):
                     subcontracted_moves.with_context(cancel_from_order=True)._action_cancel()
             if not rec._get_remaining_moves_to_cancel():
                 rec = rec.with_context(cancel_remaining_line_ids=rec.ids)
+||||||| 885a7a6f9350ab7675c2d6e2f9e43a5fcd7a5b0c
+=======
+            # Subcontracting: once core nets the negative move, mrp_subcontracting runs action_assign
+            # on the emptied receipt and raises. Cancel the remainder first so no negative move is
+            # created; like core's netting, don't propagate the cancel to destination moves.
+            subcontracted_moves = rec._get_remaining_moves_to_cancel().filtered(
+                lambda m: "is_subcontract" in m._fields and m.is_subcontract
+            )
+            if subcontracted_moves:
+                recorded_productions = subcontracted_moves._get_subcontract_production().filtered(
+                    lambda p: p.state in ("progress", "to_close")
+                )
+                if recorded_productions:
+                    raise UserError(
+                        _(
+                            "The subcontractor already recorded production on %(productions)s. "
+                            "Receive what was produced or cancel that manufacturing order before "
+                            "cancelling the remaining quantity.",
+                            productions=", ".join(recorded_productions.mapped("name")),
+                        )
+                    )
+                # With refunded returns the negative move does not empty the receipt, and cancelling
+                # first would make core create a new receipt (and MO) for the returned quantity.
+                if float_is_zero(rec.qty_returned, precision_rounding=rec.product_uom_id.rounding):
+                    subcontracted_moves.write({"propagate_cancel": False})
+                    subcontracted_moves.with_context(cancel_from_order=True)._action_cancel()
+>>>>>>> 2584a69172f1b580c9f7ecb4460f0fb0d53a9605
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
             # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
@@ -156,6 +184,15 @@ class PurchaseOrderLine(models.Model):
         # moves still open (MTO) when the line quantity drops
         skip = self.filtered(lambda line: line.id in self.env.context.get("cancel_remaining_line_ids", []))
         return super(PurchaseOrderLine, self - skip)._create_or_update_picking()
+
+    def _get_remaining_moves_to_cancel(self):
+        """Open moves of the line, without exchange replacements nor moves created by a return."""
+        self.ensure_one()
+        return self.move_ids.filtered(
+            lambda m: m.state not in ("done", "cancel")
+            and not m._is_exchange_receipt()
+            and not m.origin_returned_move_id
+        )
 
     def _get_remaining_moves_to_cancel(self):
         """Open moves of the line, without exchange replacements nor moves created by a return."""
