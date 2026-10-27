@@ -258,16 +258,19 @@ class TestCancelRemaining(PurchaseTestCommon):
         """If the subcontractor already recorded production, cancel remaining stops with a message
         instead of cancelling the MO and losing what was recorded."""
         self.warehouse.reception_steps = "one_step"
-        finished, _bom = self._subcontracted_product("CR subcontract recorded")
-        po = self._confirm_po(finished, 10)
-        line = po.order_line
-        production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
-        production.subcontracting_has_been_recorded = True
+        for state, qty in (("progress", 4), ("to_close", 10)):
+            with self.subTest(state=state):
+                finished, _bom = self._subcontracted_product("CR subcontract recorded %s" % state)
+                po = self._confirm_po(finished, 10)
+                line = po.order_line
+                production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
+                production.qty_producing = qty
+                self.assertEqual(production.state, state)
 
-        with self.assertRaisesRegex(UserError, production.name):
-            line.button_cancel_remaining()
-        self.assertEqual(line.product_qty, 10)
-        self.assertNotEqual(production.state, "cancel")
+                with self.assertRaisesRegex(UserError, production.name):
+                    line.button_cancel_remaining()
+                self.assertEqual(line.product_qty, 10)
+                self.assertNotEqual(production.state, "cancel")
 
     def test_subcontracted_partial_receipt_cancel_remaining(self):
         """Subcontracting with a partial receipt: cancel remaining cancels the pending receipt and its
