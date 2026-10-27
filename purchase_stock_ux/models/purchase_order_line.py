@@ -121,7 +121,7 @@ class PurchaseOrderLine(models.Model):
             )
             if subcontracted_moves:
                 recorded_productions = subcontracted_moves._get_subcontract_production().filtered(
-                    "subcontracting_has_been_recorded"
+                    lambda p: p.state in ("progress", "to_close")
                 )
                 if recorded_productions:
                     raise UserError(
