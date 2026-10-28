@@ -24,7 +24,7 @@ class StockRule(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res["price_unit"]:
-            price_unit = product_id.with_context(force_company=company_id.id).standard_price
+            price_unit = product_id.with_company(company_id).standard_price
             company_currency = company_id.currency_id
             if price_unit and po.currency_id != company_currency:
                 price_unit = company_currency._convert(
@@ -42,14 +42,14 @@ class StockRule(models.Model):
         # if price was not computed (not seller or seller price = 0.0), then
         # use standar price
         if not res["price_unit"]:
-            price_unit = product_id.with_context(force_company=company_id.id).standard_price
+            price_unit = product_id.with_company(company_id).standard_price
             company_currency = company_id.currency_id
             if price_unit and line.order_id.currency_id != company_currency:
                 price_unit = company_currency._convert(
                     price_unit, line.order_id.currency_id, company_id, line.order_id.date_order or fields.Date.today()
                 )
-            if price_unit and line.product_uom and product_id.uom_id != line.product_uom:
-                price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom)
+            if price_unit and line.product_uom_id and product_id.uom_id != line.product_uom_id:
+                price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom_id)
             res["price_unit"] = price_unit
         return res
 
