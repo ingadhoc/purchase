@@ -42,6 +42,7 @@
         "views/product_template_views.xml",
         "views/product_supplierinfo_views.xml",
         "views/purchase_bill_line_match_views.xml",
+        "report/purchase_report_templates.xml",
     ],
     "demo": [
         "demo/purchase_order_demo.xml",
