@@ -8,3 +8,4 @@ from . import test_stock_orderpoint
 from . import test_qty_returned
 from . import test_exchange_qty_received
 from . import test_cancel_remaining
+from . import test_stock_rule
