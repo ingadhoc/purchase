@@ -2,39 +2,11 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class StockRule(models.Model):
     _inherit = "stock.rule"
-
-    @api.model
-    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, values, po):
-        res = super()._prepare_purchase_order_line(
-            product_id=product_id,
-            product_qty=product_qty,
-            product_uom=product_uom,
-            company_id=company_id,
-            values=values,
-            po=po,
-        )
-        # Solo asignar user_id si NO es odoobot (uid=1) y la PO no tiene usuario asignado
-        if not po.user_id and not self.env.is_superuser():
-            po.user_id = self.env.user
-        # if price was not computed (not seller or seller price = 0.0), then
-        # use standar price
-        if not res["price_unit"]:
-            price_unit = product_id.with_company(company_id).standard_price
-            company_currency = company_id.currency_id
-            if price_unit and po.currency_id != company_currency:
-                price_unit = company_currency._convert(
-                    price_unit, po.currency_id, company_id, po.date_order or fields.Date.today()
-                )
-            if price_unit and res["product_uom"] and product_id.uom_id.id != res["product_uom"]:
-                product_uom = self.env["uom.uom"].browse(res["product_uom"])
-                price_unit = product_id.uom_id._compute_price(price_unit, product_uom)
-            res["price_unit"] = price_unit
-        return res
 
     def _update_purchase_order_line(self, product_id, product_qty, product_uom, company_id, values, line):
         res = super()._update_purchase_order_line(product_id, product_qty, product_uom, company_id, values, line)
@@ -48,8 +20,8 @@ class StockRule(models.Model):
                 price_unit = company_currency._convert(
                     price_unit, line.order_id.currency_id, company_id, line.order_id.date_order or fields.Date.today()
                 )
-            if price_unit and line.product_uom_id and product_id.uom_id != line.product_uom_id:
-                price_unit = product_id.uom_id._compute_price(price_unit, line.product_uom_id)
+            if price_unit and line.uom_id and product_id.uom_id != line.uom_id:
+                price_unit = product_id.uom_id._compute_price(price_unit, line.uom_id)
             res["price_unit"] = price_unit
         return res
 
