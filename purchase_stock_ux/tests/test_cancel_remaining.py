@@ -394,3 +394,32 @@ class TestCancelRemaining(PurchaseTestCommon):
         self.assertNotEqual(exchange.state, "cancel", "cancel remaining cancelled the exchange receipt")
         self._validate(exchange)
         self.assertEqual(line.qty_received, 10)
+
+    def test_line_increase_in_exchange_picking_is_cancelled(self):
+        """A quantity added to the line after an exchange lands in the exchange picking: cancel remaining
+        cancels it and keeps only the replacement."""
+        self.warehouse.reception_steps = "one_step"
+        product = self._product("CR exchange increase")
+        po = self._confirm_po(product, 10)
+        line = po.order_line
+        self._receive_full(po)
+        return_picking = self._return(po, 1)
+        exchange = self.env["stock.picking"].browse(return_picking.action_exchange()["res_id"])
+        replacement = exchange.move_ids
+        line.product_qty = 15
+        added = exchange.move_ids - replacement
+        self.assertTrue(added, "core did not add the new quantity to the exchange picking")
+        # in real use the quantity is added in a later transaction than the exchange
+        self.env.cr.execute(
+            "UPDATE stock_move SET create_date = create_date + interval '1 minute' WHERE id IN %s", [tuple(added.ids)]
+        )
+        added.invalidate_recordset(["create_date"])
+        self.assertTrue(replacement._is_exchange_receipt())
+        self.assertFalse(any(move._is_exchange_receipt() for move in added))
+
+        line.button_cancel_remaining()
+
+        self.assertEqual(line.product_qty, 10)
+        open_moves = line.move_ids.filtered(lambda m: m.state not in ("done", "cancel"))
+        self.assertEqual(open_moves, replacement)
+        self.assertEqual(replacement.product_uom_qty, 1)
