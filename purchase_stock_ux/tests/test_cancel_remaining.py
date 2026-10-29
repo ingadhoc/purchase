@@ -423,3 +423,65 @@ class TestCancelRemaining(PurchaseTestCommon):
         open_moves = line.move_ids.filtered(lambda m: m.state not in ("done", "cancel"))
         self.assertEqual(open_moves, replacement)
         self.assertEqual(replacement.product_uom_qty, 1)
+
+    def test_subcontracted_cancel_remaining_without_manufacturing_access(self):
+        """A purchase manager without manufacturing access can cancel the remaining quantity of a
+        subcontracted line with nothing received."""
+        self.warehouse.reception_steps = "one_step"
+        finished, _bom = self._subcontracted_product("CR subcontract purchase user")
+        user = self.env["res.users"].create(
+            {
+                "name": "CR purchase manager",
+                "login": "cr_purchase_manager",
+                "company_id": self.env.company.id,
+                "company_ids": [Command.set(self.env.company.ids)],
+                "group_ids": [
+                    Command.set(
+                        [self.env.ref("purchase.group_purchase_manager").id, self.env.ref("stock.group_stock_user").id]
+                    )
+                ],
+            }
+        )
+        self.assertFalse(user.has_group("mrp.group_mrp_user"))
+        po = self._confirm_po(finished, 10)
+        line = po.order_line
+        production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
+
+        line.with_user(user).button_cancel_remaining()
+
+        self.assertEqual(line.product_qty, 0)
+        self.assertEqual(production.state, "cancel")
+
+    def test_mto_cancelled_receipt_cancel_remaining(self):
+        """Bought on order for a sale, with the receipt cancelled by hand: cancel remaining does not
+        create a new receipt, as in 19."""
+        if "sale_line_id" not in self.env["stock.move"]._fields:
+            self.skipTest("sale_stock is not installed")
+        self.warehouse.reception_steps = "one_step"
+        self.warehouse.delivery_steps = "ship_only"
+        mto_route = self.warehouse.mto_pull_id.route_id
+        mto_route.active = True
+        mto_route.product_selectable = True
+        buy_route = self.warehouse.buy_pull_id.route_id
+        buy_route.product_selectable = True
+        product = self._product("CR MTO cancelled receipt")
+        product.route_ids = [Command.link(mto_route.id), Command.link(buy_route.id)]
+        product.seller_ids = [Command.create({"partner_id": self.partner.id, "price": 10.0})]
+        sale_vals = {
+            "partner_id": self.env["res.partner"].create({"name": "CR customer"}).id,
+            "order_line": [Command.create({"product_id": product.id, "product_uom_qty": 5})],
+        }
+        # sale exception rules installed in the build must not block this confirmation
+        if "ignore_exception" in self.env["sale.order"]._fields:
+            sale_vals["ignore_exception"] = True
+        self.env["sale.order"].create(sale_vals).action_confirm()
+        line = self.env["purchase.order.line"].search([("product_id", "=", product.id)])
+        po = line.order_id
+        po.button_confirm()
+        receipts = po.picking_ids
+        receipts.action_cancel()
+
+        line.button_cancel_remaining()
+
+        self.assertEqual(line.product_qty, 0)
+        self.assertEqual(po.picking_ids, receipts, "a new receipt was created")
