@@ -69,8 +69,13 @@ class TestExchangeQtyReceived(PurchaseTestCommon):
                 self.assertEqual(line.qty_to_invoice, 0)
 
     def test_exchange_with_refund(self):
-        """Exchange of a 20 return: the return lowers the received quantity and the replacement raises it."""
-        po = self._received_and_invoiced_po(self._product("receive"))
-        self._exchange(po, 1, to_refund=True)
-        self.assertEqual(po.order_line.qty_received, 10)
-        self.assertEqual(po.order_line.qty_to_invoice, 0)
+        """Exchange of a 20 return: the return lowers the received quantity and the replacement raises it.
+        The ordered quantity stays fully billed: the returned quantity is not deducted from the bill."""
+        for purchase_method in ("receive", "purchase"):
+            with self.subTest(purchase_method=purchase_method):
+                po = self._received_and_invoiced_po(self._product(purchase_method))
+                self._exchange(po, 1, to_refund=True)
+                line = po.order_line
+                self.assertEqual(line.qty_received, 10)
+                self.assertEqual(line.qty_to_invoice, 0)
+                self.assertEqual(line.invoice_status, "invoiced")
