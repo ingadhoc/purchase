@@ -29,7 +29,7 @@ class StockRule(models.Model):
         domain = super()._make_po_get_domain(company_id, values, partner)
         current_user_id = self.env.user.id
         new_domain = []
-        config = self.env["res.config.settings"].sudo().get_values()
+        use_supplier_currency = self.env["ir.config_parameter"].sudo().get_bool("purchase.use_supplier_currency")
         for condition in domain:
             field, operator, value = condition
             if field == "user_id" and value == False:
@@ -45,7 +45,7 @@ class StockRule(models.Model):
                     )
             elif (
                 field == "currency_id"
-                and config.get("use_supplier_currency", False)
+                and use_supplier_currency
                 and partner.property_purchase_currency_id
                 and partner.property_purchase_currency_id.id != value
             ):
