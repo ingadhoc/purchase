@@ -96,7 +96,8 @@ class TestQtyReturned(PurchaseTestCommon):
         self.assertEqual(line.invoice_status, "to invoice")
 
     def test_return_of_same_product_counted(self):
-        """No regresión: la devolución del mismo producto de la línea sí debe seguir contando."""
+        """No regresión: la devolución del mismo producto de la línea sí debe seguir contando.
+        Como en Odoo, no descuenta lo pendiente a facturar: se resuelve con nota de crédito."""
         product = self._product("QR mismo producto")
         po = self._confirm_po(product, 10)
         line = po.order_line
@@ -105,4 +106,4 @@ class TestQtyReturned(PurchaseTestCommon):
 
         line.invalidate_recordset()
         self.assertEqual(line.qty_returned, 10)
-        self.assertEqual(line.qty_to_invoice, 0)
+        self.assertEqual(line.qty_to_invoice, 10)
