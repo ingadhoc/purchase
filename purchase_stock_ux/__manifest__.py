@@ -33,7 +33,7 @@
         "stock_ux",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "views/purchase_order_views.xml",
         "views/purchase_line_views.xml",
         "views/stock_move_views.xml",
