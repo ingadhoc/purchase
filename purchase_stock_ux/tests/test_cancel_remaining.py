@@ -16,6 +16,9 @@ class TestCancelRemaining(PurchaseTestCommon):
     (proveedor->entrada) y debe quedar cancelado, preservando lo ya recibido en tránsito a stock.
     """
 
+    # Run as admin, as in 19: these tests set up warehouses, routes, BoMs and sale orders
+    _test_user_groups = ()
+
     STEPS = ("one_step", "two_steps", "three_steps")
 
     @classmethod
@@ -91,16 +94,9 @@ class TestCancelRemaining(PurchaseTestCommon):
         receipt = po.picking_ids.filtered(lambda p: p.picking_type_id.code == "incoming" and p.state == "done").sorted(
             "id"
         )[-1:]
-        wizard = (
-            self.env["stock.return.picking"]
-            .with_context(active_id=receipt.id, active_model="stock.picking", active_ids=receipt.ids)
-            .create({})
-        )
-        for line in wizard.product_return_moves:
-            line.quantity = qty
-            line.to_refund = to_refund
-        action = wizard.action_create_returns()
-        return_picking = self.env["stock.picking"].browse(action["res_id"])
+        return_picking = self.env["stock.picking"].browse(receipt.action_return()["res_id"])
+        return_picking.move_ids.write({"product_uom_qty": qty, "to_refund": to_refund})
+        return_picking.action_confirm()
         if validate:
             self._validate(return_picking)
         return return_picking
@@ -206,6 +202,7 @@ class TestCancelRemaining(PurchaseTestCommon):
         if not resupply_route:
             self.skipTest("mrp_subcontracting is not installed")
         component = self._product("%s component" % name)
+        resupply_route.product_selectable = True
         component.route_ids = [Command.link(resupply_route.id)]
         finished = self._product(name)
         bom = self.env["mrp.bom"].create(
@@ -258,13 +255,14 @@ class TestCancelRemaining(PurchaseTestCommon):
         """If the subcontractor already recorded production, cancel remaining stops with a message
         instead of cancelling the MO and losing what was recorded."""
         self.warehouse.reception_steps = "one_step"
-        for state, qty in (("progress", 4), ("to_close", 10)):
+        # In 20 the MO is in progress once a component is consumed; without work orders it never gets to_close
+        for state in ("progress",):
             with self.subTest(state=state):
                 finished, _bom = self._subcontracted_product("CR subcontract recorded %s" % state)
                 po = self._confirm_po(finished, 10)
                 line = po.order_line
                 production = self.env["mrp.production"].search([("product_id", "=", finished.id)])
-                production.qty_producing = qty
+                production.move_raw_ids.picked = True
                 self.assertEqual(production.state, state)
 
                 with self.assertRaisesRegex(UserError, production.name):
@@ -313,6 +311,8 @@ class TestCancelRemaining(PurchaseTestCommon):
         self.warehouse.delivery_steps = "ship_only"
         mto_route = self.warehouse.mto_pull_id.route_id
         mto_route.active = True
+        mto_route.product_selectable = True
+        self.warehouse.buy_pull_id.route_id.product_selectable = True
         for steps in self.STEPS:
             with self.subTest(steps=steps):
                 self.warehouse.reception_steps = steps
@@ -346,3 +346,51 @@ class TestCancelRemaining(PurchaseTestCommon):
                     self._open_moves_of_order(line.order_id, exclude=delivery_move), "a receipt leg was left open"
                 )
                 self.assertNotEqual(delivery_move.state, "cancel", "cancel remaining cancelled the customer delivery")
+
+    def test_cancel_remaining_on_locked_order(self):
+        """A locked purchase order can cancel its remaining quantity and stays locked."""
+        self.warehouse.reception_steps = "one_step"
+        product = self._product("CR locked")
+        po = self._confirm_po(product, 6)
+        line = po.order_line
+        self._receive_partial_at_input(po, 2)
+        po.button_lock()
+        line.button_cancel_remaining()
+        self._assert_no_vendor_pending(line)
+        self.assertEqual(line.product_qty, 2)
+        self.assertTrue(po.locked)
+
+    def test_cancel_remaining_more_invoiced_than_received(self):
+        """With more billed than received, cancel remaining stops."""
+        self.warehouse.reception_steps = "one_step"
+        product = self._product("CR invoiced")
+        product.purchase_method = "purchase"
+        po = self._confirm_po(product, 6)
+        line = po.order_line
+        self._receive_partial_at_input(po, 2)
+        bill = self.env["account.move"].browse(po.action_create_invoice()["res_id"])
+        bill.invoice_date = bill.date
+        bill.action_post()
+        self.assertEqual(line.qty_invoiced, 6)
+        with self.assertRaises(UserError):
+            line.button_cancel_remaining()
+        self.assertEqual(line.product_qty, 6)
+
+    def test_exchange_receipt_counted_and_not_cancelled(self):
+        """Odoo 20 exchange: the return lowers the received quantity and the replacement raises it
+        again; cancel remaining keeps the pending replacement receipt."""
+        self.warehouse.reception_steps = "one_step"
+        product = self._product("CR exchange")
+        po = self._confirm_po(product, 10)
+        line = po.order_line
+        self._receive_full(po)
+        return_picking = self._return(po, 1)
+        self.assertEqual(line.qty_received, 9)
+        exchange = self.env["stock.picking"].browse(return_picking.action_exchange()["res_id"])
+        self.assertEqual(exchange.move_ids.purchase_line_id, line)
+
+        line.button_cancel_remaining()
+
+        self.assertNotEqual(exchange.state, "cancel", "cancel remaining cancelled the exchange receipt")
+        self._validate(exchange)
+        self.assertEqual(line.qty_received, 10)
