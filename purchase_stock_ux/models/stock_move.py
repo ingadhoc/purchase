@@ -17,7 +17,30 @@ class StockMove(models.Model):
         super()._compute_origin_description()
         for rec in self:
             if rec.purchase_line_id:
-                rec.origin_description = rec.purchase_line_id.name
+                rec.origin_description = rec.purchase_line_id.label
+
+    def _is_exchange_receipt(self):
+        # Replacement receipt created with "Exchange" on a vendor return (no origin returned move).
+        # Core may later add other moves of the line to that picking: those are created afterwards.
+        self.ensure_one()
+        return bool(
+            self.picking_id.return_id
+            and not self.origin_returned_move_id
+            and self.create_date == self.picking_id.create_date
+        )
+
+    def _should_count_for_quantity_received(self):
+        # An exchange receipt restocks a vendor return that did not update the PO (returns made in 19)
+        if self._is_exchange_receipt() and not self.to_refund:
+            return False
+        return super()._should_count_for_quantity_received()
+
+    def _get_new_picking_values(self):
+        vals = super()._get_new_picking_values()
+        order = self.purchase_line_id.order_id
+        if len(order) == 1 and order.internal_notes:
+            vals["note"] = order.internal_notes
+        return vals
 
     @api.model
     def _prepare_merge_moves_distinct_fields(self):

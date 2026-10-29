@@ -63,13 +63,13 @@ class PurchaseOrder(models.Model):
                 raise UserError(_('Only users with "%s" can Set Received manually') % (group.name))
 
     def action_create_invoice(self, attachment_ids=False):
-        """Drop the zero-quantity lines Odoo 19 leaves on the draft vendor bill.
+        """Drop the zero-quantity lines Odoo leaves on the draft vendor bill.
 
-        Odoo 19's ``action_create_invoice`` iterates over every ``order_line``
+        Odoo's ``action_create_invoice`` iterates over every ``order_line``
         without filtering by ``qty_to_invoice`` (the old ``_get_invoiceable_lines``
-        is gone). Our ``_compute_qty_invoiced`` subtracts ``qty_returned``, so a
-        fully-returned line has ``qty_to_invoice = 0`` and core still adds it to
-        the bill as a zero-quantity line.
+        is gone). Billed on received quantities, a fully-returned line has
+        ``qty_to_invoice = 0`` and core still adds it to the bill as a
+        zero-quantity line.
 
         We let ``super`` build the invoice and clean it up afterwards instead of
         reimplementing the whole method, so we don't bypass other overrides of it
@@ -90,8 +90,3 @@ class PurchaseOrder(models.Model):
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
         return super().button_cancel()
-
-    def _prepare_picking(self):
-        res = super(PurchaseOrder, self)._prepare_picking()
-        res["note"] = self.internal_notes
-        return res

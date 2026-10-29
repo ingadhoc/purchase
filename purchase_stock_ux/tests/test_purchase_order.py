@@ -4,6 +4,9 @@ from odoo.tools.float_utils import float_is_zero
 
 
 class TestPurchaseOrder(PurchaseTestCommon):
+    # Run as admin, as in 19: these tests set up warehouses, routes, BoMs and sale orders
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -34,17 +37,12 @@ class TestPurchaseOrder(PurchaseTestCommon):
 
     def _create_return_for_product(self, picking, product, qty, to_refund=True):
         """Return `qty` units of `product` from a validated picking."""
-        return_wiz = (
-            self.env["stock.return.picking"].with_context(active_id=picking.id, active_model="stock.picking").create({})
-        )
-        for line in return_wiz.product_return_moves:
-            if line.product_id == product:
-                line.quantity = qty
-                line.to_refund = to_refund
-            else:
-                line.quantity = 0
-        return_picking = return_wiz._create_return()
-        return_picking.move_ids.quantity = qty
+        return_picking = self.env["stock.picking"].browse(picking.action_return()["res_id"])
+        return_picking.move_ids.filtered(lambda m: m.product_id != product).product_uom_qty = 0
+        return_move = return_picking.move_ids.filtered(lambda m: m.product_id == product)
+        return_move.write({"product_uom_qty": qty, "to_refund": to_refund})
+        return_picking.action_confirm()
+        return_move.quantity = qty
         return_picking.with_context(skip_backorder=True).button_validate()
         return return_picking
 
@@ -54,7 +52,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "name": "Product 2 Storable",
                 "is_storable": True,
-                "purchase_method": "purchase",
+                # billed on received quantities: a fully returned line has nothing to bill
+                "purchase_method": "receive",
             }
         )
         po = self.env["purchase.order"].create(
@@ -191,7 +190,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "product_id": self.product.id,
                 "product_uom_qty": 10,
-                "product_uom": self.product.uom_id.id,
+                "uom_id": self.product.uom_id.id,
                 "location_id": internal_loc.id,
                 "location_dest_id": internal_loc.id,
                 "to_refund": True,
@@ -214,7 +213,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "name": "Product 2 Storable",
                 "is_storable": True,
-                "purchase_method": "purchase",
+                # billed on received quantities: a fully returned line has nothing to bill
+                "purchase_method": "receive",
             }
         )
         po = self.env["purchase.order"].create(
@@ -234,7 +234,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
                             "name": "Handle with care",
                             "product_id": False,
                             "product_qty": 0.0,
-                            "product_uom_id": False,
+                            "uom_id": False,
                             "price_unit": 0.0,
                         }
                     ),
@@ -301,9 +301,9 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "product_id": self.product.id,
                 "product_uom_qty": 5,
-                "product_uom": self.product.uom_id.id,
-                "location_id": self.env.ref("stock.stock_location_stock").id,
-                "location_dest_id": self.env.ref("stock.stock_location_customers").id,
+                "uom_id": self.product.uom_id.id,
+                "location_id": self.stock_location.id,
+                "location_dest_id": self.customer_location.id,
             }
         )
         done_move.write({"state": "done"})
@@ -335,7 +335,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
                             "name": "Handle with care",
                             "product_id": False,
                             "product_qty": 0.0,
-                            "product_uom_id": False,
+                            "uom_id": False,
                             "price_unit": 0.0,
                         }
                     ),
@@ -376,3 +376,34 @@ class TestPurchaseOrder(PurchaseTestCommon):
         backorder.move_ids.quantity = 6
         backorder.with_context(skip_backorder=True).button_validate()
         self.assertEqual(line.receipt_status, "full")
+
+    def test_internal_notes_go_to_receipt(self):
+        """The internal notes of the purchase order are copied to the receipt it creates."""
+        receipt = self.purchase_order.picking_ids
+        self.assertEqual(len(receipt), 1)
+        self.assertIn("Test internal notes", receipt.note)
+
+    def test_receipt_origin_description_is_line_label(self):
+        """The receipt move shows the purchase line as the purchase shows it: product and description."""
+        line = self.purchase_order.order_line
+        self.assertTrue(line.label)
+        self.assertEqual(line.move_ids.origin_description, line.label)
+
+    def test_cancel_remaining_message_names_the_line(self):
+        """The chatter message of cancel remaining names the line, not an empty description."""
+        line = self.purchase_order.order_line
+        line.button_cancel_remaining()
+        self.assertIn(line.label, self.purchase_order.message_ids[:1].body)
+
+    def test_config_settings_are_saved(self):
+        """Unit of measure propagation and supplier currency settings are stored and read back."""
+        self.env["res.config.settings"].create({"propagate_uom": True, "use_supplier_currency": True}).execute()
+        settings = self.env["res.config.settings"].create({})
+        self.assertTrue(settings.propagate_uom)
+        self.assertTrue(settings.use_supplier_currency)
+        self.assertTrue(self.env["ir.config_parameter"].get_bool("stock.propagate_uom"))
+        settings.write({"propagate_uom": False, "use_supplier_currency": False})
+        settings.execute()
+        settings = self.env["res.config.settings"].create({})
+        self.assertFalse(settings.propagate_uom)
+        self.assertFalse(settings.use_supplier_currency)

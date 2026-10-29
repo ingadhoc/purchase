@@ -8,7 +8,7 @@
                 <field name="purchase_id" invisible="1"/>
                 <button name="action_view_linked_record"
                         class="oe_stat_button"
-                        icon="fa-credit-card"
+                        icon="credit_card"
                         string="Purchase Order"
                         type="object"
                         groups="purchase.group_purchase_user"

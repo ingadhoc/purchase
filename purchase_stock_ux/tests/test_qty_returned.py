@@ -13,6 +13,9 @@ class TestQtyReturned(PurchaseTestCommon):
     igual que _compute_qty_received del core.
     """
 
+    # Run as admin, as in 19: these tests set up warehouses, routes, BoMs and sale orders
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -66,16 +69,8 @@ class TestQtyReturned(PurchaseTestCommon):
         receipt = po.picking_ids.filtered(lambda p: p.picking_type_id.code == "incoming" and p.state == "done").sorted(
             "id"
         )[-1:]
-        wizard = (
-            self.env["stock.return.picking"]
-            .with_context(active_id=receipt.id, active_model="stock.picking", active_ids=receipt.ids)
-            .create({})
-        )
-        for wizard_line in wizard.product_return_moves:
-            wizard_line.quantity = qty
-            wizard_line.to_refund = to_refund
-        action = wizard.action_create_returns()
-        return_picking = self.env["stock.picking"].browse(action["res_id"])
+        return_picking = self.env["stock.picking"].browse(receipt.action_return()["res_id"])
+        return_picking.move_ids.write({"product_uom_qty": qty, "to_refund": to_refund})
         self._validate(return_picking)
         return return_picking
 
@@ -101,7 +96,8 @@ class TestQtyReturned(PurchaseTestCommon):
         self.assertEqual(line.invoice_status, "to invoice")
 
     def test_return_of_same_product_counted(self):
-        """No regresión: la devolución del mismo producto de la línea sí debe seguir contando."""
+        """No regresión: la devolución del mismo producto de la línea sí debe seguir contando.
+        Como en Odoo, no descuenta lo pendiente a facturar: se resuelve con nota de crédito."""
         product = self._product("QR mismo producto")
         po = self._confirm_po(product, 10)
         line = po.order_line
@@ -110,4 +106,4 @@ class TestQtyReturned(PurchaseTestCommon):
 
         line.invalidate_recordset()
         self.assertEqual(line.qty_returned, 10)
-        self.assertEqual(line.qty_to_invoice, 0)
+        self.assertEqual(line.qty_to_invoice, 10)

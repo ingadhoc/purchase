@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0+e\n"
+"Project-Id-Version: Odoo Server 20.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 19:10+0000\n"
-"PO-Revision-Date: 2026-08-26 19:10+0000\n"
+"POT-Creation-Date: 2026-10-29 15:29+0000\n"
+"PO-Revision-Date: 2026-10-29 15:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,115 @@ msgstr ""
 msgid ""
 "'Do you want to cancel remaining quantities to receive for these orders? "
 "This can´t be undone'"
+msgstr ""
+
+#. module: purchase_stock_ux
+#: model:ir.module.module,description:base.module_purchase_stock_ux
+msgid ""
+".. |company| replace:: ADHOC SA\n"
+"\n"
+".. |company_logo| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-logo.png\n"
+"   :alt: ADHOC SA\n"
+"   :target: https://www.adhoc.com.ar\n"
+"\n"
+".. |icon| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-icon.png\n"
+"\n"
+".. image:: https://img.shields.io/badge/license-AGPL--3-blue.png\n"
+"   :target: https://www.gnu.org/licenses/agpl\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"=================\n"
+"Purchase Stock UX\n"
+"=================\n"
+"\n"
+"Several Improvements to purchases.\n"
+"\n"
+"On purchase orders:\n"
+"\n"
+"#. Add a to filter by PO with billable returns.\n"
+"#. Add receipt status filters and column, and allow to force the receipt status (administrators only).\n"
+"#. Cancel the remaining quantities of several purchase orders at once from the action menu.\n"
+"#. Bills do not include lines with nothing to bill after a return.\n"
+"\n"
+"On purchase lines:\n"
+"\n"
+"#. Add receipt status on purchase lines\n"
+"#. Add button on purchase lines to allow cancelling of remaining qty to be received\n"
+"#. Add returned quantity when products are returned to the vendor. The returned quantity is not billed.\n"
+"#. Warn when the ordered quantity of a confirmed line is decreased, suggesting to cancel the remaining quantity.\n"
+"\n"
+"On incoming pickings:\n"
+"\n"
+"#. Add moving internal notes of the PO to the picking.\n"
+"\n"
+"On Stock Moves:\n"
+"\n"
+"#. Add button to access to purchase order related.\n"
+"\n"
+"On replenishment:\n"
+"\n"
+"#. When the vendor has no price, the purchase line takes the product cost.\n"
+"#. Requests for quotation created by replenishment are grouped by buyer.\n"
+"\n"
+"On purchase settings:\n"
+"\n"
+"#. Add option to enable supplier currency selection when creating a PO.\n"
+"#. Add option to propagate the unit of measure of the purchase order to the picking.\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"#. Just install this module.\n"
+"\n"
+"\n"
+"Configuration\n"
+"=============\n"
+"\n"
+"To configure this module, you need to:\n"
+"\n"
+"#. No configuration nedeed.\n"
+"\n"
+"Usage\n"
+"=====\n"
+"\n"
+"To use this module, you need to:\n"
+"\n"
+"#. Go to ...\n"
+"\n"
+".. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas\n"
+"   :alt: Try me on Runbot\n"
+"   :target: http://runbot.adhoc.com.ar/\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/ingadhoc/purchase/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smashing it by providing a detailed and welcomed feedback.\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Images\n"
+"------\n"
+"\n"
+"* |company| |icon|\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+"|company_logo|\n"
+"\n"
+"This module is maintained by the |company|.\n"
+"\n"
+"To contribute to this module, please visit https://www.adhoc.com.ar.\n"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -89,7 +198,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__display_name
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -111,7 +219,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__id
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__id
 msgid "ID"
 msgstr ""
 
@@ -128,11 +235,6 @@ msgstr ""
 #. module: purchase_stock_ux
 #: model:ir.actions.act_window,name:purchase_stock_ux.action_purchase_order_massive_cancel_wizard
 msgid "Mass cancellation of remaining quantities"
-msgstr ""
-
-#. module: purchase_stock_ux
-#: model:ir.model,name:purchase_stock_ux.model_stock_warehouse_orderpoint
-msgid "Minimum Inventory Rule"
 msgstr ""
 
 #. module: purchase_stock_ux
@@ -198,6 +300,11 @@ msgid "Purchase Order Line"
 msgstr ""
 
 #. module: purchase_stock_ux
+#: model:ir.module.module,shortdesc:base.module_purchase_stock_ux
+msgid "Purchase Stock UX"
+msgstr ""
+
+#. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Purchase orders that include lines partially received."
 msgstr ""
@@ -247,6 +354,15 @@ msgstr ""
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_stock_rule
 msgid "Stock Rule"
+msgstr ""
+
+#. module: purchase_stock_ux
+#. odoo-python
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
+msgid ""
+"The subcontractor already recorded production on %(productions)s. Receive "
+"what was produced or cancel that manufacturing order before cancelling the "
+"remaining quantity."
 msgstr ""
 
 #. module: purchase_stock_ux

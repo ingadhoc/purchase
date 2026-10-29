@@ -19,12 +19,16 @@ Several Improvements to purchases.
 On purchase orders:
 
 #. Add a to filter by PO with billable returns.
+#. Add receipt status filters and column, and allow to force the receipt status (administrators only).
+#. Cancel the remaining quantities of several purchase orders at once from the action menu.
+#. Bills do not include lines with nothing to bill after a return.
 
 On purchase lines:
 
 #. Add receipt status on purchase lines
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
-#. Add return quantity when you return products with "To Refund" option.
+#. Add returned quantity when products are returned to the vendor.
+#. Warn when the ordered quantity of a confirmed line is decreased, suggesting to cancel the remaining quantity.
 
 On incoming pickings:
 
@@ -34,13 +38,15 @@ On Stock Moves:
 
 #. Add button to access to purchase order related.
 
-On Stock Warehouse Orderpoints:
+On replenishment:
 
-#. Set main seller as default supplier in replenishment rules.
+#. When the vendor has no price, the purchase line takes the product cost.
+#. Requests for quotation created by replenishment are grouped by buyer.
 
 On purchase settings:
 
 #. Add option to enable supplier currency selection when creating a PO.
+#. Add option to propagate the unit of measure of the purchase order to the picking.
 
 
 Installation

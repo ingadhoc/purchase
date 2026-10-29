@@ -2,10 +2,8 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-import json
 import logging
 
-from lxml import etree
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
@@ -85,13 +83,6 @@ class PurchaseOrderLine(models.Model):
         # solo computa la cantidad entregada cuando todo el kit se entregó.
         # Cuestión que, por ahora, desactivamos la cancelación de kits.
 
-        # Manejar órdenes bloqueadas (done): desbloquear temporalmente sin tracking
-        orders_to_relock = self.env["purchase.order"]
-        for order in self.mapped("order_id").filtered(lambda o: o.state == "done"):
-            orders_to_relock |= order
-            # Desbloquear sin generar mensaje en el chatter
-            order.with_context(tracking_disable=True).write({"state": "purchase"})
-
         bom_enable = "bom_ids" in self.env["product.template"]._fields
         for rec in self:
             old_product_qty = rec.product_qty
@@ -113,20 +104,67 @@ class PurchaseOrderLine(models.Model):
                     raise UserError(
                         _("Cancel remaining can't be called for Kit Products (products with a bom of type kit).")
                     )
+            # Subcontracting: once core nets the negative move, mrp_subcontracting runs action_assign
+            # on the emptied receipt and raises. Cancel the remainder first so no negative move is
+            # created; like core's netting, don't propagate the cancel to destination moves.
+            subcontracted_moves = rec._get_remaining_moves_to_cancel().filtered(
+                lambda m: "is_subcontract" in m._fields and m.is_subcontract
+            )
+            if subcontracted_moves:
+                # The MO is the subcontractor's: a purchase user may not have manufacturing access
+                subcontracted_moves = subcontracted_moves.sudo()
+                recorded_productions = subcontracted_moves._get_subcontract_production().filtered(
+                    lambda p: p.state in ("progress", "to_close")
+                )
+                if recorded_productions:
+                    raise UserError(
+                        _(
+                            "The subcontractor already recorded production on %(productions)s. "
+                            "Receive what was produced or cancel that manufacturing order before "
+                            "cancelling the remaining quantity.",
+                            productions=", ".join(recorded_productions.mapped("name")),
+                        )
+                    )
+                # With refunded returns the negative move does not empty the receipt, and cancelling
+                # first would make core create a new receipt (and MO) for the returned quantity.
+                if rec.uom_id.is_zero(rec.qty_returned):
+                    subcontracted_moves.write({"propagate_cancel": False})
+                    subcontracted_moves.with_context(cancel_from_order=True)._action_cancel()
+            if not rec._get_remaining_moves_to_cancel():
+                rec = rec.with_context(cancel_remaining_line_ids=rec.ids)
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
-            # la realidad es que probablemente esto de acá no sea necesario. modificar product_qty ya hace que odoo,
-            # apartir de 16 al menos, baje las cantidades de los moves. Justamente por esta razon es que ahora
-            # pasamos contexto arriba de "cancel_from_order", porque ahora es odoo quien cancela los pickings
+            # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
+            # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
+            # netea contra el pendiente (precio/ubicación final distintos), queda una recepción viva en
+            # el pronóstico (o una contra-entrega al proveedor). Cancelamos explícitamente el remanente
+            # abierto de la línea. En recepción de 1, 2 o 3 pasos el pendiente vive siempre en el move de
+            # primer paso (proveedor->entrada), que cuelga de move_ids; core (_action_cancel) propaga a
+            # los downstream si hiciera falta. Acotamos a las recepciones forward genuinas del proveedor:
+            # excluimos los reemplazos de devolución con cambio (recepción legítima esperada) y las
+            # devoluciones al proveedor abiertas sin validar (origin_returned_move_id), que no son parte
+            # del remanente y no deben cancelarse.
+            rec._get_remaining_moves_to_cancel().with_context(cancel_from_order=True)._action_cancel()
             if rec.product_qty < old_product_qty:
                 rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
                 body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
-                % (rec.name, rec.id, old_product_qty, rec.product_qty)
+                % (rec.label, rec.id, old_product_qty, rec.product_qty)
             )
 
-        # Volver a bloquear las órdenes que estaban bloqueadas sin generar mensaje
-        if orders_to_relock:
-            orders_to_relock.with_context(tracking_disable=True).write({"state": "done"})
+    def _create_or_update_picking(self):
+        # Nothing left to receive: unlike 19, core 20 would create a new receipt for the destination
+        # moves still open (MTO) when the line quantity drops
+        skip = self.filtered(lambda line: line.id in self.env.context.get("cancel_remaining_line_ids", []))
+        return super(PurchaseOrderLine, self - skip)._create_or_update_picking()
+
+    def _get_remaining_moves_to_cancel(self):
+        """Open moves of the line, without exchange replacements nor moves created by a return."""
+        self.ensure_one()
+        return self.move_ids.filtered(
+            lambda m: m.state not in ("done", "cancel")
+            and not m._is_exchange_receipt()
+            and not m.origin_returned_move_id
+        )
 
     def _compute_vouchers(self):
         # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
@@ -194,43 +232,13 @@ class PurchaseOrderLine(models.Model):
             for move in line._get_po_line_moves().filtered(
                 lambda m: m.state == "done" and m.to_refund and m._is_purchase_return()
             ):
-                qty += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom_id)
+                qty += move.uom_id._compute_quantity(move.product_uom_qty, line.uom_id)
             line.qty_returned = qty
 
     # Overwrite the origin method to introduce the qty_on_voucher
     def action_add_all_to_invoice(self):
         for rec in self:
             rec.invoice_qty = rec.qty_on_voucher or (rec.qty_to_invoice + rec.invoice_qty)
-
-    @api.model
-    def fields_view_get(self, view_id=None, view_type="form", toolbar=False, submenu=False):
-        """
-        If we came from invoice, we send in context 'force_line_edit'
-        and we change list view to make editable and also field qty
-        """
-        res = super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-        if self.env.context.get("force_line_edit") and view_type == "tree":
-            doc = etree.XML(res["arch"])
-            placeholder = doc.xpath("//field[1]")[0]
-            placeholder.addprevious(
-                etree.Element(
-                    "field",
-                    {
-                        "name": "qty_on_voucher",
-                    },
-                )
-            )
-
-            # make all fields not editable
-            node = doc.xpath("//field[1]")[0]
-            node.set("readonly", "1")
-            modifiers = json.loads(node.get("modifiers") or "{}")
-            modifiers["readonly"] = True
-            node.set("modifiers", json.dumps(modifiers))
-            res["fields"].update(self.fields_get(["qty_on_voucher"]))
-            res["arch"] = etree.tostring(doc)
-
-        return res
 
     @api.model
     def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
@@ -241,35 +249,27 @@ class PurchaseOrderLine(models.Model):
             po.user_id = self.env.user
         return res
 
-    @api.depends("qty_invoiced", "qty_received", "order_id.state", "qty_returned")
-    def _compute_qty_invoiced(self):
-        super()._compute_qty_invoiced()
-        for line in self:
-            if line.order_id.state in ["purchase", "done"]:
-                if line.product_id.purchase_method == "purchase":
-                    line.qty_to_invoice = line.product_qty - line.qty_invoiced - line.qty_returned
-                else:
-                    line.qty_to_invoice = line.qty_received - line.qty_invoiced
-            else:
-                line.qty_to_invoice = 0
-
-    @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
-    def _compute_invoice_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit")
-        super()._compute_invoice_status()
-        for line in self:
-            if line.order_id.force_invoiced_status:
-                # keep the forced status that super() already applied
-                continue
-            if not float_is_zero(line.qty_to_invoice, precision_digits=precision):
-                line.invoice_status = "to invoice"
-            elif (
-                float_compare(line.qty_invoiced, (line.product_qty - line.qty_returned), precision_digits=precision)
-                >= 0
-            ):
-                line.invoice_status = "invoiced"
-            else:
-                line.invoice_status = "no"
+    @api.model
+    def _prepare_purchase_order_line_from_procurement(
+        self, product_id, product_qty, product_uom, location_dest_id, name, origin, company_id, values, po
+    ):
+        res = super()._prepare_purchase_order_line_from_procurement(
+            product_id, product_qty, product_uom, location_dest_id, name, origin, company_id, values, po
+        )
+        # if price was not computed (not seller or seller price = 0.0), then
+        # use standar price
+        if not res["price_unit"]:
+            price_unit = product_id.with_company(company_id).standard_price
+            company_currency = company_id.currency_id
+            if price_unit and po.currency_id != company_currency:
+                price_unit = company_currency._convert(
+                    price_unit, po.currency_id, company_id, po.date_order or fields.Date.today()
+                )
+            line_uom = self.env["uom.uom"].browse(res["uom_id"])
+            if price_unit and line_uom and product_id.uom_id != line_uom:
+                price_unit = product_id.uom_id._compute_price(price_unit, line_uom)
+            res["price_unit"] = price_unit
+        return res
 
     @api.depends()
     def _compute_price_unit_and_date_planned_and_name(self):

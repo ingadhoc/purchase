@@ -9,12 +9,14 @@ class TestStockRule(TransactionCase):
         super().setUpClass()
         cls.partner = cls.env["res.partner"].create({"name": "Vendor"})
         cls.warehouse = cls.env["stock.warehouse"].search([("company_id", "=", cls.env.company.id)], limit=1)
+        buy_route = cls.env.ref("purchase_stock.route_warehouse0_buy")
+        buy_route.product_selectable = True
         cls.product = cls.env["product.product"].create(
             {
                 "name": "Product without vendor price",
                 "is_storable": True,
                 "standard_price": 100.0,
-                "route_ids": [Command.link(cls.env.ref("purchase_stock.route_warehouse0_buy").id)],
+                "route_ids": [Command.link(buy_route.id)],
                 "seller_ids": [Command.create({"partner_id": cls.partner.id, "price": 0.0})],
             }
         )
@@ -42,4 +44,11 @@ class TestStockRule(TransactionCase):
         line = self.env["purchase.order.line"].search([("product_id", "=", self.product.id)])
         self.assertEqual(len(line), 1)
         self.assertEqual(line.product_qty, 2)
+        self.assertEqual(line.price_unit, 100.0)
+
+    def test_new_po_line_falls_back_to_standard_price(self):
+        """A new purchase line from a procurement uses the product cost when the vendor has no price."""
+        self._run_buy_procurement(1)
+        line = self.env["purchase.order.line"].search([("product_id", "=", self.product.id)])
+        self.assertEqual(len(line), 1)
         self.assertEqual(line.price_unit, 100.0)

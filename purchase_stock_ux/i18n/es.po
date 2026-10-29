@@ -9,19 +9,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0+e\n"
+"Project-Id-Version: Odoo Server 20.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 19:10+0000\n"
-"PO-Revision-Date: 2026-02-23 22:21+0000\n"
+"POT-Creation-Date: 2026-10-29 15:29+0000\n"
+"PO-Revision-Date: 2026-10-29 15:29+0000\n"
 "Last-Translator: BAF <baf@adhoc.inc>\n"
-"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
-"purchase-19-0/purchase-19-0-purchase_stock_ux/es/>\n"
+"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/purchase-20-0/purchase-20-0-purchase_stock_ux/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.10.4\n"
 
 #. module: purchase_stock_ux
@@ -30,17 +28,129 @@ msgid ""
 "'Do you want to cancel remaining quantities to receive for these orders? "
 "This can´t be undone'"
 msgstr ""
+"'¿Desea cancelar las cantidades remanentes a recibir de estas órdenes? Esta "
+"acción no se puede deshacer'"
+
+#. module: purchase_stock_ux
+#: model:ir.module.module,description:base.module_purchase_stock_ux
+msgid ""
+".. |company| replace:: ADHOC SA\n"
+"\n"
+".. |company_logo| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-logo.png\n"
+"   :alt: ADHOC SA\n"
+"   :target: https://www.adhoc.com.ar\n"
+"\n"
+".. |icon| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-icon.png\n"
+"\n"
+".. image:: https://img.shields.io/badge/license-AGPL--3-blue.png\n"
+"   :target: https://www.gnu.org/licenses/agpl\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"=================\n"
+"Purchase Stock UX\n"
+"=================\n"
+"\n"
+"Several Improvements to purchases.\n"
+"\n"
+"On purchase orders:\n"
+"\n"
+"#. Add a to filter by PO with billable returns.\n"
+"#. Add receipt status filters and column, and allow to force the receipt status (administrators only).\n"
+"#. Cancel the remaining quantities of several purchase orders at once from the action menu.\n"
+"#. Bills do not include lines with nothing to bill after a return.\n"
+"\n"
+"On purchase lines:\n"
+"\n"
+"#. Add receipt status on purchase lines\n"
+"#. Add button on purchase lines to allow cancelling of remaining qty to be received\n"
+"#. Add returned quantity when products are returned to the vendor. The returned quantity is not billed.\n"
+"#. Warn when the ordered quantity of a confirmed line is decreased, suggesting to cancel the remaining quantity.\n"
+"\n"
+"On incoming pickings:\n"
+"\n"
+"#. Add moving internal notes of the PO to the picking.\n"
+"\n"
+"On Stock Moves:\n"
+"\n"
+"#. Add button to access to purchase order related.\n"
+"\n"
+"On replenishment:\n"
+"\n"
+"#. When the vendor has no price, the purchase line takes the product cost.\n"
+"#. Requests for quotation created by replenishment are grouped by buyer.\n"
+"\n"
+"On purchase settings:\n"
+"\n"
+"#. Add option to enable supplier currency selection when creating a PO.\n"
+"#. Add option to propagate the unit of measure of the purchase order to the picking.\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"#. Just install this module.\n"
+"\n"
+"\n"
+"Configuration\n"
+"=============\n"
+"\n"
+"To configure this module, you need to:\n"
+"\n"
+"#. No configuration nedeed.\n"
+"\n"
+"Usage\n"
+"=====\n"
+"\n"
+"To use this module, you need to:\n"
+"\n"
+"#. Go to ...\n"
+"\n"
+".. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas\n"
+"   :alt: Try me on Runbot\n"
+"   :target: http://runbot.adhoc.com.ar/\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/ingadhoc/purchase/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smashing it by providing a detailed and welcomed feedback.\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Images\n"
+"------\n"
+"\n"
+"* |company| |icon|\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+"|company_logo|\n"
+"\n"
+"This module is maintained by the |company|.\n"
+"\n"
+"To contribute to this module, please visit https://www.adhoc.com.ar.\n"
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_cancel_remaining_form
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. module: purchase_stock_ux
 #. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
 msgid ""
-"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to %s"
+"Cancel remaining call for line \"%s\" (id %s), line qty updated from %s to "
+"%s"
 msgstr ""
 "Cancelar remanente para línea \"%s\" (id %s), cantidad actualizada de la "
 "linea desde %s a %s"
@@ -58,8 +168,8 @@ msgstr ""
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
 msgid ""
-"Cancel remaining quanitity to be received. This will set line quantity equal "
-"to received qty and will cancel remaining moves"
+"Cancel remaining quanitity to be received. This will set line quantity equal"
+" to received qty and will cancel remaining moves"
 msgstr ""
 "Cancelar cantidades pendientes de recibir. Al hacer click en el botón se "
 "ejecutará una acción que disminuirá la cantidad a comprar igualándola con la "
@@ -73,7 +183,7 @@ msgstr "Ajustes de configuración"
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_cancel_remaining_form
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__use_supplier_currency
@@ -92,12 +202,12 @@ msgstr ""
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__display_name
@@ -106,9 +216,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__display_name
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__display_name
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__display_name
 msgid "Display Name"
-msgstr "Nombre a Mostrar"
+msgstr "Mostrar nombre"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__force_delivered_status
@@ -119,7 +228,7 @@ msgstr "Forzar estado de entrega"
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__full
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order_line__receipt_status__full
 msgid "Fully Received"
-msgstr ""
+msgstr "Totalmente recibido"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order__id
@@ -128,29 +237,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__id
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_rule__id
-#: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_warehouse_orderpoint__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Última actualización por"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última actualización el"
 
 #. module: purchase_stock_ux
 #: model:ir.actions.act_window,name:purchase_stock_ux.action_purchase_order_massive_cancel_wizard
 msgid "Mass cancellation of remaining quantities"
-msgstr ""
-
-#. module: purchase_stock_ux
-#: model:ir.model,name:purchase_stock_ux.model_stock_warehouse_orderpoint
-msgid "Minimum Inventory Rule"
-msgstr "Regla de inventario mínimo"
+msgstr "Cancelación masiva de cantidades remanentes"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields.selection,name:purchase_stock_ux.selection__purchase_order__force_delivered_status__pending
@@ -158,7 +261,7 @@ msgstr "Regla de inventario mínimo"
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Not Received"
-msgstr ""
+msgstr "No recibido"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_on_voucher
@@ -175,8 +278,6 @@ msgstr ""
 #. module: purchase_stock_ux
 #. odoo-python
 #: code:addons/purchase_stock_ux/models/purchase_order.py:0
-#, fuzzy
-#| msgid "Only users with \"%s / %s\" can Set Received manually"
 msgid "Only users with \"%s\" can Set Received manually"
 msgstr ""
 "Sólo usuarios con \"%s / %s\" pueden establecer como Recibido manualmente"
@@ -193,7 +294,7 @@ msgstr "Alerta sobre disminunción de cantidades"
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Partially Received"
-msgstr ""
+msgstr "Parcialmente recibido"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_res_config_settings__propagate_uom
@@ -205,23 +306,28 @@ msgstr "Propagar unidad de medida"
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_stock_move__purchase_id
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_move_form
 msgid "Purchase Order"
-msgstr "Pedido de compra"
+msgstr "Orden de compra"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_purchase_order_cancel_remaining
 msgid "Purchase Order Cancel Remaining"
-msgstr ""
+msgstr "Cancelar remanente de orden de compra"
 
 #. module: purchase_stock_ux
 #: model:ir.model,name:purchase_stock_ux.model_purchase_order_line
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_cancel_remaining__purchase_order_line_ids
 msgid "Purchase Order Line"
-msgstr "Línea de pedido de compra"
+msgstr "Línea de la orden de compra"
+
+#. module: purchase_stock_ux
+#: model:ir.module.module,shortdesc:base.module_purchase_stock_ux
+msgid "Purchase Stock UX"
+msgstr ""
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Purchase orders that include lines partially received."
-msgstr ""
+msgstr "Órdenes de compra que incluyen líneas parcialmente recibidas."
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
@@ -236,7 +342,7 @@ msgstr "Órdenes de compra con devoluciones facturables"
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Purchase orders with no lines received."
-msgstr ""
+msgstr "Órdenes de compra sin líneas recibidas."
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__receipt_status
@@ -248,7 +354,7 @@ msgstr "Estado de la recepción"
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_line_search
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.view_purchase_order_filter
 msgid "Received"
-msgstr ""
+msgstr "Recibido"
 
 #. module: purchase_stock_ux
 #: model:ir.model.fields,field_description:purchase_stock_ux.field_purchase_order_line__qty_returned
@@ -269,6 +375,17 @@ msgstr "Movimiento de stock"
 #: model:ir.model,name:purchase_stock_ux.model_stock_rule
 msgid "Stock Rule"
 msgstr "Regla de inventario"
+
+#. module: purchase_stock_ux
+#. odoo-python
+#: code:addons/purchase_stock_ux/models/purchase_order_line.py:0
+msgid ""
+"The subcontractor already recorded production on %(productions)s. Receive "
+"what was produced or cancel that manufacturing order before cancelling the "
+"remaining quantity."
+msgstr ""
+"El subcontratista ya registró producción en %(productions)s. Reciba lo "
+"producido o cancele esa orden de producción antes de cancelar el remanente."
 
 #. module: purchase_stock_ux
 #: model_terms:ir.ui.view,arch_db:purchase_stock_ux.purchase_order_form
@@ -324,19 +441,3 @@ msgid ""
 "¡Está reduciendo la cantidad pedida! Recomendamos usar el botón para "
 "cancelar remanente y luego setear la cantidad deseada."
 msgstr ""
-
-#~ msgid ""
-#~ "Cancel remaining quantities can't be called for blocked purchase orders. "
-#~ "First unblock the purchase order"
-#~ msgstr ""
-#~ "Cancelar las cantidades remanentes no puede utilizarse para ordenes de "
-#~ "compra bloqueadas. Primero desbloquee la orden de compra."
-
-#~ msgid "Purchase orders that include lines not received."
-#~ msgstr "Pedidos de compra que incluyen líneas no recibidas"
-
-#~ msgid "full"
-#~ msgstr "Recibido"
-
-#~ msgid "Order Reference"
-#~ msgstr "Referencia de la orden"
