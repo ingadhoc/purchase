@@ -148,7 +148,7 @@ class PurchaseOrderLine(models.Model):
                 rec.order_id._log_decrease_ordered_quantity({rec: (rec.product_qty, old_product_qty)})
             rec.order_id.message_post(
                 body=_('Cancel remaining call for line "%s" (id %s), line qty updated from %s to %s')
-                % (rec.name, rec.id, old_product_qty, rec.product_qty)
+                % (rec.label, rec.id, old_product_qty, rec.product_qty)
             )
 
     def _create_or_update_picking(self):
