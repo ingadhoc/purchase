@@ -17,7 +17,7 @@ class StockMove(models.Model):
         super()._compute_origin_description()
         for rec in self:
             if rec.purchase_line_id:
-                rec.origin_description = rec.purchase_line_id.name
+                rec.origin_description = rec.purchase_line_id.label
 
     def _is_exchange_receipt(self):
         # Replacement receipt created with "Exchange" on a vendor return (no origin returned move).

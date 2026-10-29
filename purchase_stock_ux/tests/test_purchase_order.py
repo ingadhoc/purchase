@@ -383,6 +383,18 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(len(receipt), 1)
         self.assertIn("Test internal notes", receipt.note)
 
+    def test_receipt_origin_description_is_line_label(self):
+        """The receipt move shows the purchase line as the purchase shows it: product and description."""
+        line = self.purchase_order.order_line
+        self.assertTrue(line.label)
+        self.assertEqual(line.move_ids.origin_description, line.label)
+
+    def test_cancel_remaining_message_names_the_line(self):
+        """The chatter message of cancel remaining names the line, not an empty description."""
+        line = self.purchase_order.order_line
+        line.button_cancel_remaining()
+        self.assertIn(line.label, self.purchase_order.message_ids[:1].body)
+
     def test_config_settings_are_saved(self):
         """Unit of measure propagation and supplier currency settings are stored and read back."""
         self.env["res.config.settings"].create({"propagate_uom": True, "use_supplier_currency": True}).execute()
