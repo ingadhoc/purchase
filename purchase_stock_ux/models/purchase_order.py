@@ -90,8 +90,3 @@ class PurchaseOrder(models.Model):
     def button_cancel(self):
         self = self.with_context(cancel_from_order=True)
         return super().button_cancel()
-
-    def _prepare_picking(self):
-        res = super(PurchaseOrder, self)._prepare_picking()
-        res["note"] = self.internal_notes
-        return res
