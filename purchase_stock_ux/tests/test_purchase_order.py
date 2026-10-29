@@ -52,7 +52,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "name": "Product 2 Storable",
                 "is_storable": True,
-                "purchase_method": "purchase",
+                # billed on received quantities: a fully returned line has nothing to bill
+                "purchase_method": "receive",
             }
         )
         po = self.env["purchase.order"].create(
@@ -212,7 +213,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
             {
                 "name": "Product 2 Storable",
                 "is_storable": True,
-                "purchase_method": "purchase",
+                # billed on received quantities: a fully returned line has nothing to bill
+                "purchase_method": "receive",
             }
         )
         po = self.env["purchase.order"].create(

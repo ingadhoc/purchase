@@ -27,7 +27,7 @@ On purchase lines:
 
 #. Add receipt status on purchase lines
 #. Add button on purchase lines to allow cancelling of remaining qty to be received
-#. Add returned quantity when products are returned to the vendor. The returned quantity is not billed.
+#. Add returned quantity when products are returned to the vendor.
 #. Warn when the ordered quantity of a confirmed line is decreased, suggesting to cancel the remaining quantity.
 
 On incoming pickings:

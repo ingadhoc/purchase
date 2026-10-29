@@ -271,36 +271,6 @@ class PurchaseOrderLine(models.Model):
             res["price_unit"] = price_unit
         return res
 
-    @api.depends("qty_invoiced", "qty_received", "order_id.state", "qty_returned")
-    def _compute_qty_invoiced(self):
-        super()._compute_qty_invoiced()
-        for line in self:
-            if line.order_id.state in ["purchase", "done"]:
-                if line.product_id.purchase_method == "purchase":
-                    line.qty_to_invoice = line.product_qty - line.qty_invoiced - line.qty_returned
-                else:
-                    line.qty_to_invoice = line.qty_received - line.qty_invoiced
-            else:
-                line.qty_to_invoice = 0
-
-    @api.depends("order_id.state", "qty_invoiced", "product_qty", "qty_to_invoice", "order_id.force_invoiced_status")
-    def _compute_invoice_status(self):
-        precision = self.env["decimal.precision"].precision_get("Product Unit")
-        super()._compute_invoice_status()
-        for line in self:
-            if line.order_id.force_invoiced_status:
-                # keep the forced status that super() already applied
-                continue
-            if not float_is_zero(line.qty_to_invoice, precision_digits=precision):
-                line.invoice_status = "to invoice"
-            elif (
-                float_compare(line.qty_invoiced, (line.product_qty - line.qty_returned), precision_digits=precision)
-                >= 0
-            ):
-                line.invoice_status = "invoiced"
-            else:
-                line.invoice_status = "no"
-
     @api.depends()
     def _compute_price_unit_and_date_planned_and_name(self):
         # Esto lo hacemos por un caso raro de cancelacion de remanentes,
