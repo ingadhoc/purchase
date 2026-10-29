@@ -111,6 +111,8 @@ class PurchaseOrderLine(models.Model):
                 lambda m: "is_subcontract" in m._fields and m.is_subcontract
             )
             if subcontracted_moves:
+                # The MO is the subcontractor's: a purchase user may not have manufacturing access
+                subcontracted_moves = subcontracted_moves.sudo()
                 recorded_productions = subcontracted_moves._get_subcontract_production().filtered(
                     lambda p: p.state in ("progress", "to_close")
                 )
@@ -128,7 +130,8 @@ class PurchaseOrderLine(models.Model):
                 if rec.uom_id.is_zero(rec.qty_returned):
                     subcontracted_moves.write({"propagate_cancel": False})
                     subcontracted_moves.with_context(cancel_from_order=True)._action_cancel()
-                    rec = rec.with_context(cancel_remaining_line_ids=rec.ids)
+            if not rec._get_remaining_moves_to_cancel():
+                rec = rec.with_context(cancel_remaining_line_ids=rec.ids)
             rec.with_context(cancel_from_order=True).product_qty = rec.qty_received + rec.qty_returned
             # Bajar product_qty hace que Odoo (>=16) reduzca los moves, pero no siempre cancela el
             # remanente de recepción: si hubo una devolución con reembolso, o si el move negativo no
@@ -149,8 +152,8 @@ class PurchaseOrderLine(models.Model):
             )
 
     def _create_or_update_picking(self):
-        # The remainder was already cancelled: unlike 19, core 20 would create a new receipt for
-        # the destination moves still open (MTO) when the line quantity drops to zero
+        # Nothing left to receive: unlike 19, core 20 would create a new receipt for the destination
+        # moves still open (MTO) when the line quantity drops
         skip = self.filtered(lambda line: line.id in self.env.context.get("cancel_remaining_line_ids", []))
         return super(PurchaseOrderLine, self - skip)._create_or_update_picking()
 
