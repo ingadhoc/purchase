@@ -79,22 +79,6 @@
         </field>
     </record>
 
-   <!-- Esto es para arreglar que purchase matching solo se puede usar cuando tiene un producto seteado -->
-    <record id="view_inherit_purchase_matching" model="ir.ui.view">
-        <field name="name">purchase.matching</field>
-        <field name="model">account.move</field>
-        <field name="inherit_id" ref="purchase.view_move_form_inherit_purchase"/>
-        <field name="priority" eval="99"/>
-        <field name="arch" type="xml">
-            <button name="action_purchase_matching" position="replace">
-                <button class="oe_stat_button" name="action_purchase_matching" type="object" groups="purchase.group_purchase_user" icon="crisis_alert" invisible="not partner_id or move_type not in ('in_invoice', 'in_refund') or state not in ('draft','cancel')">
-                    <div class="o_field_statinfo">
-                        <span class="o_stat_text">Purchase Matching</span>
-                    </div>
-                </button>
-            </button>
-        </field>
-    </record>
 
     <record id="purchase_order_kpis_tree" model="ir.ui.view">
         <field name="name">purchase.order.list.inherit</field>
