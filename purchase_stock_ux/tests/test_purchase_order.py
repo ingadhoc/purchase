@@ -98,6 +98,42 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(len(product_lines), 1, "Invoice must not include the fully-returned line")
         self.assertEqual(product_lines.product_id, self.product)
 
+    def test_invoice_keeps_not_yet_received_line(self):
+        """Ticket 131673: a "received quantities" line invoiced before any
+        receipt has qty_to_invoice = 0 same as a fully-returned line, but for
+        an unrelated reason (nothing received yet, nothing returned). It must
+        stay on the draft bill instead of being dropped like a returned line,
+        or the line the user re-adds by hand never gets linked back to the
+        purchase order line and the PO never reaches "Fully Invoiced"."""
+        self.assertEqual(self.product.purchase_method, "receive")
+        po = self.env["purchase.order"].create(
+            {
+                "partner_id": self.vendor.id,
+                "order_line": [
+                    Command.create(
+                        {
+                            "product_id": self.product.id,
+                            "product_qty": 10,
+                            "price_unit": 50,
+                        }
+                    ),
+                ],
+            }
+        )
+        po.button_confirm()
+
+        line = po.order_line
+        self.assertAlmostEqual(line.qty_received, 0.0, places=2)
+        self.assertTrue(
+            float_is_zero(line.qty_to_invoice, precision_digits=2),
+            "Not-yet-received line must also have qty_to_invoice = 0",
+        )
+
+        invoice = self.env["account.move"].browse(po.action_create_invoice()["res_id"])
+        product_lines = invoice.invoice_line_ids.filtered(lambda l: l.display_type == "product")
+        self.assertEqual(len(product_lines), 1, "The not-yet-received line must stay on the draft bill")
+        self.assertEqual(product_lines.purchase_line_id, line)
+
     def test_invoice_partial_return_no_regression(self):
         """Partial return → invoice for the remaining net quantity, no zero lines."""
         po = self.env["purchase.order"].create(
