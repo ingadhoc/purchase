@@ -35,7 +35,7 @@ Purchase Orders
 Purchase Order Lines
 --------------------
 
-* Use product standard price when supplier price is not available (seller price = 0.0)
+* Use product standard price when the vendor has no pricelist for the product and it was never bought from that vendor (since 20.0, Odoo uses the price of the last confirmed purchase order)
 * Enhanced invoice quantity management and controls
 * Add pivot view to the purchase lines menu, to analyse lines without a predefined report
 * Wizard to add the selected purchase lines to a draft vendor bill
