@@ -63,7 +63,7 @@ class PurchaseOrder(models.Model):
                 raise UserError(_('Only users with "%s" can Set Received manually') % (group.name))
 
     def action_create_invoice(self, attachment_ids=False):
-        """Drop the zero-quantity lines Odoo leaves on the draft vendor bill.
+        """Drop the fully-returned lines Odoo leaves on the draft vendor bill.
 
         Odoo's ``action_create_invoice`` iterates over every ``order_line``
         without filtering by ``qty_to_invoice`` (the old ``_get_invoiceable_lines``
@@ -75,6 +75,12 @@ class PurchaseOrder(models.Model):
         reimplementing the whole method, so we don't bypass other overrides of it
         in the MRO (e.g. ``purchase_force_invoiced``, which skips invoicing on
         force-invoiced orders). Sections, notes and down payment lines are kept.
+
+        A line can also be zero-quantity for an unrelated reason: a "received
+        quantities" product that was invoiced before being received at all
+        (``qty_received = 0``). That is a legitimate draft line core expects to
+        keep, so we only drop lines whose purchase line actually has something
+        returned (``qty_returned > 0``) — never a plain zero quantity.
         """
         invoices_before = self.invoice_ids
         action = super().action_create_invoice(attachment_ids=attachment_ids)
@@ -83,6 +89,8 @@ class PurchaseOrder(models.Model):
         new_invoices.invoice_line_ids.filtered(
             lambda aml: aml.display_type == "product"
             and not aml.is_downpayment
+            and aml.purchase_line_id
+            and not float_is_zero(aml.purchase_line_id.qty_returned, precision_digits=precision)
             and float_is_zero(aml.quantity, precision_digits=precision)
         ).unlink()
         return action
