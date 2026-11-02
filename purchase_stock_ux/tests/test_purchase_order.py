@@ -100,9 +100,9 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(product_lines.product_id, self.product)
 
     def test_invoice_keeps_not_yet_received_line(self):
-        """Ticket 131673: a "received quantities" line invoiced before any
-        receipt has qty_to_invoice = 0 same as a fully-returned line, but for
-        an unrelated reason (nothing received yet, nothing returned). It must
+        """A "received quantities" line invoiced before any receipt has
+        qty_to_invoice = 0 same as a fully-returned line, but for an
+        unrelated reason (nothing received yet, nothing returned). It must
         stay on the draft bill instead of being dropped like a returned line,
         or the line the user re-adds by hand never gets linked back to the
         purchase order line and the PO never reaches "Fully Invoiced"."""
