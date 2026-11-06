@@ -5,3 +5,4 @@
 
 from . import test_purchase_matching
 from . import test_purchase_order
+from . import test_rfq_send_render
