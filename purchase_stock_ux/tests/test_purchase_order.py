@@ -412,3 +412,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
         backorder.move_ids.quantity = 6
         backorder.with_context(skip_backorder=True).button_validate()
         self.assertEqual(line.receipt_status, "full")
+
+    def test_search_vouchers_without_stock_voucher(self):
+        self.purchase_order.button_confirm()
+        lines = self.env["purchase.order.line"].search([("vouchers", "like", "0001")])
+        self.assertFalse(lines)

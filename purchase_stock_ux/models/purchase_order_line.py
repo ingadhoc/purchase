@@ -28,7 +28,7 @@ class PurchaseOrderLine(models.Model):
         copy=False,
     )
 
-    vouchers = fields.Char(compute="_compute_vouchers")
+    vouchers = fields.Char(compute="_compute_vouchers", search="_search_vouchers")
 
     qty_on_voucher = fields.Float(
         compute="_compute_qty_on_voucher",
@@ -149,6 +149,12 @@ class PurchaseOrderLine(models.Model):
                 if "voucher_ids" in picking._fields:
                     vouchers += picking.voucher_ids.mapped("display_name")
             rec.vouchers = ", ".join(vouchers)
+
+    def _search_vouchers(self, operator, value):
+        # voucher_ids exists only when stock_voucher is installed
+        if "voucher_ids" not in self.env["stock.picking"]._fields:
+            return [("id", "=", 0)]
+        return [("move_ids.picking_id.voucher_ids", operator, value)]
 
     @api.depends(
         "display_type",
