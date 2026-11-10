@@ -160,7 +160,8 @@ class PurchaseOrderLine(models.Model):
         negations = {"not in": "in", "!=": "=", "not like": "like", "not ilike": "ilike"}
         positive = negations.get(operator, operator)
         path = "move_ids.picking_id.voucher_ids"
-        if positive in ("in", "=") and not any(value if isinstance(value, list | tuple) else [value]):
+        values = [value] if isinstance(value, str | bool) or value is None else value
+        if positive in ("in", "=") and not any(values):
             # "not set": the computed char is empty when no picking has vouchers
             matches = ~Domain(path, "!=", False) if self._has_stock_voucher() else Domain.TRUE
         elif self._has_stock_voucher():
