@@ -414,6 +414,8 @@ class TestPurchaseOrder(PurchaseTestCommon):
         self.assertEqual(line.receipt_status, "full")
 
     def test_search_vouchers_without_stock_voucher(self):
-        self.purchase_order.button_confirm()
-        lines = self.env["purchase.order.line"].search([("vouchers", "like", "0001")])
-        self.assertFalse(lines)
+        line = self.purchase_order.order_line
+        search = self.env["purchase.order.line"].search
+        self.assertIn(line, search([("vouchers", "=", False)]))
+        self.assertIn(line, search([("vouchers", "not ilike", "0001")]))
+        self.assertNotIn(line, search([("vouchers", "ilike", "0001")]))
