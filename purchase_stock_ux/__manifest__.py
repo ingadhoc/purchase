@@ -19,7 +19,13 @@
 ##############################################################################
 {
     "name": "Purchase Stock UX",
+<<<<<<< cd27a2c78a6de7649e9013cf887b7237f10e9557
     "version": "20.0.1.0.0",
+||||||| 7ab2599df8cc5c840623cfd6aab98db5f1ece8f7
+    "version": "19.0.1.4.0",
+=======
+    "version": "19.0.1.4.1",
+>>>>>>> f9b3c4ec1195cff017eb7fedcd1f902c725d960d
     "category": "Purchases",
     "sequence": 14,
     "summary": "",
