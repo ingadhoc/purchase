@@ -443,3 +443,10 @@ class TestPurchaseOrder(PurchaseTestCommon):
         settings = self.env["res.config.settings"].create({})
         self.assertFalse(settings.propagate_uom)
         self.assertFalse(settings.use_supplier_currency)
+
+    def test_search_vouchers_without_stock_voucher(self):
+        line = self.purchase_order.order_line
+        search = self.env["purchase.order.line"].search
+        self.assertIn(line, search([("vouchers", "=", False)]))
+        self.assertIn(line, search([("vouchers", "not ilike", "0001")]))
+        self.assertNotIn(line, search([("vouchers", "ilike", "0001")]))
