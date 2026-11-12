@@ -99,6 +99,10 @@ class PurchaseOrder(models.Model):
         self = self.with_context(cancel_from_order=True)
         return super().button_cancel()
 
+    def _create_picking(self):
+        # purchase_stock unlinks the empty receipt it creates when the order was already fully received
+        return super(PurchaseOrder, self.with_context(purchase_drop_empty_receipt=True))._create_picking()
+
     def _prepare_picking(self):
         res = super(PurchaseOrder, self)._prepare_picking()
         res["note"] = self.internal_notes
