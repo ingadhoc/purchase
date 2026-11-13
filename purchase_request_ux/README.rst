@@ -16,14 +16,15 @@ Purchase Request UX
 
 On purchase requests:
 
-#. Adds a new permission in which the user can see all the PRs (and use the chatter) but is not able to approve them.
+#. Adds a new permission in which the user can see all the PRs (and use the chatter) but is not able to approve them. They can create and delete only their own PRs.
+#. Makes the request reference editable.
 
 Installation
 ============
 
 To install this module, you need to:
 
-#. Just install this module.
+#. It is installed automatically when Purchase Request is installed.
 
 
 Configuration
