@@ -31,7 +31,7 @@ class TestPurchaseRequestAccess(TransactionCase):
             )
         )
 
-    @mute_logger("odoo.addons.base.models.ir_rule", "odoo.models")
+    @mute_logger("odoo.addons.base.models.ir_access", "odoo.models")
     def test_extended_user_access(self):
         """The extended group sits between user and manager.
 

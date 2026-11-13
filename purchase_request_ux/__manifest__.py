@@ -32,6 +32,7 @@
     ],
     "data": [
         "security/purchase_request.xml",
+        "security/ir.access.csv",
         "views/purchase_request_views.xml",
     ],
     "demo": [],

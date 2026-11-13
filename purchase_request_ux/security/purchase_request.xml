@@ -1,12 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018-2019 ForgeFlow, S.L.
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
 <odoo>
     <record id="group_purchase_request_user_extended" model="res.groups">
         <field name="name">Purchase Request User Extended</field>
-        <field name="implied_ids" eval="[(4, ref('purchase_request.group_purchase_request_user'))]"/>
-        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request"/>
+        <field name="implied_ids" eval="[(4, ref('purchase_request.group_purchase_request_user'))]" />
+        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request" />
     </record>
     <record id="purchase_request.group_purchase_request_manager" model="res.groups">
         <field name="name">Purchase Request Manager</field>
         <field name="implied_ids" eval="[(4, ref('group_purchase_request_user_extended'))]"/>
-        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request"/>
+        <field name="privilege_id" ref="purchase_request.res_groups_privilege_purchase_request" />
     </record>
-    </odoo>
+</odoo>

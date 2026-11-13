@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+purchase_request_followers_rule_extended,Follow Purchase Request Extended,purchase.request,group_purchase_request_user_extended,ru,
+purchase_request_rule_extended,Purchase Request User Extended,purchase.request,group_purchase_request_user_extended,crud,"[('requested_by', '=', user.id)]"
+purchase_request_line_followers_rule_extended,Follow Purchase Request Line Extended,purchase.request.line,group_purchase_request_user_extended,ru,
+purchase_request_line_rule_extended,Purchase Request Line User Extended,purchase.request.line,group_purchase_request_user_extended,crud,"[('request_id.requested_by', '=', user.id)]"
