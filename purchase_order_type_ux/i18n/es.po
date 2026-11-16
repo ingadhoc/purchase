@@ -7,20 +7,103 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0+e\n"
+"Project-Id-Version: Odoo Server 20.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 18:35+0000\n"
-"PO-Revision-Date: 2026-05-07 17:41+0000\n"
+"POT-Creation-Date: 2026-11-16 14:15+0000\n"
+"PO-Revision-Date: 2026-11-16 14:15+0000\n"
 "Last-Translator: Luciano Esperlazza <les@adhoc.inc>\n"
-"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
-"purchase-19-0/purchase-19-0-purchase_order_type_ux/es/>\n"
+"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/purchase-20-0/purchase-20-0-purchase_order_type_ux/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.10.4\n"
+
+#. module: purchase_order_type_ux
+#: model:ir.module.module,description:base.module_purchase_order_type_ux
+msgid ""
+".. |company| replace:: ADHOC SA\n"
+"\n"
+".. |company_logo| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-logo.png\n"
+"   :alt: ADHOC SA\n"
+"   :target: https://www.adhoc.com.ar\n"
+"\n"
+".. |icon| image:: https://raw.githubusercontent.com/ingadhoc/maintainer-tools/master/resources/adhoc-icon.png\n"
+"\n"
+".. image:: https://img.shields.io/badge/license-AGPL--3-blue.png\n"
+"   :target: https://www.gnu.org/licenses/agpl\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"======================\n"
+"Purchase Order Type UX\n"
+"======================\n"
+"\n"
+"On purchase order type:\n"
+"\n"
+"#. Adds to the purchase order type the operation type for receipts (\"Deliver To\"), the fiscal position, the invoice\n"
+"   company, the billing journal and the bill control (ordered or received quantities).\n"
+"#. When the type is selected on a purchase order, sets the operation type and the fiscal position of the type. Orders\n"
+"   created with a type that has a fiscal position get it too.\n"
+"#. Purchase orders of that type bill on the type's bill control.\n"
+"#. Vendor bills created from those orders use the type's billing journal and invoice company.\n"
+"#. Adds a per-type \"Lock on Confirmation\" flag that locks orders of that type when they are approved. It is\n"
+"   additive to the global \"Lock Confirmed Orders\" setting, which always prevails.\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"#. Just install this module.\n"
+"\n"
+"\n"
+"Configuration\n"
+"=============\n"
+"\n"
+"To configure this module, you need to:\n"
+"\n"
+"#. No configuration needed.\n"
+"\n"
+"Usage\n"
+"=====\n"
+"\n"
+"To use this module, you need to:\n"
+"\n"
+"#. Go to ...\n"
+"\n"
+".. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas\n"
+"   :alt: Try me on Runbot\n"
+"   :target: http://runbot.adhoc.com.ar/\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/ingadhoc/purchase/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smashing it by providing a detailed and welcomed feedback.\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Images\n"
+"------\n"
+"\n"
+"* |company| |icon|\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+"|company_logo|\n"
+"\n"
+"This module is maintained by the |company|.\n"
+"\n"
+"To contribute to this module, please visit https://www.adhoc.com.ar.\n"
+msgstr ""
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__journal_id
@@ -59,13 +142,13 @@ msgstr "Entregar a"
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Mostrar nombre"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__fiscal_position_id
 #: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.view_purchase_order_type_form
 msgid "Fiscal Position"
-msgstr ""
+msgstr "Posición fiscal"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order__id
@@ -78,10 +161,15 @@ msgstr ""
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__set_locked_on_confirmation
 msgid ""
 "If enabled, purchase orders of this type are automatically locked when they "
-"are approved, preventing further edits. This is additive to the global 'Lock "
-"Confirmed Orders' setting: when that setting is on, every confirmed order is "
-"locked regardless of this flag, and the global setting prevails."
+"are approved, preventing further edits. This is additive to the global 'Lock"
+" Confirmed Orders' setting: when that setting is on, every confirmed order "
+"is locked regardless of this flag, and the global setting prevails."
 msgstr ""
+"Si se habilita, las órdenes de compra de este tipo se bloquean "
+"automáticamente al aprobarse y ya no se pueden editar. Se suma a la "
+"configuración global 'Bloquear órdenes confirmadas': cuando esa "
+"configuración está activa, todas las órdenes confirmadas se bloquean sin "
+"importar esta opción, y prevalece la configuración global."
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__fiscal_position_id
@@ -89,26 +177,28 @@ msgid ""
 "If you choose a fiscal position then this fiscal positioon would be used as "
 "default instead of the automatically detected or setted on the partner"
 msgstr ""
+"Si elige una posición fiscal, se usará por defecto en lugar de la detectada "
+"automáticamente o la configurada en el contacto"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__invoice_company_id
 msgid "Invoice Company"
-msgstr ""
+msgstr "Compañía de facturación"
 
 #. module: purchase_order_type_ux
 #: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.view_purchase_order_type_search_inherit
 msgid "Journal"
-msgstr ""
+msgstr "Diario"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__journal_domain
 msgid "Journal Domain"
-msgstr ""
+msgstr "Dominio del diario"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__lock_confirmed_po_setting
 msgid "Lock Confirmed Po Setting"
-msgstr ""
+msgstr "Configuración de bloqueo de órdenes confirmadas"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,field_description:purchase_order_type_ux.field_purchase_order_type__set_locked_on_confirmation
@@ -134,36 +224,47 @@ msgstr "Términos del Pago"
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__payment_term_id
 msgid "Payment terms applied by default to purchase orders of this type."
 msgstr ""
-"Plazo de pago que se aplica por defecto a las órdenes de compra de este tipo."
+"Plazo de pago que se aplica por defecto a las órdenes de compra de este "
+"tipo."
 
 #. module: purchase_order_type_ux
 #: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.view_purchase_order_type_search_inherit
 msgid "Purchase Method"
-msgstr ""
+msgstr "Método de compra"
 
 #. module: purchase_order_type_ux
 #: model:ir.model,name:purchase_order_type_ux.model_purchase_order
 msgid "Purchase Order"
-msgstr "Pedido de compra"
+msgstr "Orden de compra"
 
 #. module: purchase_order_type_ux
 #: model:ir.model,name:purchase_order_type_ux.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de pedido de compra"
+msgstr "Línea de la orden de compra"
+
+#. module: purchase_order_type_ux
+#: model:ir.module.module,shortdesc:base.module_purchase_order_type_ux
+msgid "Purchase Order Type UX"
+msgstr "Tipo de orden de compra UX"
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__lock_confirmed_po_setting
 msgid ""
 "Technical field: True when the global 'Lock Confirmed Orders' setting is "
 "enabled for this type's company. Analogous to sale_order_type_automation's "
-"'auto_done_setting', it hides the per-type 'Lock on Confirmation' flag while "
-"the global setting prevails, since the flag would then be irrelevant."
+"'auto_done_setting', it hides the per-type 'Lock on Confirmation' flag while"
+" the global setting prevails, since the flag would then be irrelevant."
 msgstr ""
+"Campo técnico: verdadero cuando la configuración global 'Bloquear órdenes "
+"confirmadas' está activa en la compañía del tipo. Igual que "
+"'auto_done_setting' de sale_order_type_automation, oculta la opción "
+"'Bloquear al confirmar' del tipo mientras prevalece la configuración global,"
+" ya que en ese caso la opción no tendría efecto."
 
 #. module: purchase_order_type_ux
 #: model:ir.model.fields,help:purchase_order_type_ux.field_purchase_order_type__picking_type_id
 msgid "This will determine operation type of incoming shipment"
-msgstr ""
+msgstr "Determina el tipo de operación de la recepción"
 
 #. module: purchase_order_type_ux
 #: model:ir.model,name:purchase_order_type_ux.model_purchase_order_type
@@ -174,11 +275,9 @@ msgstr "Tipo de Orden de Compra"
 #: model_terms:ir.ui.view,arch_db:purchase_order_type_ux.res_config_settings_view_form
 msgid ""
 "When enabled, every confirmed order is locked, regardless of the per-type\n"
-"                    \"Lock on Confirmation\" flag. That flag (off by default "
-"on each Purchase Order Type)\n"
-"                    only takes effect when this setting is off; this global "
-"setting always prevails."
+"                    \"Lock on Confirmation\" flag. That flag (off by default on each Purchase Order Type)\n"
+"                    only takes effect when this setting is off; this global setting always prevails."
 msgstr ""
-
-#~ msgid "Journal Entry"
-#~ msgstr "Asiento contable"
+"Si se habilita, todas las órdenes confirmadas se bloquean, sin importar la opción por tipo\n"
+"                    \"Bloquear al confirmar\". Esa opción (apagada por defecto en cada tipo de orden de compra)\n"
+"                    solo tiene efecto cuando esta configuración está apagada; esta configuración global siempre prevalece."
