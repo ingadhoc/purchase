@@ -35,8 +35,42 @@ class PurchaseOrder(models.Model):
 
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
+<<<<<<< 489bee843a8516547391e75a3a5ea66d5c128d9b
         if self.order_type.journal_id:
             res["journal_id"] = self.order_type.journal_id.id
         if self.order_type.invoice_company_id and self.order_type.invoice_company_id != self.company_id:
             res["company_id"] = self.order_type.invoice_company_id.id
+||||||| 395ee690fdbaa2ac42baa49742315ac7cbdcbc79
+        company = self.order_type.journal_id.company_id
+        journal = self.env["account.journal"].browse(res.get("journal_id")) if res.get("journal_id") else False
+        if company != self.company_id:
+            # En purchase, partner_bank_id es del proveedor, no de la compañía
+            partner_bank_id = self.partner_id.commercial_partner_id.bank_ids.filtered_domain(
+                ["|", ("company_id", "=", False), ("company_id", "=", company.id)]
+            )[:1]
+            res["partner_bank_id"] = partner_bank_id.id
+            # agregamos para que recompute term y cond si la nueva compañia los tiene por defecto
+            if "narration" in res and not res["narration"]:
+                del res["narration"]
+            if journal and journal.company_id.id != self.company_id.id:
+                res.pop("journal_id")
+
+=======
+        company = self.order_type.journal_id.company_id
+        journal = self.env["account.journal"].browse(res.get("journal_id")) if res.get("journal_id") else False
+        if company != self.company_id:
+            # En purchase, partner_bank_id es del proveedor, no de la compañía
+            partner_bank_id = self.partner_id.commercial_partner_id.bank_ids.filtered_domain(
+                ["|", ("company_id", "=", False), ("company_id", "=", company.id)]
+            )[:1]
+            res["partner_bank_id"] = partner_bank_id.id
+            # agregamos para que recompute term y cond si la nueva compañia los tiene por defecto
+            if "narration" in res and not res["narration"]:
+                del res["narration"]
+            if journal and journal.company_id.id != self.company_id.id:
+                res.pop("journal_id")
+        else:
+            res["journal_id"] = self.order_type.journal_id.id
+
+>>>>>>> baf4d510ebf6f4612b1d80462f673f27e8e0517d
         return res
