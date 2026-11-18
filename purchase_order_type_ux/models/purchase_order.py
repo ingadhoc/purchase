@@ -51,6 +51,8 @@ class PurchaseOrder(models.Model):
                 del res["narration"]
             if journal and journal.company_id.id != self.company_id.id:
                 res.pop("journal_id")
+        else:
+            res["journal_id"] = self.order_type.journal_id.id
 
         return res
 
