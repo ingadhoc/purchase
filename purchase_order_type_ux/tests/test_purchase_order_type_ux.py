@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import Command
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.purchase_stock.tests.common import PurchaseTestCommon
 from odoo.tests import tagged
 
@@ -92,3 +93,36 @@ class TestPurchaseOrderTypeLock(PurchaseTestCommon):
             self.type_lock.lock_confirmed_po_setting,
             "Con el lock global prendido el check por tipo debe ocultarse (como en Ventas)",
         )
+
+
+@tagged("post_install", "-at_install")
+class TestPurchaseOrderTypeJournal(AccountTestInvoicingCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company = cls.company_data["company"]
+        cls.product_a.purchase_method = "purchase"
+        cls.type_journal = cls.env["account.journal"].create(
+            {"name": "Order Type Bills", "code": "OTB", "type": "purchase", "company_id": cls.company.id}
+        )
+        cls.order_type = cls.env["purchase.order.type"].create(
+            {"name": "Type with journal", "journal_id": cls.type_journal.id, "company_id": cls.company.id}
+        )
+
+    def test_type_journal_same_company_beats_default(self):
+        """The type journal is used even if the order is in the journal company and a default exists."""
+        self.env["ir.default"].set(
+            "account.move", "journal_id", self.company_data["default_journal_misc"].id, company_id=self.company.id
+        )
+        po = self.env["purchase.order"].create(
+            {
+                "partner_id": self.partner_a.id,
+                "order_type": self.order_type.id,
+                "order_line": [
+                    Command.create({"product_id": self.product_a.id, "product_qty": 1.0, "price_unit": 100.0})
+                ],
+            }
+        )
+        po.button_confirm()
+        po.action_create_invoice()
+        self.assertEqual(po.invoice_ids.journal_id, self.type_journal)
