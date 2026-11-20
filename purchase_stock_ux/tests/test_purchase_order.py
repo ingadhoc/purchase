@@ -412,6 +412,7 @@ class TestPurchaseOrder(PurchaseTestCommon):
         backorder.move_ids.quantity = 6
         backorder.with_context(skip_backorder=True).button_validate()
         self.assertEqual(line.receipt_status, "full")
+<<<<<<< cd27a2c78a6de7649e9013cf887b7237f10e9557
 
     def test_internal_notes_go_to_receipt(self):
         """The internal notes of the purchase order are copied to the receipt it creates."""
@@ -443,3 +444,13 @@ class TestPurchaseOrder(PurchaseTestCommon):
         settings = self.env["res.config.settings"].create({})
         self.assertFalse(settings.propagate_uom)
         self.assertFalse(settings.use_supplier_currency)
+||||||| 7ab2599df8cc5c840623cfd6aab98db5f1ece8f7
+=======
+
+    def test_search_vouchers_without_stock_voucher(self):
+        line = self.purchase_order.order_line
+        search = self.env["purchase.order.line"].search
+        self.assertIn(line, search([("vouchers", "=", False)]))
+        self.assertIn(line, search([("vouchers", "not ilike", "0001")]))
+        self.assertNotIn(line, search([("vouchers", "ilike", "0001")]))
+>>>>>>> f9b3c4ec1195cff017eb7fedcd1f902c725d960d

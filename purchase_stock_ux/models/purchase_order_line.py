@@ -6,6 +6,7 @@ import logging
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Domain
 from odoo.tools import float_compare, float_is_zero
 
 _logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ class PurchaseOrderLine(models.Model):
         copy=False,
     )
 
-    vouchers = fields.Char(compute="_compute_vouchers")
+    vouchers = fields.Char(compute="_compute_vouchers", search="_search_vouchers")
 
     qty_on_voucher = fields.Float(
         compute="_compute_qty_on_voucher",
@@ -43,7 +44,7 @@ class PurchaseOrderLine(models.Model):
         # al calcular por voucher no tenemos en cuenta el metodo de facturacion
         # es decir, que calculamos como si fuese metodo segun lo recibido
         voucher = self.env.context.get("voucher", False)
-        if not voucher:
+        if not voucher or not self._has_stock_voucher():
             self.update({"qty_on_voucher": 0.0})
             return
         lines = self.filtered(lambda x: x.order_id.state in ["purchase", "done"])
@@ -168,13 +169,32 @@ class PurchaseOrderLine(models.Model):
 
     def _compute_vouchers(self):
         # Cambiamos esta lógica ya que antes teníamos si o si voucher_ids por dependencias y ahora va a depender de que esté instalado stock_voucher
+        has_vouchers = self._has_stock_voucher()
         for rec in self:
             vouchers = []
-            for move in rec.move_ids:
-                picking = move.picking_id
-                if "voucher_ids" in picking._fields:
+            if has_vouchers:
+                for picking in rec.move_ids.picking_id:
                     vouchers += picking.voucher_ids.mapped("display_name")
             rec.vouchers = ", ".join(vouchers)
+
+    @api.model
+    def _has_stock_voucher(self):
+        # voucher_ids exists only when stock_voucher is installed
+        return "voucher_ids" in self.env["stock.picking"]._fields
+
+    def _search_vouchers(self, operator, value):
+        negations = {"not in": "in", "!=": "=", "not like": "like", "not ilike": "ilike"}
+        positive = negations.get(operator, operator)
+        path = "move_ids.picking_id.voucher_ids"
+        values = [value] if isinstance(value, str | bool) or value is None else value
+        if positive in ("in", "=") and not any(values):
+            # "not set": the computed char is empty when no picking has vouchers
+            matches = ~Domain(path, "!=", False) if self._has_stock_voucher() else Domain.TRUE
+        elif self._has_stock_voucher():
+            matches = Domain(path, positive, value)
+        else:
+            matches = Domain.FALSE
+        return ~matches if operator in negations else matches
 
     @api.depends(
         "display_type",
