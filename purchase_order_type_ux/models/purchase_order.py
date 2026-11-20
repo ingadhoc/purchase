@@ -8,8 +8,8 @@ class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
     @api.model_create_multi
-    def create(self, vals):
-        res = super().create(vals)
+    def create(self, vals_list):
+        res = super().create(vals_list)
         if res.order_type and res.order_type.fiscal_position_id:
             res.fiscal_position_id = res.order_type.fiscal_position_id
         return res

@@ -8,6 +8,11 @@ from odoo.tests import tagged
 
 @tagged("post_install", "-at_install")
 class TestPurchaseOrderTypeLock(PurchaseTestCommon):
+    _test_user_groups = (
+        "stock.group_stock_user",
+        "purchase.group_purchase_manager",
+    )
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -53,14 +58,14 @@ class TestPurchaseOrderTypeLock(PurchaseTestCommon):
 
     def test_03_global_lock_dominates(self):
         """AC4: lock global ON -> bloquea siempre, sin importar el flag (apagado) del tipo."""
-        self.company.po_lock = "lock"
+        self.company.sudo().po_lock = "lock"
         po = self._create_po(self.type_no_lock)
         po.button_confirm()
         self.assertTrue(po.locked, "Con el lock global prendido la OC debe quedar bloqueada igual")
 
     def test_04_double_validation_respected(self):
         """AC5: con doble validación el bloqueo se aplica al aprobar, no al confirmar."""
-        self.company.write(
+        self.company.sudo().write(
             {
                 "po_double_validation": "two_step",
                 "po_double_validation_amount": 100.0,
@@ -83,12 +88,12 @@ class TestPurchaseOrderTypeLock(PurchaseTestCommon):
         compañía del tipo. Con el global apagado el check queda visible; al prenderlo, se oculta.
         """
         self.type_lock.company_id = self.company
-        self.company.po_lock = "edit"
+        self.company.sudo().po_lock = "edit"
         self.assertFalse(
             self.type_lock.lock_confirmed_po_setting,
             "Con el lock global apagado el check por tipo debe seguir visible",
         )
-        self.company.po_lock = "lock"
+        self.company.sudo().po_lock = "lock"
         self.type_lock.invalidate_recordset(["lock_confirmed_po_setting"])
         self.assertTrue(
             self.type_lock.lock_confirmed_po_setting,

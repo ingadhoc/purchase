@@ -46,7 +46,7 @@ class PurchaseOrderType(models.Model):
         readonly=False,
         precompute=True,
     )
-    journal_domain = fields.Binary(compute="_compute_journal_domain")
+    journal_domain = fields.Json(compute="_compute_journal_domain")
     # en este caso no hace falta definir "check_company=False" porque el modulo original no tiene este campo
     # pero lo dejamos definido al argumento para que quede más parecido a sale_order_type_ux
     journal_id = fields.Many2one(
@@ -77,9 +77,10 @@ class PurchaseOrderType(models.Model):
     @api.depends("invoice_company_id")
     def _compute_journal_domain(self):
         for rec in self:
-            rec.journal_domain = Domain(
-                rec.env["account.journal"]._check_company_domain(rec.invoice_company_id)
-            ) & Domain("type", "=", "purchase")
+            rec.journal_domain = list(
+                Domain(rec.env["account.journal"]._check_company_domain(rec.invoice_company_id))
+                & Domain("type", "=", "purchase")
+            )
 
     @api.constrains("invoice_company_id", "journal_id")
     def _check_journal_company(self):
