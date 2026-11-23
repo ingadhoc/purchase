@@ -10,6 +10,14 @@
             </field>
 
 
+            <!-- La columna de OC depende de parent.move_type y, cuando la condición no se
+                 cumple, la opción desaparece del menú de columnas opcionales en lugar de
+                 quedar destildada, así que el usuario no tiene forma de recuperarla.
+                 La dejamos siempre disponible como columna opcional (oculta por defecto). -->
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='purchase_order_id']" position="attributes">
+                <attribute name="column_invisible"/>
+            </xpath>
+
             <div name='button_box' position="inside">
                 <field name="has_purchases" invisible="1"/>
             </div>
