@@ -16,7 +16,12 @@ Purchase Order Type UX
 
 On purchase order type:
 
-#. Adds to the purchase order type the report partner, the project, the billing journal and the billing policy.
+#. Adds to the purchase order type the operation type for receipts ("Deliver To"), the fiscal position, the invoice
+   company, the billing journal and the bill control (ordered or received quantities).
+#. When the type is selected on a purchase order, sets the operation type and the fiscal position of the type. Orders
+   created with a type that has a fiscal position get it too.
+#. Purchase orders of that type bill on the type's bill control.
+#. Vendor bills created from those orders use the type's billing journal and invoice company.
 #. Adds a per-type "Lock on Confirmation" flag that locks orders of that type when they are approved. It is
    additive to the global "Lock Confirmed Orders" setting, which always prevails.
 

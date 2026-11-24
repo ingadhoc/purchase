@@ -20,7 +20,7 @@
 
 {
     "name": "Purchase Order Type UX",
-    "version": "19.0.1.4.0",
+    "version": "20.0.1.0.0",
     "category": "Purchases",
     "sequence": 14,
     "summary": "",
@@ -33,6 +33,6 @@
         "views/purchase_order_type_views.xml",
         "views/res_config_settings_views.xml",
     ],
-    "installable": False,
+    "installable": True,
     "auto_install": False,
 }
